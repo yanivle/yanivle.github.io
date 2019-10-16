@@ -134,7 +134,7 @@ Note how simple this is! First of all we gain a big speed factor as we are proce
 
 Running the fireworks program with only the mmx_shade filter on, results in this:
 
-<div class="img img--fullContainer img--14xLeading" style="background-image: url({{ site.baseurl_posts_img }}shade_only.jpg);"></div>
+{% include image.html url="/assets/images/posts/shade_only.jpg" %}
 
 Not very impressive yet, but it does look like fireworks! (at least when animated…)
 
@@ -164,7 +164,7 @@ Notice that we skip the first and last lines (plus several extra bytes) in order
 
 Running the program with the mmx_blur filter applied, as well as the mmx_shade filter, results in this:
 
-<div class="img img--fullContainer img--14xLeading" style="background-image: url({{ site.baseurl_posts_img }}mmx_blur.jpg);"></div>
+{% include image.html url="/assets/images/posts/mmx_blur.jpg" %}
 
 Much nicer! Finally we have the mmx_blur_right function, which is a slight variation of mmx_blur, that gives the fireworks comet like appearance. Its code is self-explanatory:
 
@@ -188,7 +188,7 @@ ret
 
 The MAIN program switches between the two blur functions once in a while. The result of applying the mmx_blur_right function is:
 
-<div class="img img--fullContainer img--14xLeading" style="background-image: url({{ site.baseurl_posts_img }}mmx_blur_right.jpg);"></div>
+{% include image.html url="/assets/images/posts/mmx_blur_right.jpg" %}
 
 ### Exercises to the Reader
 

@@ -6,7 +6,7 @@ layout: default
     <div class="section-backgroundImage">
 
       {% if page.image.feature %}
-        <img class="post-featuredImage" src="{{ page.image.feature | prepend: site.baseurl_featured_img }}" style="
+        <img class="post-featuredImage" src="{{ page.image.feature | prepend: "/assets/images/hero/" }}" style="
         {% if page.image.topPosition %}
           top:{{ page.image.topPosition }};
         {% endif %}
@@ -60,7 +60,7 @@ layout: default
         <div class="section-backgroundImage section-backgroundImage--previousPage">
           <img class="post-featuredImage"
           {% if page.previous.image.feature %}
-            src="{{ page.previous.image.feature | prepend: site.baseurl_featured_img }}"
+            src="{{ page.previous.image.feature | prepend: "/assets/images/hero/" }}"
           {% endif %}
           style="top:0" alt="">
         </div>
