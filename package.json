@@ -1,0 +1,24 @@
+{
+  "name": "Yaniv Leviathan Blog",
+  "version": "0.0.1",
+  "description": "Yaniv Leviathan's blog",
+  "homepage": "http://yanivle.github.io",
+  "author": "Yaniv Leviathan",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yanivle/yanivle.github.io"
+  },
+  "devDependencies": {
+    "gulp": "^4.0.2"
+  },
+  "dependencies": {
+    "browser-sync": "^2.26.7",
+    "concurrent-transform": "^1.0.0",
+    "gulp-autoprefixer": "^7.0.0",
+    "gulp-image-resize": "^0.13.1",
+    "gulp-minify-css": "^1.2.4",
+    "gulp-postcss": "^8.0.0",
+    "gulp-rename": "^1.4.0",
+    "gulp-sass": "^4.0.2"
+  }
+}
