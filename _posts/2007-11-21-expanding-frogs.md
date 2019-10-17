@@ -2,7 +2,7 @@
 layout: post
 title:  "Expanding Frogs"
 date:   2007-11-21 01:00:00
-excerpt: "A geometric math puzzle about plane tr"
+excerpt: "An easy geometric math puzzle"
 categories: Math
 tags:  Math Puzzles Easy
 image:
