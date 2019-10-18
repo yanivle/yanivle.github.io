@@ -9,13 +9,16 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="224.52101mm"
-   height="16.459288mm"
-   viewBox="0 0 224.52101 16.459288"
+   width="848.58331"
+   height="62.208332"
+   viewBox="0 0 224.521 16.459288"
    version="1.1"
    id="svg3867"
    inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
-   sodipodi:docname="logo-text-black.svg">
+   sodipodi:docname="logo-text-black.svg"
+   inkscape:export-filename="/usr/local/google/home/leviathan/proj/site/site/assets/images/logo-text-black.svg.png"
+   inkscape:export-xdpi="65.16272"
+   inkscape:export-ydpi="65.16272">
   <defs
      id="defs3861" />
   <sodipodi:namedview
@@ -26,20 +29,21 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.35"
-     inkscape:cx="-170.59607"
-     inkscape:cy="-521.6419"
-     inkscape:document-units="mm"
+     inkscape:cx="257.23726"
+     inkscape:cy="-407.35617"
+     inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="3840"
-     inkscape:window-height="2028"
+     inkscape:window-height="998"
      inkscape:window-x="0"
-     inkscape:window-y="50"
-     inkscape:window-maximized="1"
+     inkscape:window-y="1080"
+     inkscape:window-maximized="0"
      fit-margin-top="0"
      fit-margin-left="0"
      fit-margin-right="0"
-     fit-margin-bottom="0" />
+     fit-margin-bottom="0"
+     units="px" />
   <metadata
      id="metadata3864">
     <rdf:RDF>
@@ -56,21 +60,21 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-2.0475925,-54.832483)">
+     transform="translate(111.14998,-54.832483)">
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="2.2680786"
+       x="114.52858"
        y="71.291771"
        id="text3983"><tspan
          sodipodi:role="line"
-         x="2.2680786"
+         x="2.2680795"
          y="71.291771"
          id="tspan3981"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:22.57777786px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.26458332"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:22.57777786px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;stroke-width:0.26458332"><tspan
            x="2.2680786"
            y="71.291771"
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:22.57777786px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.26458332"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:22.57777786px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;stroke-width:0.26458332"
            id="tspan3979">YANIV LEVIATHAN</tspan></tspan></text>
   </g>
 </svg>
