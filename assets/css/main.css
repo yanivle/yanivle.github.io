@@ -1969,6 +1969,12 @@ body {
   line-height: 1.5;
 }
 
+@media (max-width: 767px) {
+  .blockGroup-list li .postArticle-title {
+    font-size: 1rem;
+  }
+}
+
 .blockGroup-list .postArticle-wrapper {
   position: relative;
   background: #fff;

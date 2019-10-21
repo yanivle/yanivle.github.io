@@ -113,6 +113,9 @@
 
     .postArticle-title {
       font-size: $font-XS;
+      @media (max-width: $screen-xs-max) {
+        font-size: $font-S;
+      }  
       line-height: 1.5;
     }
   }
