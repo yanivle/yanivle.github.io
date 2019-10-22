@@ -8,8 +8,8 @@ tags:  Puzzle Hard Math Philosophy Probability
 image:
   feature: dice.jpg
   topPosition: -100px
-bgContrast: light
-bgGradientOpacity: lighter
+bgContrast: dark
+bgGradientOpacity: darker
 syntaxHighlighter: no
 ---
 A group of *very* smart men perform an experiment. There are no restrictions on the men's behaviour during the experiment. After the experiment is over, each of the men reveals to all the others everything that they know. Despite the fact that none of them lies and they all know of everything that happened, there are 2 individuals in the group that reach different scientific conclusions. Your task is to devise such an experiment.
