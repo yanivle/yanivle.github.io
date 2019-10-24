@@ -12,7 +12,7 @@ bgContrast: dark
 bgGradientOpacity: darker
 syntaxHighlighter: no
 ---
-I wrote a physical simulator for a piece of cloth in TypeScript.
+A year ago, mostly during a transatlantic flight, I wrote a physical simulator for a piece of cloth in TypeScript.
 
 The cloth interacts with gravity and with the wind:
 
@@ -32,7 +32,8 @@ TODO add interactive demo here
 
 ### Interesting Technological Pieces
 
-TODO
+There were several interesting techonological aspects to this project.
+
 #### UIValue
 UIValue.ts
 
