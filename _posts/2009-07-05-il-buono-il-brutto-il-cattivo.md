@@ -30,4 +30,4 @@ Prove that a degree 7 polynomial with integer coefficients, that receives the va
 
 Here is some inspirational music to help you solve these riddles:
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/4aniv65Mw8I" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/4aniv65Mw8I?start=6" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
