@@ -202,6 +202,12 @@
   filter: none;
 }
 
+.block .topBlock {
+  @media (max-width: $screen-xs-max) {
+    filter: none;
+  }
+}
+
 // Newsletter subscription area
 .section--subscribe {
   width: 100%;

@@ -57,4 +57,25 @@ MathJax.Hub.Config({
   }
 });
 </script>
+
+<script>
+
+function saturateTop() {
+  var windowScroll = $(window).scrollTop();
+  $(".desaturate").each(function(index) {
+    var offsetY = $(this).offset().top - windowScroll;
+    if (offsetY > 70 && offsetY < 400) {
+      $(this).addClass("topBlock");
+    } else {
+      $(this).removeClass("topBlock");
+    }
+  });
+}
+
+$( window ).scroll(function() {
+  saturateTop();
+});
+
+saturateTop();
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>

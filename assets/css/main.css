@@ -2065,6 +2065,13 @@ body {
           filter: none;
 }
 
+@media (max-width: 767px) {
+  .block .topBlock {
+    -webkit-filter: none;
+            filter: none;
+  }
+}
+
 .section--subscribe {
   width: 100%;
   background: #fff;
