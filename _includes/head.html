@@ -23,24 +23,6 @@
     <link rel="prev" href="{{ page.previous.url | replace:'index.html','' }}" title="{{ page.previous.title }}">
   {% endif %}
 
-  <!-- Twitter card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:site" content="@{{ site.author.twitter }}">
-  <meta name="twitter:creator" content="@{{ site.author.twitter }}">
-  <meta name="twitter:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.name }}{% endif %}">
-  <meta name="twitter:description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
-  <meta name="twitter:image" content="{% if page.image.feature %}{{ page.image.feature | prepend: "/assets/images/hero/" }}{% else %}{{ site.icon }}{% endif %}">
-  <meta name="twitter:url" content="{{ page.url | replace:'index.html','' }}">
-
-  <!-- Open graph -->
-  <meta property="og:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.name }}{% endif %}">
-  <meta property="og:type" content="{% if page.date %}article{% else %}website{% endif %}">
-  <meta property="og:url" content="{{ page.url | replace:'index.html','' }}">
-  <meta property="og:image" content="{% if page.image.feature %}{{ page.image.feature | prepend: "/assets/images/hero/" }}{% else %}{{ site.icon }}{% endif %}">
-  <meta property="og:description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
-  <meta property="og:site_name" content="{{ site.name }}">
-  <meta property="og:locale" content="{{ site.locale }}">
-
   {% if page.date %}
     <meta property="article:modified_time" content="{% if page.last_modified_at %}{{ page.last_modified_at | date_to_xmlschema }}{% else %}{{ page.date | date_to_xmlschema }}{% endif %}">
     <meta property="article:published_time" content="{{ page.date | date_to_xmlschema }}">
