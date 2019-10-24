@@ -29,7 +29,11 @@ title: Yaniv Leviathan's Blog
               <article class="postArticle postArticle--short">
                 {% if post.image.feature %}
                   <a href="{{ post.url }}">
-                    <div class="postArticle-image desaturate" style="background-image:url('{{ post.image.feature | prepend: "/assets/images/hero/" }}')">
+                    {% if forloop.index0 < 3 %}
+                      <div class="postArticle-image desaturate" style="background-image:url('{{ post.image.feature | prepend: "/assets/images/hero/" }}')">
+                    {% else %}
+                      <div class="postArticle-image desaturate" style="background-image:url('{{ post.image.feature | prepend: "/assets/images/midsize/" }}')">
+                      {% endif %}
                     </div>
                   </a>
                 {% else %}

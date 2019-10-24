@@ -82,8 +82,18 @@ function thumbnails() {
       os.cpus().length
     ))
     .pipe(gulp.dest("assets/images/thumbnail"));
-}
-
+  }
+  function midsize() {
+    return gulp.src("assets/images/hero/*.{jpg,png}")
+      .pipe(parallel(
+        imageResize({
+          height: 335
+        }),
+        os.cpus().length
+      ))
+      .pipe(gulp.dest("assets/images/midsize"));
+    }
+  
 /**
  * Watch scss files for changes & recompile
  * Watch html/md files, run jekyll
@@ -92,6 +102,7 @@ function thumbnails() {
 function watch() {
   gulp.watch('_scss/**/*.scss', styles);
   gulp.watch('assets/images/hero/*.{jpg,png}', thumbnails);
+  gulp.watch('assets/images/hero/*.{jpg,png}', midsize);
   gulp.watch(['*.html',
       '*.txt',
       'about/**',
@@ -108,10 +119,11 @@ function watch() {
   gulp.watch("_site/index.html").on('change', browserSync.reload);
 }
 
-gulp.task('default', gulp.parallel(thumbnails, browserSyncTask, watch));
+gulp.task('default', gulp.parallel(thumbnails, midsize, browserSyncTask, watch));
 
 exports.jekyllBuild = jekyllBuild;
 exports.styles = styles;
 exports.browserSync = browserSyncTask;
 exports.thumbnails = thumbnails;
+exports.midsize = midsize;
 exports.watch = watch;
