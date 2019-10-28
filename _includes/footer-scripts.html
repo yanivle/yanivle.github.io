@@ -59,11 +59,20 @@ MathJax.Hub.Config({
 
 <script>
 
+function inRange(mn, mx, p) {
+  return (p >= mn) && (p <= mx);
+}
+
 function saturateTop() {
+  var height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+  var midpoint = height / 2;
+
   var windowScroll = $(window).scrollTop();
   $(".desaturate").each(function(index) {
-    var offsetY = $(this).offset().top - windowScroll;
-    if (offsetY > 70 && offsetY < 400) {
+    var block = $(this).parent().parent().parent();
+    var offsetTop = block.offset().top - windowScroll;
+    var offsetBottom = block.offset().top + block.outerHeight(true) - windowScroll;
+    if (inRange(offsetTop, offsetBottom, midpoint)) {
       $(this).addClass("topBlock");
     } else {
       $(this).removeClass("topBlock");
