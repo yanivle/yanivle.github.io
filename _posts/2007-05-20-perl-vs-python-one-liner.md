@@ -22,7 +22,7 @@ Oh, and try to solve the riddle without running it (run it only as a last resort
 
 ![Perl Logo](/assets/images/posts/perl.png)
 
-```shell
+```perl
 perl -wle 'print "True" if (1 x shift) !~ /^1?$|^(11+?)\1+$/' [number]
 ```
 
@@ -30,7 +30,7 @@ perl -wle 'print "True" if (1 x shift) !~ /^1?$|^(11+?)\1+$/' [number]
 
 ![Python Logo](/assets/images/posts/python.png)
 
-```shell
+```python
 python -c "import sys, re; print None == re.match('^1?$|^(11+?)\\1+$','1'*int(sys.argv[1]))" [number]
 ```
 
