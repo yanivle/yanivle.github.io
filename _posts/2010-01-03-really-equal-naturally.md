@@ -12,6 +12,7 @@ bgContrast: dark
 bgGradientOpacity: darker
 syntaxHighlighter: no
 ---
-You have a set of 2N+1 natural numbers, with the following property: if you remove any one element, you can partition the remaining 2N elements into two sets A and B, each of size N, such that the sum of the N numbers in set A equals the sum of the N numbers in set B. Prove that all the numbers in the original set are equal.
+You have a set of 2N+1 real numbers, with the following property: if you remove any one element, you can partition the remaining 2N elements into two sets, *A* and *B*, each of size N, such that the sum of the N numbers in set *A* equals the sum of the N numbers in set *B*. Prove that all the numbers in the original set are equal.
 
-Try to solve the riddle in the more general case, where the numbers are not necessarily natural, but arbitrary reals (some knowledge of algebra is helpful here).
+### Spoiler Alert - Hint Ahead
+Start by trying to solve the riddle for the special case where the set contains only *natural numbers* instead of general reals.
