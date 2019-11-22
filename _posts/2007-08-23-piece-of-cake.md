@@ -7,9 +7,9 @@ categories: Math
 tags:  Math Puzzle Easy
 image:
   feature: cake.jpg
-  topPosition: -100px
-bgContrast: dark
-bgGradientOpacity: darker
+  topPosition: -1500px
+bgContrast: light
+bgGradientOpacity: lighter
 syntaxHighlighter: no
 ---
 In this post you will find a collection of very easy puzzles - enjoy!

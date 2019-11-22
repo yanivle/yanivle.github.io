@@ -7,7 +7,7 @@ categories: Math
 tags:  Math Puzzles Easy Combinatorics
 image:
   feature: chameleon.jpg
-  topPosition: -100px
+  topPosition: -200px
 bgContrast: dark
 bgGradientOpacity: darker
 syntaxHighlighter: no

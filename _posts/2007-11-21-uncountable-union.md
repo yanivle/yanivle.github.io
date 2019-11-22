@@ -7,7 +7,7 @@ categories: Puzzle
 tags:  Math Puzzle Set-Theory
 image:
   feature: union.jpg
-  topPosition: -100px
+  topPosition: -500px
 bgContrast: dark
 bgGradientOpacity: darker
 syntaxHighlighter: no

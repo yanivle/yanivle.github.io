@@ -7,7 +7,7 @@ categories: Algorithms
 tags:  Algorithms Puzzles Easy
 image:
   feature: neighbors.jpg
-  topPosition: -100px
+  topPosition: -300px
 bgContrast: dark
 bgGradientOpacity: darker
 syntaxHighlighter: no

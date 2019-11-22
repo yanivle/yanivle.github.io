@@ -7,9 +7,9 @@ categories: Puzzles
 tags:  Coding Puzzles
 image:
   feature: python.jpg
-  topPosition: -100px
-bgContrast: light
-bgGradientOpacity: lighter
+  topPosition: -300px
+bgContrast: dark
+bgGradientOpacity: darker
 syntaxHighlighter: yes
 ---
 A few years ago a friend of mine asked me the following Perl riddle. Unfortunately, in order to solve it you must know Perl. As I like Python much better, I translated the riddle to Python. Attached are both versions.

@@ -7,7 +7,7 @@ categories: Math
 tags:  Math Puzzle
 image:
   feature: n_over_x_to_the_x.png
-  topPosition: -100px
+  topPosition: -800px
 bgContrast: dark
 bgGradientOpacity: darker
 syntaxHighlighter: no

@@ -7,14 +7,55 @@ categories: Graphics
 tags:  Coding Graphics Physics Simulation Javascript Typescript
 image:
   feature: clothsim3d.png
-  topPosition: -100px
-bgContrast: dark
-bgGradientOpacity: darker
+  topPosition: -300px
+bgContrast: light
+bgGradientOpacity: lighter
 syntaxHighlighter: yes
 ---
 A year ago, mostly during a long transatlantic flight, I wrote a simulator for a piece of cloth in TypeScript. That's what it looks like (you can move the sphere with the mouse, clicking the mouse button will tear the cloth):
 
-{% include image.html url="/assets/images/posts/wind.png" %}
+<style>
+  #wrapper {
+    position: relative;
+  }
+
+  canvas {
+    position: absolute;
+    left: 0;
+  }
+
+  #insert_point {
+    position: absolute;
+    right: 0;
+  }
+
+  #reset {
+    position: absolute;
+    right: 0;
+  }
+
+  input {
+    margin: 20px;
+  }
+</style>
+
+<h1>Demo</h1>
+<p>
+  <strong>Tear</strong>: mouse click<br/>
+  <strong>Shoot</strong>: space bar (aim with mouse!)<br/>
+</p>
+<div id="wrapper">
+  <canvas width=800 height=600 id="canvas"></canvas>
+  <script src="/assets/javascripts/require.js"></script>
+  <script src="/assets/javascripts/clothsim.js"></script>
+  <script>
+    requirejs(['clothsim']);
+  </script>
+  <br/>
+  <button type="button" id="reset" onclick="init()">Reset</button><br/>
+  <div id="insert_point">
+  </div>
+</div>
 
 In this post I will describe a couple of the more interesting things about this small project.
 

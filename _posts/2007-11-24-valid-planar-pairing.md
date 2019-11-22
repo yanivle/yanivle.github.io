@@ -7,7 +7,7 @@ categories: Puzzle
 tags:  Puzzle Geometry
 image:
   feature: pairs.jpg
-  topPosition: -100px
+  topPosition: -400px
 bgContrast: dark
 bgGradientOpacity: darker
 syntaxHighlighter: no

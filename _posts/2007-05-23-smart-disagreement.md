@@ -7,7 +7,6 @@ categories: Puzzle
 tags:  Puzzle Hard Math Philosophy Probability
 image:
   feature: dice.jpg
-  topPosition: -100px
 bgContrast: dark
 bgGradientOpacity: darker
 syntaxHighlighter: no

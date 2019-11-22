@@ -7,7 +7,7 @@ categories: Math
 tags:  Puzzles Hard Set-Theory Combinatorics
 image:
   feature: prison.jpg
-  topPosition: -100px
+  topPosition: -500px
 bgContrast: dark
 bgGradientOpacity: darker
 syntaxHighlighter: no

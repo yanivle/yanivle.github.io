@@ -7,7 +7,7 @@ categories: Puzzle
 tags:  Algorithms Puzzle Easy Coding
 image:
   feature: twins.jpg
-  topPosition: -100px
+  topPosition: -1000px
 bgContrast: dark
 bgGradientOpacity: darker
 syntaxHighlighter: no
