@@ -108,6 +108,7 @@ function watch() {
       'about/**',
       '_posts/*.markdown',
       '_posts/*.md',
+      '_drafts/*.md',
       'assets/javascripts/**/**.js',
       'assets/images/**',
       'assets/fonts/**',
