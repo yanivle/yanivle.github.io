@@ -19,7 +19,7 @@ var messages = {
  */
 function jekyllBuild(cb) {
   browserSync.notify(messages.jekyllBuild);
-  return cp.spawn('jekyll', ['build', '--config=_config.yml'], {
+  return cp.spawn('jekyll', ['build', '--config=_config.yml', '--drafts'], {
       stdio: 'inherit'
     })
     .on('close', cb);
