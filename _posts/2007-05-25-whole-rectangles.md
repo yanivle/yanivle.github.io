@@ -32,10 +32,10 @@ It is trivial to prove this claim by induction on the number of edges (on a grap
 
 A rectangle is called ***whole*** if at least one of its sides is an integer. For example, a rectangle of 2 by $$\frac{3}{5}$$ is whole as well as a rectangle of $$\sqrt{5}$$ by 3. A rectangle of $$\frac{1}{2}$$ by $$\frac{1}{2}$$ is not whole. Examples:
 
-![Whole Rectangles Examples](/assets/images/posts/rectangles.gif)
+{% include image.html url="/assets/images/posts/rectangles.gif" %}
 
 A set *T* of rectangles constitues a ***tiling*** of a rectangle *R* if the rectangles in *T* are disjoint and for every point *p* in *R* there is a rectangle *S* in *T* such that *p* belongs to *S*. Example:
 
-![Tiling Rectangles Examples](/assets/images/posts/tiling.gif)
+{% include image.html url="/assets/images/posts/tiling.gif" %}
 
 **Prove that if *R* is a rectangle and *T* is a tiling of *R* consisting only of whole rectangles (i.e. every rectangle *S* in *T* is whole) then *R* is whole.**

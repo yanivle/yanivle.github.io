@@ -30,13 +30,13 @@ In order to answer this question we shall develop some tools.
 
 Given two points, *a* and *b*, we can construct the line passing through their mid-point that is perpendicular to the line passing through *a* and *b*. This is done as depicted here (the yellow dot is the constructed mid-point):
 
-![Mid Point Perpendicular Construction](/assets/images/posts/mid_point_perpendicular.gif)
+{% include image.html url="/assets/images/posts/mid_point_perpendicular.gif" %}
 
 ### Point Reflection
 
 Given a point *a* and a point *b*, we can create the point *c* (that is different from *a*) lying on the line through *a* and *b* and whose distance from *b* is the same as the distance from *b* to *a*. This can be done by using the straight-edge to create the line through *a* and *b* and then use the compass with center at *b* and leg at *a*. *c* is the intersection of this circle and line:
 
-![Point Reflection Construction](/assets/images/posts/point_reflection.gif)
+{% include image.html url="/assets/images/posts/point_reflection.gif" %}
 
 ### Creation of the Axis
 
@@ -77,7 +77,7 @@ Given constructable numbers *a* and *b*, *a+b* is a constructable number. We can
 
 If *a* and *b* are constructable numbers, so are $$a \times b$$ and $$\frac{a}{b}$$. The construction for multiplication is depicted below (division is similar):
 
-![Multiplication Consturction](/assets/images/posts/mul_div.gif)
+{% include image.html url="/assets/images/posts/mul_div.gif" %}
 
 We have just proved an important theorem: **the rational numbers $$\mathbb{Q}$$ are constructable** $$\blacksquare$$
 

@@ -29,15 +29,15 @@ A point of the euclidean plane is called *constructable* (from the original poin
 1. If the initial set of points consists of only a single point then this single point is also the only constructable point (as no lines can be drawn). The same applies for an initial set containing 2 points (as only one line can be drawn, and so there are no line intersections!).
 2. If the initial set contains 3 points then 3 lines can be drawn (as shown here). But no new point is created.
 
-![Triangle Example](/assets/images/posts/triangle1.jpg)
+{% include image.html url="/assets/images/posts/triangle1.jpg" %}
 
 If the initial set is a rectangle, one new point can be created.
 
-![Rectangle Example](/assets/images/posts/rectangle.jpg)
+{% include image.html url="/assets/images/posts/rectangle.jpg" %}
 
 A more complex example is depicted below. Well, as you can see, many new points can be created. I added to the illustration only the first few, but hopefully you get the point (pun not intended).
 
-![Complex Example](/assets/images/posts/complex1.jpg)
+{% include image.html url="/assets/images/posts/complex1.jpg" %}
 
 > Question: What initial sets of points (if any) lead to an infinite set of constructable points?
 
