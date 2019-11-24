@@ -2,9 +2,11 @@
   <ul class="popover popover--menu">
     <li class="menu-avatar">
       <a href="/" class="brandLogo brandLogo--small
+      {% comment %}
       {% if page.bgContrast == "light" %}
         brandLogo--black
       {% endif %}
+      {% endcomment %}
       ">{{ site.name }}</a>
       <ul class="list list--avatarMenu hidden">
         <li class="list-item"><a href="">Twitter</a></li>
