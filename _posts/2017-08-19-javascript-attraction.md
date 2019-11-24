@@ -18,10 +18,12 @@ During a long transatlantic flight, I wrote this simple graphics simulation for 
 <script src="/assets/javascripts/attraction.js"></script>
 
 #### Interaction
-**Space** - Set attractors.
+**Space** - Set attractors (try clicking it repeatedly).
 
 **Enter** - Reset attractors.
 
 **Mouse Click** or **Mouse Drag** - Set attractors to mouse.
+
+Note - the interaction might not work properly on mobile devices, so please see this post on a desktop or laptop machine.
 
 Enjoy!
