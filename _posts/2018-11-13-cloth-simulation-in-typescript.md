@@ -45,7 +45,7 @@ A year ago, mostly during a long transatlantic flight, I wrote a simulator for a
   <strong>Shoot</strong>: space bar (aim with mouse!)<br/>
 </p>
 <div id="wrapper">
-  <canvas width=800 height=600 id="canvas"></canvas>
+  <canvas width="800" height="600" id="canvas"></canvas>
   <script src="/assets/javascripts/require.js"></script>
   <script src="/assets/javascripts/clothsim.js"></script>
   <script>
