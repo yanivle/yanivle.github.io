@@ -22,7 +22,7 @@ $$
 
 Since 
 $$|T^{1000}_{400}| = \binom{1000}{400} \lt \binom{1000}{401} = |T^{1000}_{401}|$$
-, there exists a function $$f: T^{1000}_{400} \rightarrow T^{1000}_{401}$$ that is an injection. Write a function, e.g. in C or Python, that implements the injection above (the input is represented by a boolean vector of length 1000). Your function should optimize for shortest code length as well as shortest runtime.
+, there exists a function $$f: T^{1000}_{400} \rightarrow T^{1000}_{401}$$ that is an [injection](https://en.wikipedia.org/wiki/Injective_function) (i.e. one-to-one). Write a function, e.g. in C or Python, that implements the injection above (the input is represented by a boolean vector of length 1000). Your function should optimize for shortest code length as well as shortest runtime.
 
 Thanks Asaf Aharoni for this super cool puzzle!
 
