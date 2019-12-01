@@ -35,6 +35,7 @@ layout: default
               By {{ site.author.name }}
             </li>
             <li class="postMeta-tags">
+              {%if page.categories contains "Puzzle" %}<span>&#129513;</span>{% endif %}
               {{ page.categories }}
             </li>
           </ul>
