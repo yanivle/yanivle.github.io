@@ -3,7 +3,7 @@ layout: post
 title:  "Perl vs. Python One-Liner"
 date:   2007-05-20 01:00:00
 excerpt: "A code puzzle"
-categories: Puzzles
+categories: Puzzle
 tags:  Coding Puzzles
 image:
   feature: python.jpg

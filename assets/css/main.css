@@ -1854,6 +1854,26 @@ body {
   }
 }
 
+.category-icon-large {
+  font-size: 3rem;
+  float: right;
+  margin-right: -0.5rem;
+  margin-top: -0.5rem;
+}
+
+.category-icon-small {
+  font-size: 2rem;
+  float: right;
+  margin-right: -0.5rem;
+  margin-top: -0.5rem;
+}
+
+@media (max-width: 767px) {
+  .category-icon-small {
+    font-size: 3rem;
+  }
+}
+
 .postWrapper {
   position: relative;
   width: 100%;

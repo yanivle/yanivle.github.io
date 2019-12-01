@@ -3,7 +3,7 @@ layout: post
 title: The Better Half
 date: 2010-05-19 17:42 -0400
 excerpt: "A cute and easy algorithmic riddle"
-categories: Algorithms
+categories: Puzzle
 tags:  Algorithms Puzzles Easy
 image:
   feature: halves.jpg

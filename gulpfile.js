@@ -35,7 +35,7 @@ function styles() {
       outputStyle: 'expanded'
     }))
     .pipe(autoprefixer({
-      browsers: ['last 2 versions', 'Firefox ESR', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1']
+      overrideBrowserslist: ['last 2 versions', 'Firefox ESR', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1']
     }))
     .pipe(postcss([opacity]))
     .pipe(gulp.dest('assets/css'))

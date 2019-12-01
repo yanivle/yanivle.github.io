@@ -3,7 +3,7 @@ layout: post
 title: Prisoners with Bit Sequences
 date: 2010-05-28 17:42 -0400
 excerpt: "A hard riddle"
-categories: Math
+categories: Puzzle
 tags:  Puzzles Hard Set-Theory Combinatorics
 image:
   feature: prison.jpg

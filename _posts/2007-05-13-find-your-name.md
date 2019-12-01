@@ -3,7 +3,7 @@ layout: post
 title:  "Find Your Name"
 date:   2007-05-13 01:00:00
 excerpt: "A very hard combinatorics puzzle"
-categories: Puzzles
+categories: Puzzle
 tags:  Math Puzzles Hard Classic
 image:
   feature: chest.jpg

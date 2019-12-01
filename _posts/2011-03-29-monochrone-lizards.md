@@ -3,7 +3,7 @@ layout: post
 title:  "Monochrome Lizards"
 date:   2011-03-29 01:00:00
 excerpt: "An easy combinatorics puzzle"
-categories: Math
+categories: Puzzle
 tags:  Math Puzzles Easy Combinatorics
 image:
   feature: chameleon.jpg

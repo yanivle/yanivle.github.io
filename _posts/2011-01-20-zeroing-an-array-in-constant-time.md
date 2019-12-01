@@ -3,7 +3,7 @@ layout: post
 title:  "Zeroing an Array in Constant Time"
 date:   2011-01-20 01:00:00
 excerpt: "A cool and practical riddle"
-categories: Algorithms
+categories: Puzzle
 tags:  Algorithms Puzzles Easy
 image:
   feature: zero.jpg

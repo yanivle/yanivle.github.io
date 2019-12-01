@@ -216,3 +216,20 @@
     font-size: $font-XXS;
   }
 }
+
+.category-icon-large {
+  font-size: 3rem;
+  float: right;
+  margin-right: -0.5rem;
+  margin-top: -0.5rem;
+}
+
+.category-icon-small {
+  font-size: 2rem;
+  @media (max-width: $screen-xs-max) {
+    font-size: 3rem;
+  }
+  float: right;
+  margin-right: -0.5rem;
+  margin-top: -0.5rem;
+}

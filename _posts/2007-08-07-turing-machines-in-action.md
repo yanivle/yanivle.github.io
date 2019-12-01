@@ -3,7 +3,7 @@ layout: post
 title:  "Turing Machines in Action"
 date:   2007-08-07 01:00:00
 excerpt: "In this post I will define turing machines and demonstrate a simple one in action."
-categories: Coding
+categories: Programming
 tags:  Coding Python Theory Computer-Science
 image:
   feature: machine.jpg

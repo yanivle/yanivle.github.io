@@ -12,7 +12,7 @@ title: Yaniv Leviathan's Blog
       <div class="postMeta-wrapper postMeta-wrapper--frontpage">
         <ul class="postMeta">
           <li class="postMeta-tagline">
-            a blog about math, programming, and other intersting things
+            puzzles, math, programming, and other interesting things
           </li>
         </ul>
       </div>
@@ -31,9 +31,16 @@ title: Yaniv Leviathan's Blog
                   <a href="{{ post.url }}">
                     {% if forloop.index0 < 3 %}
                       <div class="postArticle-image desaturate" style="background-image:url('{{ post.image.feature | prepend: "/assets/images/hero/" }}')">
+                      {%if post.categories contains "Puzzle" %}<span class="category-icon-large">&#129513;</span>{% endif %}
                     {% else %}
                       <div class="postArticle-image desaturate" style="background-image:url('{{ post.image.feature | prepend: "/assets/images/midsize/" }}')">
-                      {% endif %}
+                      {%if post.categories contains "Puzzle" %}<span class="category-icon-small">&#129513;</span>{% endif %}
+                    {% endif %}
+                    {% comment %}
+                    {%if post.categories contains "Math" %}<span class="category-icon">&#8512;</span>{% endif %}
+                    {%if post.categories contains "Programming" %}<span class="category-icon">&#128187;</span>{% endif %}
+                    {%if post.categories contains "Graphics" %}<span class="category-icon">&#128396;</span>{% endif %}
+                    {% endcomment %}
                     </div>
                   </a>
                 {% else %}
