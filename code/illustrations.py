@@ -420,6 +420,10 @@ def pirates():
     if i not in [1, len(cells) - 1]:
       Label.draw(image, str(v.ituple2()), arrow_center + Vec(30, 30))
 
+  compass = Image.open('cliparts/compass.png')
+  compass = compass.resize((300, 300), resample=Image.LANCZOS)
+  image.paste(compass, (50, 50), compass)
+
   image.save('../assets/images/posts/pirates_illustration.png')
   image.show()
 
@@ -577,11 +581,11 @@ def planar_pairings():
     else:
       shoes2.append(coord)
   pairing = [(i, i) for i in range(N)]
-  # planar_pairings_board('random_start.png', shoes1, shoes2, pairing, width=3)
+  planar_pairings_board('random_start.png', shoes1, shoes2, pairing, width=3)
 
 if __name__ == '__main__':
   # zero_knowledge()
   # pawns()
-  # pirates()
+  pirates()
   # table_cover()
-  planar_pairings()
+  # planar_pairings()
