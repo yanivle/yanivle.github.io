@@ -6,7 +6,7 @@ layout: default
     <div class="section-backgroundImage">
 
       {% if page.image.feature %}
-        <img class="post-featuredImage" src="{{ page.image.feature | prepend: "/assets/images/hero/" }}" style="
+      <img class="post-featuredImage" src="{{ page.image.feature | prepend: "/assets/images/hero/" }}" style="
         {% if page.image.topPosition %}
           top:{{ page.image.topPosition }};
         {% endif %}
@@ -32,7 +32,7 @@ layout: default
               </time>
             </li>
             <li class="postMeta-author">
-              By {{ site.author.name }}
+              {{ site.author.name }}
             </li>
             <li class="postMeta-tags">
               {%if page.categories contains "Puzzle" %}<span>&#129513;</span>{% endif %}
@@ -51,36 +51,33 @@ layout: default
 
       </div>
     </div>
-    <hr class="u-clearHr"/>
-    <hr class="u-clearHr"/>
-    <hr/>
+    <hr class="u-clearHr" />
+    <hr class="u-clearHr" />
+    <hr />
   </section>
   <footer class="postFooter">
     {% if page.previous.url %}
-      <section class="section--prePost is-darkBackgrounded u-table">
-        <div class="section-backgroundImage section-backgroundImage--previousPage">
-          <img class="post-featuredImage"
-          {% if page.previous.image.feature %}
-            src="{{ page.previous.image.feature | prepend: "/assets/images/hero/" }}"
-          {% endif %}
-          style="top:0" alt="">
-        </div>
-        <div class="section-gradient
+    <section class="section--prePost is-darkBackgrounded u-table">
+      <div class="section-backgroundImage section-backgroundImage--previousPage">
+        <img class="post-featuredImage" {% if page.previous.image.feature %}
+          src="{{ page.previous.image.feature | prepend: "/assets/images/hero/" }}" {% endif %} style="top:0" alt="">
+      </div>
+      <div class="section-gradient
         {% if page.previous.bgGradientOpacity == "darker" %}
           section-gradient--darker
         {% elsif page.previous.bgGradientOpacity == "lighter" %}
           section-gradient--lighter
         {% endif %}
         "></div>
-        <div class="section-title u-tableCell u-verticalAlignMiddle">
-          <div class="container">
-            <h4>Next story:</h4>
-            <a class="prev" href="{{page.previous.url}}">
-              <h2>{{page.previous.title}}</h2>
-            </a>
-          </div>
+      <div class="section-title u-tableCell u-verticalAlignMiddle">
+        <div class="container">
+          <h4>Next story:</h4>
+          <a class="prev" href="{{page.previous.url}}">
+            <h2>{{page.previous.title}}</h2>
+          </a>
         </div>
-      </section>
+      </div>
+    </section>
     {% endif %}
   </footer>
 </article>

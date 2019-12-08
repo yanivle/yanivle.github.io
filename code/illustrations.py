@@ -295,7 +295,7 @@ def pawnBoard(filename,
   grid = Grid(image, grid_width, grid_height)
   grid.draw()
 
-  pawn = Image.open('cliparts/pawn.png')
+  pawn = Image.open('cliparts/blobby.png')
   pawn.thumbnail((grid.cell_size * 0.8).ituple2())
 
   if draw_separator_line:
@@ -321,8 +321,8 @@ def pawnBoard(filename,
           Label.draw(image, '-', cell.center)
           Label.draw(image, str(denominator), cell.center + Vec(0, 20))
 
-  image.save('../assets/images/posts/pawns/' + filename)
-  # image.show()
+  # image.save('../assets/images/posts/pawns/' + filename)
+  image.show()
 
 
 def pawns():
@@ -490,6 +490,6 @@ def table_cover():
 
 if __name__ == '__main__':
   # zero_knowledge()
-  # pawns()
+  pawns()
   # pirates()
-  table_cover()
+  # table_cover()
