@@ -3,8 +3,8 @@ layout: post
 title:  "Simple Shader Ray Tracer with Shadertoy"
 date:   2019-10-06 01:00:00
 excerpt: "A simple ray tracer running on the GPU"
-categories: Graphics
-tags:  Coding Graphics Shadertoy Shader GPU Raytracing Raytracer
+categories: WIP
+tags:  Graphics Coding Shadertoy Shader GPU Raytracing Raytracer
 image:
   feature: spheres.png
   topPosition: -100px

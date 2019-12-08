@@ -24,36 +24,42 @@ title: Yaniv Leviathan's Blog
     <div class="blockGroup">
       <ul class="blockGroup-list">
         {% for post in site.posts %}
-          <li class="block">
-            <div class="postArticle-wrapper">
-              <article class="postArticle postArticle--short">
-                {% if post.image.feature %}
-                  <a href="{{ post.url }}">
-                    {% if forloop.index0 < 3 %}
-                      <div class="postArticle-image desaturate" style="background-image:url('{{ post.image.feature | prepend: "/assets/images/hero/" }}')">
-                      {%if post.categories contains "Puzzle" %}<span class="category-icon-large">&#129513;</span>{% endif %}
-                    {% else %}
-                      <div class="postArticle-image desaturate" style="background-image:url('{{ post.image.feature | prepend: "/assets/images/midsize/" }}')">
-                      {%if post.categories contains "Puzzle" %}<span class="category-icon-small">&#129513;</span>{% endif %}
+        <li class="block">
+          <div class="postArticle-wrapper">
+            <article class="postArticle postArticle--short">
+              {% if post.image.feature %}
+              <a href="{{ post.url }}">
+                {% if forloop.index0 < 3 %}
+                <div class="postArticle-image desaturate"
+                  style="background-image:url('{{ post.image.feature | prepend: "/assets/images/hero/" }}')">
+                  {%if post.categories contains "Puzzle" %}<span class="category-icon-large">&#129513;</span>{% endif %}
+                  {%if post.categories contains "WIP" %}<span class="category-icon-large">&#128679;</span>{% endif %}
+                  {% else %}
+                  <div class="postArticle-image desaturate"
+                    style="background-image:url('{{ post.image.feature | prepend: "/assets/images/midsize/" }}')">
+                    {%if post.categories contains "Puzzle" %}<span
+                      class="category-icon-small">&#129513;</span>{% endif %}
+                    {%if post.categories contains "WIP" %}<span class="category-icon-small">&#128679;</span>{% endif %}
                     {% endif %}
                     {% comment %}
                     {%if post.categories contains "Math" %}<span class="category-icon">&#8512;</span>{% endif %}
-                    {%if post.categories contains "Programming" %}<span class="category-icon">&#128187;</span>{% endif %}
+                    {%if post.categories contains "Programming" %}<span
+                      class="category-icon">&#128187;</span>{% endif %}
                     {%if post.categories contains "Graphics" %}<span class="category-icon">&#128396;</span>{% endif %}
                     {% endcomment %}
-                    </div>
-                  </a>
-                {% else %}
-                <a href="{{ post.url }}">
-                  <div class="postArticle-image" style="background-image:url('/assets/images/logo-black.svg')">
                   </div>
-                </a>
-                {% endif %}
-                <a class="postArticle-title" href="{{ post.url }}">{{ post.title }}</a>
-              </article>
-              <div class="block-postMeta">{{ post.date | date_to_string }}</div>
-            </div>
-          </li>
+              </a>
+              {% else %}
+              <a href="{{ post.url }}">
+                <div class="postArticle-image" style="background-image:url('/assets/images/logo-black.svg')">
+                </div>
+              </a>
+              {% endif %}
+              <a class="postArticle-title" href="{{ post.url }}">{{ post.title }}</a>
+            </article>
+            <div class="block-postMeta">{{ post.date | date_to_string }}</div>
+          </div>
+        </li>
         {% endfor %}
       </ul>
     </div>

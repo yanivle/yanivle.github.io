@@ -12,6 +12,8 @@ syntaxHighlighter: yes
 ---
 There are 100 identical coins on a rectangular table, such that you cannot add any coin without it touching one of the existing coins. Prove that you can completely cover the table with 400 coins.
 
+Thanks Asaf Aharoni for this puzzle!
+
 ## Spoiler Alert - Solution Ahead!
 
 WLOG assume that the radius of the coins is 1. The fact that you cannot add another coin without it touching one of the existing coins means that any point on the table is of distance less than 1 from one of the edges of the coins. That means that if you replace each of the coins by another coin of radius 2, you could cover the table.

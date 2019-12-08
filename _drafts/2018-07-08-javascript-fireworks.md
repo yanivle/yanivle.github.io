@@ -2,7 +2,7 @@
 layout: post
 title:  "Javascript Fireworks"
 excerpt: "Simple fireworks in Javascript"
-categories: Graphics
+categories: WIP
 tags:  Graphics Javascript Coding
 image:
   feature: js-fireworks.png

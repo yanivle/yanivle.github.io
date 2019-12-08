@@ -2,7 +2,7 @@
 layout: post
 title:  "Javascript Attraction"
 excerpt: "Gesture of Love in Javascript"
-categories: Graphics
+categories: WIP
 tags:  Graphics Javascript Coding
 image:
   feature: attraction.png

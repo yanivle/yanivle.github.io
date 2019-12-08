@@ -283,7 +283,8 @@ def pawnBoard(filename,
               arrows,
               label_cells=False,
               image_size=(1000, 1000),
-              draw_separator_line=True):
+              draw_separator_line=True,
+              label_with_grid=False):
   image = Image.new(mode='RGB', size=image_size, color=(
       255,
       255,
@@ -295,14 +296,15 @@ def pawnBoard(filename,
   grid = Grid(image, grid_width, grid_height)
   grid.draw()
 
-  pawn = Image.open('cliparts/blobby.png')
+  pawn = Image.open('cliparts/pawn.png')
   pawn.thumbnail((grid.cell_size * 0.8).ituple2())
 
   if draw_separator_line:
     grid.horizontal_line(horizontal_line, width=3)
   for cell in pawn_cells:
     image.paste(pawn,
-                (grid.cell(*cell).center - Vec(*pawn.size) / 2).ituple2())
+                (grid.cell(*cell).center - Vec(*pawn.size) / 2).ituple2(),
+                pawn)
 
   for arrow in arrows:
     Arrow(grid.cell(*arrow[0]).center, grid.cell(*arrow[1]).center).draw(image)
@@ -321,7 +323,16 @@ def pawnBoard(filename,
           Label.draw(image, '-', cell.center)
           Label.draw(image, str(denominator), cell.center + Vec(0, 20))
 
-  # image.save('../assets/images/posts/pawns/' + filename)
+  if label_with_grid:
+    center_cell_x = grid_width // 2
+    center_cell_y = grid_height // 2
+    for x in range(grid_width):
+      for y in range(grid_height):
+        coord = (x - center_cell_x), (y - center_cell_y)
+        cell = grid.cell(x, y)
+        Label.draw(image, str(coord), cell.center)
+
+  image.save('../assets/images/posts/pawns/' + filename)
   image.show()
 
 
@@ -349,6 +360,10 @@ def pawns():
             [((6, 4), (4, 4))])
   pawnBoard('example2_3.png', 9, 9, [(4, 3), (4, 4)], [((4, 4), (4, 2))])
   pawnBoard('example2_4.png', 9, 9, [(4, 2)], [])
+  pawnBoard('solution_potential_grid_labels.png',
+            9,
+            9, [], [],
+            label_with_grid=True)
   pawnBoard('solution_potential_labels.png', 9, 9, [], [], True)
 
 

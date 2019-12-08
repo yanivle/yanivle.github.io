@@ -3,8 +3,8 @@ layout: post
 title:  "Cloth Simulation in TypeScript"
 date:   2018-11-13 01:00:00
 excerpt: "A physical simulation of a piece of cloth in TypeScript"
-categories: Graphics
-tags:  Coding Graphics Physics Simulation Javascript Typescript
+categories: WIP
+tags:  Graphics Coding Physics Simulation Javascript Typescript
 image:
   feature: clothsim3d.png
   topPosition: -300px
