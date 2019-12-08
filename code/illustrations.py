@@ -85,6 +85,11 @@ class Vec:
     diff = other - self
     return self + diff * alpha
 
+  def dist2(self, other):
+    return (self - other).norm2()
+
+  def dist(self, other):
+    return (self - other).norm()
 
 class Grid:
   @dataclass
@@ -173,10 +178,10 @@ class Circle:
     self.r2 = radius * radius
 
   def dist2(self, other):
-    return (self.pos - other.pos).norm2()
+    return self.pos.dist2(other.pos)
 
   def dist(self, other):
-    return (self.pos - other.pos).norm()
+    return self.pos.dist(other.pos)
 
   def draw(self, image: Image, color1: Vec, color2: Vec):
     draw = ImageDraw.Draw(image, mode='RGBA')
@@ -230,14 +235,15 @@ class Arrow:
               fill=self.color.ituple4(),
               width=self.width)
     d = self.end - self.start
-    e1 = (d.perpendicular2() - d * 2).inorm(self.arrow_head_size) + self.end
-    e2 = (-d.perpendicular2() - d * 2).inorm(self.arrow_head_size) + self.end
-    draw.line((e1.ituple2(), self.end.ituple2()),
-              fill=self.color.ituple4(),
-              width=self.width)
-    draw.line((e2.ituple2(), self.end.ituple2()),
-              fill=self.color.ituple4(),
-              width=self.width)
+    if self.arrow_head_size:
+      e1 = (d.perpendicular2() - d * 2).inorm(self.arrow_head_size) + self.end
+      e2 = (-d.perpendicular2() - d * 2).inorm(self.arrow_head_size) + self.end
+      draw.line((e1.ituple2(), self.end.ituple2()),
+                fill=self.color.ituple4(),
+                width=self.width)
+      draw.line((e2.ituple2(), self.end.ituple2()),
+                fill=self.color.ituple4(),
+                width=self.width)
 
 
 class Label:
@@ -503,8 +509,79 @@ def table_cover():
   image.show()
 
 
+def planar_pairings_board(filename,
+                          shoes1,
+                          shoes2,
+                          pairing,
+                          pairing2 = [],
+                          image_size=(1000, 1000),
+                          shoe_size=(50, 50),
+                          width=8,
+                          show_shoes=True):
+  image = Image.new(mode='RGB', size=image_size, color=(
+      255,
+      255,
+      255,
+  ))
+  shoe1 = Image.open('cliparts/shoe1.png')
+  shoe2 = Image.open('cliparts/shoe2.png')
+  shoe1.thumbnail(shoe_size)
+  shoe2.thumbnail(shoe_size)
+
+  if show_shoes:
+    for coord in shoes1:
+      image.paste(shoe1, coord, shoe1)
+    for coord in shoes2:
+      image.paste(shoe2, coord, shoe2)
+
+  for p in pairing:
+    target = Vec(shoes1[p[0]]) + Vec(shoe_size) / 2
+    src = Vec(shoes2[p[1]]) + Vec(shoe_size) / 2
+    arr = Arrow(src, target, color=Vec(0, 0, 0, 50), arrow_head_size=0, width=width)
+    arr.draw(image)
+
+  for p in pairing2:
+    target = Vec(shoes1[p[0]]) + Vec(shoe_size) / 2
+    src = Vec(shoes2[p[1]]) + Vec(shoe_size) / 2
+    arr = Arrow(src, target, color=Vec(255, 0, 0, 50), arrow_head_size=0, width=width)
+    arr.draw(image)
+
+  image.save('../assets/images/posts/planar_pairing/' + filename)
+  image.show()
+
+
+def planar_pairings():
+  planar_pairings_board('cross.png', [(60,60), (700, 80)], [(800, 800), (180, 750)], [(0, 0,), (1, 1)], image_size=(1000, 1000), shoe_size=(150, 150))
+  planar_pairings_board('uncross.png', [(60,60), (700, 80)], [(800, 800), (180, 750)], [(0, 1,), (1, 0)], image_size=(1000, 1000), shoe_size=(150, 150))
+  planar_pairings_board('dists.png', [(60,60), (700, 80)], [(800, 800), (180, 750)], [(0, 0,), (1, 1)], [(0, 1,), (1, 0)], image_size=(1000, 1000), shoe_size=(150, 150), show_shoes=False)
+
+  MIN_DIST = 80
+  MIN_DIST2 = MIN_DIST * MIN_DIST
+  N = 20
+
+  shoes1 = []
+  while len(shoes1) < N:
+    coord = (random.randint(100, 900), random.randint(100, 900))
+    for s in shoes1:
+      if Vec(s).dist2(Vec(coord)) < MIN_DIST2:
+        break
+    else:
+      shoes1.append(coord)
+
+  shoes2 = []
+  while len(shoes2) < N:
+    coord = (random.randint(100, 900), random.randint(100, 900))
+    for s in shoes1 + shoes2:
+      if Vec(s).dist2(Vec(coord)) < MIN_DIST2:
+        break
+    else:
+      shoes2.append(coord)
+  pairing = [(i, i) for i in range(N)]
+  # planar_pairings_board('random_start.png', shoes1, shoes2, pairing, width=3)
+
 if __name__ == '__main__':
   # zero_knowledge()
-  pawns()
+  # pawns()
   # pirates()
   # table_cover()
+  planar_pairings()
