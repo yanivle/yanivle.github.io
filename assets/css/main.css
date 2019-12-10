@@ -487,6 +487,22 @@ hr {
   height: 24rem;
 }
 
+.img--17xLeading {
+  height: 25.5rem;
+}
+
+.img--18xLeading {
+  height: 27rem;
+}
+
+.img--19xLeading {
+  height: 28.5rem;
+}
+
+.img--20xLeading {
+  height: 30rem;
+}
+
 html,
 body {
   overflow-x: hidden;

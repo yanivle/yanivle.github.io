@@ -32,11 +32,13 @@ title: Yaniv Leviathan's Blog
                 {% if forloop.index0 < 3 %}
                 <div class="postArticle-image desaturate"
                   style="background-image:url('{{ post.image.feature | prepend: "/assets/images/hero/" }}')">
+                  <!-- {%if post.tags contains "Solved" %}<span class="category-icon-large">&#9989;</span>{% endif %} -->
                   {%if post.categories contains "Puzzle" %}<span class="category-icon-large">&#129513;</span>{% endif %}
                   {%if post.categories contains "WIP" %}<span class="category-icon-large">&#128679;</span>{% endif %}
                   {% else %}
                   <div class="postArticle-image desaturate"
                     style="background-image:url('{{ post.image.feature | prepend: "/assets/images/midsize/" }}')">
+                    <!-- {%if post.tags contains "Solved" %}<span class="category-icon-small">&#9989;</span>{% endif %} -->
                     {%if post.categories contains "Puzzle" %}<span
                       class="category-icon-small">&#129513;</span>{% endif %}
                     {%if post.categories contains "WIP" %}<span class="category-icon-small">&#128679;</span>{% endif %}
