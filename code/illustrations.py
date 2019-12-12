@@ -257,29 +257,38 @@ class Label:
               font=font,
               fill=(0, 0, 0, 50))
 
-
 class RandomThumbnails:
-  def __init__(self, file_filter):
+  def __init__(self, file_filter, black_and_white_mode=True):
     files = glob.glob(file_filter)
     print(files)
-    self.thumbnails = [
-        Image.open(f).resize((100, 100), resample=Image.LANCZOS) for f in files
-    ]
+    self.thumbnails = []
+    self.files = []
+    for f in files:
+      im = Image.open(f).resize((30, 30), resample=Image.LANCZOS)
+      if black_and_white_mode:
+        if im.mode in 'LA':
+          im = im.convert('RGBA')
+          if 2000 < im.histogram()[-256]:
+            self.thumbnails.append(im)
+            self.files.append(f)
+      else:
+        im = im.convert('RGBA')
+        self.thumbnails.append(im)
+        self.files.append(f)
+    print(f'Total {len(self.thumbnails)} images')
 
-  def draw(self, image: Image, n: int):
-    for i in range(n):
-      pos = (random.randint(0, image.width - 1),
-             random.randint(0, image.height - 1))
-      thumbnail = random.choice(self.thumbnails)
-      rotated = thumbnail.rotate(random.randint(0, 360),
-                                 resample=Image.BICUBIC,
-                                 fillcolor=(
-                                     255,
-                                     255,
-                                     255,
-                                     0,
-                                 ))
-      image.paste(rotated, pos)
+  def draw(self, image: Image, width : int, height : int):
+    for x in range(width):
+      for y in range(height):
+        pos = Vec(x * image.width / width, y * image.height / height)
+        offset = Vec(random.randint(-20, 20),
+                     random.randint(-20, 20))
+        pos = (pos + offset).ituple2()
+        thumbnail = random.choice(self.thumbnails)
+        rotated = thumbnail.rotate(random.randint(0, 360),
+                                  resample=Image.BICUBIC,
+                                  fillcolor=(255, 255, 255, 0))
+        image.paste(rotated, pos, rotated)
 
 
 def pawnBoard(filename,
@@ -448,8 +457,8 @@ def zero_knowledge():
   #   ))
   #   c.drawShaded(image, col1, col2)
 
-  rt = RandomThumbnails('cliparts/pirate_ship.png')
-  rt.draw(image, 1000)
+  rt = RandomThumbnails('scrapped_cliparts/cartoon/*.png', False)
+  rt.draw(image, 50, 50)
 
   image.show()
 
@@ -583,7 +592,7 @@ def planar_pairings():
   pairing = [(i, i) for i in range(N)]
   planar_pairings_board('random_start.png', shoes1, shoes2, pairing, width=3)
 
-def reverse_and_clean(filename,
+def reverse_and_clean_board(filename,
               white_cells,
               empty_cells,
               image_size=(1000, 1000)):
@@ -607,13 +616,15 @@ def reverse_and_clean(filename,
   image.save('../assets/images/posts/reverse_and_clean/' + filename)
   image.show()
 
+def reverse_and_clean():
+  reverse_and_clean_board('3x3.png', [(2, 2)], [])
+  reverse_and_clean_board('move1.png', [(1,2), (2, 1)], [(2, 2)])
+  reverse_and_clean_board('move2.png', [(1,2), (1, 1), (2, 0)], [(2, 2), (2, 1)])
 
 if __name__ == '__main__':
-  # zero_knowledge()
+  zero_knowledge()
   # pawns()
   # pirates()
   # table_cover()
   # planar_pairings()
-  reverse_and_clean('3x3.png', [(2, 2)], [])
-  reverse_and_clean('move1.png', [(1,2), (2, 1)], [(2, 2)])
-  reverse_and_clean('move2.png', [(1,2), (1, 1), (2, 0)], [(2, 2), (2, 1)])
+  # reverse_and_clean()
