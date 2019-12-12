@@ -6,7 +6,7 @@ layout: default
     <div class="section-backgroundImage">
 
       {% if page.image.feature %}
-      <img class="post-featuredImage" src="{{ page.image.feature | prepend: "/assets/images/hero/" }}" style="
+      <img class="post-featuredImage" src="{{ page.image.feature | prepend: "/assets/images/largesize/" }}" style="
         {% if page.image.topPosition %}
           top:{{ page.image.topPosition }};
         {% endif %}
@@ -61,7 +61,8 @@ layout: default
     <section class="section--prePost is-darkBackgrounded u-table">
       <div class="section-backgroundImage section-backgroundImage--previousPage">
         <img class="post-featuredImage" {% if page.previous.image.feature %}
-          src="{{ page.previous.image.feature | prepend: "/assets/images/hero/" }}" {% endif %} style="top:0" alt="">
+          src="{{ page.previous.image.feature | prepend: "/assets/images/largesize/" }}" {% endif %} style="top:0"
+          alt="">
       </div>
       <div class="section-gradient
         {% if page.previous.bgGradientOpacity == "darker" %}

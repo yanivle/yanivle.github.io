@@ -20,8 +20,8 @@ var messages = {
 function jekyllBuild(cb) {
   browserSync.notify(messages.jekyllBuild);
   return cp.spawn('jekyll', ['build', '--config=_config.yml', '--drafts'], {
-      stdio: 'inherit'
-    })
+    stdio: 'inherit'
+  })
     .on('close', cb);
 
 }
@@ -82,18 +82,28 @@ function thumbnails() {
       os.cpus().length
     ))
     .pipe(gulp.dest("assets/images/thumbnail"));
-  }
-  function midsize() {
-    return gulp.src("assets/images/hero/*.{jpg,png}")
-      .pipe(parallel(
-        imageResize({
-          height: 335
-        }),
-        os.cpus().length
-      ))
-      .pipe(gulp.dest("assets/images/midsize"));
-    }
-  
+}
+function midsize() {
+  return gulp.src("assets/images/hero/*.{jpg,png}")
+    .pipe(parallel(
+      imageResize({
+        height: 335
+      }),
+      os.cpus().length
+    ))
+    .pipe(gulp.dest("assets/images/midsize"));
+}
+function largesize() {
+  return gulp.src("assets/images/hero/*.{jpg,png}")
+    .pipe(parallel(
+      imageResize({
+        width: 1140
+      }),
+      os.cpus().length
+    ))
+    .pipe(gulp.dest("assets/images/largesize"));
+}
+
 /**
  * Watch scss files for changes & recompile
  * Watch html/md files, run jekyll
@@ -103,19 +113,20 @@ function watch() {
   gulp.watch('_scss/**/*.scss', styles);
   gulp.watch('assets/images/hero/*.{jpg,png}', thumbnails);
   gulp.watch('assets/images/hero/*.{jpg,png}', midsize);
+  gulp.watch('assets/images/hero/*.{jpg,png}', largesize);
   gulp.watch(['*.html',
-      '*.txt',
-      'about/**',
-      '_posts/*.markdown',
-      '_posts/*.md',
-      '_drafts/*.md',
-      'assets/javascripts/**/**.js',
-      'assets/images/**',
-      'assets/fonts/**',
-      '_layouts/**',
-      '_includes/**',
-      'assets/css/**'
-    ],
+    '*.txt',
+    'about/**',
+    '_posts/*.markdown',
+    '_posts/*.md',
+    '_drafts/*.md',
+    'assets/javascripts/**/**.js',
+    'assets/images/**',
+    'assets/fonts/**',
+    '_layouts/**',
+    '_includes/**',
+    'assets/css/**'
+  ],
     jekyllBuild);
   gulp.watch("_site/index.html").on('change', browserSync.reload);
 }
@@ -127,4 +138,5 @@ exports.styles = styles;
 exports.browserSync = browserSyncTask;
 exports.thumbnails = thumbnails;
 exports.midsize = midsize;
+exports.largesize = largesize;
 exports.watch = watch;
