@@ -583,9 +583,37 @@ def planar_pairings():
   pairing = [(i, i) for i in range(N)]
   planar_pairings_board('random_start.png', shoes1, shoes2, pairing, width=3)
 
+def reverse_and_clean(filename,
+              white_cells,
+              empty_cells,
+              image_size=(1000, 1000)):
+  image = Image.new(mode='RGB', size=image_size, color=(
+      255,
+      255,
+      255,
+  ))
+
+  grid = Grid(image, 3, 3)
+  grid.draw()
+
+  for x in range(3):
+    for y in range(3):
+      c = Circle(grid.cell(x, y).center, grid.cell_height // 2 * 0.8)
+      if (x, y) in white_cells:
+        c.draw(image, Vec(200, 200, 200, 255), Vec(0, 0, 0, 255))
+      elif (x, y) not in empty_cells:
+        c.draw(image, Vec(0, 0, 0, 255), Vec(0, 0, 0, 255))
+
+  image.save('../assets/images/posts/reverse_and_clean/' + filename)
+  image.show()
+
+
 if __name__ == '__main__':
   # zero_knowledge()
   # pawns()
-  pirates()
+  # pirates()
   # table_cover()
   # planar_pairings()
+  reverse_and_clean('3x3.png', [(2, 2)], [])
+  reverse_and_clean('move1.png', [(1,2), (2, 1)], [(2, 2)])
+  reverse_and_clean('move2.png', [(1,2), (1, 1), (2, 0)], [(2, 2), (2, 1)])
