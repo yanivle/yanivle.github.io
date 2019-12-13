@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Finding Uniqueness"
-date:   2019-12-14 01:00:00
+date:   2018-12-14 01:00:00
 excerpt: "An easy programming puzzle"
 categories: Puzzle
 tags:  Puzzles Programming
