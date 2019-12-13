@@ -257,8 +257,8 @@ class Label:
               font=font,
               fill=(0, 0, 0, 50))
 
-class RandomThumbnails:
-  def __init__(self, file_filter, black_and_white_mode=True):
+class WheresWaldo:
+  def __init__(self, file_filter, waldo_file, black_and_white_mode=True):
     files = glob.glob(file_filter)
     print(files)
     self.thumbnails = []
@@ -269,12 +269,18 @@ class RandomThumbnails:
         if im.mode in 'LA':
           im = im.convert('RGBA')
           if 2000 < im.histogram()[-256]:
-            self.thumbnails.append(im)
-            self.files.append(f)
+            if f == waldo_file:
+              self.waldo = im
+            else:
+              self.thumbnails.append(im)
+              self.files.append(f)
       else:
         im = im.convert('RGBA')
-        self.thumbnails.append(im)
-        self.files.append(f)
+        if f == waldo_file:
+          self.waldo = im
+        else:
+          self.thumbnails.append(im)
+          self.files.append(f)
     print(f'Total {len(self.thumbnails)} images')
 
   def draw(self, image: Image, width : int, height : int):
@@ -284,11 +290,20 @@ class RandomThumbnails:
         offset = Vec(random.randint(-20, 20),
                      random.randint(-20, 20))
         pos = (pos + offset).ituple2()
-        thumbnail = random.choice(self.thumbnails)
-        rotated = thumbnail.rotate(random.randint(0, 360),
-                                  resample=Image.BICUBIC,
-                                  fillcolor=(255, 255, 255, 0))
-        image.paste(rotated, pos, rotated)
+        i = random.choice(range(len(self.thumbnails)))
+        thumbnail = self.thumbnails[i]
+        # thumbnail = random.choice(self.thumbnails)
+        self.pasteAtPos(image, pos, thumbnail)
+
+    waldo_pos = random.randint(100, image.width-100), random.randint(100, image.height-100)
+    self.pasteAtPos(image, waldo_pos, self.waldo)
+    print(f'Waldo is at {waldo_pos}')
+
+  def pasteAtPos(self, image:Image, pos:Tuple[int, int], thumbnail:Image):
+    rotated = thumbnail.rotate(random.randint(0, 360),
+                              resample=Image.BICUBIC,
+                              fillcolor=(255, 255, 255, 0))
+    image.paste(rotated, pos, rotated)
 
 
 def pawnBoard(filename,
@@ -438,29 +453,26 @@ def pirates():
 
 
 def zero_knowledge():
-  image = Image.new(mode='RGB', size=(1000, 1000), color=(
+  random.seed(0)
+  image = Image.new(mode='RGB', size=(1500, 1500), color=(
       255,
       255,
       255,
   ))
 
-  # for i in progressbar.progressbar(range(10000)):
-  #   r = random.randint(10, 30)
-  #   c = Circle(
-  #       Vec(random.randint(r, 1000 - 1 - r), random.randint(r, 1000 - 1 - r)),
-  #       r)
-  #   col1 = Vec(*ImageColor.getrgb(
-  #       f'hsl({random.randint(0, 360)}, {random.randint(70, 100)}%, {random.randint(30, 100)}%)'
-  #   ))
-  #   col2 = Vec(*ImageColor.getrgb(
-  #       f'hsl({random.randint(0, 360)}, {random.randint(70, 100)}%, {random.randint(30, 100)}%)'
-  #   ))
-  #   c.drawShaded(image, col1, col2)
+  rt = WheresWaldo('scrapped_cliparts/cartoon/*.png', 'scrapped_cliparts/cartoon/waldo.png', False)
+  rt.draw(image, 75, 75)
 
-  rt = RandomThumbnails('scrapped_cliparts/cartoon/*.png', False)
-  rt.draw(image, 50, 50)
-
+  image.save('../assets/images/posts/zkp/waldo50x50.png')
   image.show()
+
+  image2 = Image.new(mode='RGB', size=(1500, 1500), color=(
+      255,
+      255,
+      255,
+  ))
+
+  # image2.transform
 
 
 class Table:
