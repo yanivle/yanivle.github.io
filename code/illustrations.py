@@ -407,7 +407,8 @@ def pirates():
   grid = Grid(image, 16, 16)
   grid.draw()
 
-  pirate_ship = Image.open('cliparts/pirate_ship.png')
+  pirate_ship = Image.open('cliparts/pirate-ship.png')
+  pirate_ship = pirate_ship.convert('RGBA')
   pirate_ship.thumbnail((grid.cell_size * 1.8).ituple2())
 
   p1 = Vec(2, 12)
@@ -423,7 +424,7 @@ def pirates():
   for cell in cells:
     image.paste(pirate_ship,
                 (grid.cell(*cell).center - (Vec(*pirate_ship.size) / 2) +
-                 Vec(0, -25)).ituple2())
+                 Vec(0, -25)).ituple2(), pirate_ship)
     Label.draw(image, str(cell),
                grid.cell(*cell).center + Vec(0, grid.cell_height * 0.8))
 
@@ -442,11 +443,21 @@ def pirates():
     arrow_center = (grid.cell(*cells[i - 1]).center +
                     grid.cell(*cells[i]).center) / 2
     if i not in [1, len(cells) - 1]:
-      Label.draw(image, str(v.ituple2()), arrow_center + Vec(30, 30))
+      # need to reverse the y coordinate to make the y-axis grow up.
+      label_text = str((v.ituple2()[0], -v.ituple2()[1]))
+      Label.draw(image, label_text, arrow_center + Vec(30, 30))
 
   compass = Image.open('cliparts/compass.png')
   compass = compass.resize((300, 300), resample=Image.LANCZOS)
   image.paste(compass, (50, 50), compass)
+
+  cannon = Image.open('cliparts/cannon.png')
+  cannon.thumbnail((400, 400), resample=Image.LANCZOS)
+  # cannon = cannon.rotate(-20,
+  #                        resample=Image.BICUBIC,
+  #                        fillcolor=(255, 255, 255, 0),
+  #                        expand=True)
+  image.paste(cannon, (550, 750), cannon)
 
   image.save('../assets/images/posts/pirates_illustration.png')
   image.show()
@@ -634,9 +645,9 @@ def reverse_and_clean():
   reverse_and_clean_board('move2.png', [(1,2), (1, 1), (2, 0)], [(2, 2), (2, 1)])
 
 if __name__ == '__main__':
-  zero_knowledge()
+  # zero_knowledge()
   # pawns()
-  # pirates()
+  pirates()
   # table_cover()
   # planar_pairings()
   # reverse_and_clean()
