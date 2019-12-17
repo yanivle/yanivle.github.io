@@ -38,7 +38,7 @@ So now, after we have set our goals, let's dive in to the the first step:
 
 At this point, I rather not formally define the exact meaning of a ZKP. I will instead try to explain is intuitively. Say I know the answer to a complicated puzzle and you don't. The process of me convincing you that I know the answer, without you learning anything about it, is called a Zero Knowledge Proof.
 
-Let me give you this neat example (taken from [Applied Kid Cryptography](http://www.wisdom.weizmann.ac.il/~naor/PUZZLES/waldo.html)). Say we are playing the game of Where's Waldo? with [this picture](/assets/images/posts/zkp/waldo50x50.png):
+Let me give you this neat example (taken from [Applied Kid Cryptography](http://www.wisdom.weizmann.ac.il/~naor/PUZZLES/waldo.html)). Say we are playing the game of Where's Waldo? with [this picture](/assets/images/posts/zkp/waldo50x50.png) (click to zoom):
 
 {% include image.html url="/assets/images/posts/zkp/waldo50x50.png" %}
 
