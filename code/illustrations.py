@@ -704,8 +704,58 @@ def reverse_and_clean():
   reverse_and_clean_board('move1.png', [(1,2), (2, 1)], [(2, 2)])
   reverse_and_clean_board('move2.png', [(1,2), (1, 1), (2, 0)], [(2, 2), (2, 1)])
 
+def transparent_polygon(image, points, width=5, fill=(255, 200, 200, 255), outline=(0, 0, 0, 255)):
+  image2 = Image.new('RGBA', image.size)
+  polygon(image2, points, width, fill, outline)
+  image.paste(image2, mask=image2)
+
+def polygon(image, points, width=5, fill=(255, 200, 200, 255), outline=(0, 0, 0, 255)):
+  draw = ImageDraw.Draw(image)
+  draw.polygon(points, fill=fill, outline=(255, 0, 0, 0))
+  pp = points[0]
+  for p in points[1:] + [points[0]]:
+    draw.line((pp, p), fill=outline, width=width)
+    pp = p
+
+def hilbert():
+  random.seed(0)
+  image = Image.new(mode='RGBA', size=(800, 800), color=(255, 255, 255, 255,))
+  polygon(image, [(50, 150), (200, 30), (400, 100), (700, 600), (350, 350), (250, 700), (100, 500)], width=8)
+  image.show()
+  image.save('../assets/images/posts/hilbert/polygon.png')
+
+  transparent_polygon(image, [(10, 10), (10, 500), (300, 500), (300, 10)], width=2, fill=(200, 200, 255, 64))
+  transparent_polygon(image, [(280, 40), (750, 40), (750, 650), (280, 650)], width=2, fill=(200, 200, 255, 64))
+  transparent_polygon(image, [(30, 450), (530, 450), (530, 750), (30, 750)], width=2, fill=(200, 200, 255, 64))
+  image.show()
+  image.save('../assets/images/posts/hilbert/polygon_covering.png')
+
+  image = Image.new(mode='RGBA', size=(800, 800), color=(255, 255, 255, 255,))
+  polygon(image, [(50, 600), (700, 600), (450, 100)], width=8)
+  image.show()
+  image.save('../assets/images/posts/hilbert/triangle.png')
+
+  polygon(image, [(50, 600), (450, 600), (450, 100)], width=8, fill=(200, 255, 200, 255))
+  polygon(image, [(450, 100), (450, 600), (700, 600)], width=8, fill=(255, 255, 200, 255))
+  image.show()
+  image.save('../assets/images/posts/hilbert/right_triangles.png')
+
+  image = Image.new(mode='RGBA', size=(800, 800), color=(255, 255, 255, 255,))
+  polygon(image, [(50, 600), (450, 600), (450, 100)], width=8, fill=(200, 255, 200, 255))
+  polygon(image, [(250, 350), (450, 350), (450, 100)], width=8, fill=(200, 200, 255, 255))
+  image.show()
+  image.save('../assets/images/posts/hilbert/right_triangle_half_height.png')
+
+  image = Image.new(mode='RGBA', size=(800, 800), color=(255, 255, 255, 255,))
+  polygon(image, [(50, 600), (450, 600), (450, 100)], width=8, fill=(200, 255, 200, 255))
+  polygon(image, [(250, 350), (450, 350), (450, 100)], width=8, fill=(200, 200, 255, 255))
+  polygon(image, [(50, 350), (250, 350), (50, 600)], width=8, fill=(200, 200, 255, 255))
+  image.show()
+  image.save('../assets/images/posts/hilbert/triangle_rectangle.png')
+
 if __name__ == '__main__':
-  zero_knowledge()
+  hilbert()
+  # zero_knowledge()
   # pawns()
   # pirates()
   # table_cover()

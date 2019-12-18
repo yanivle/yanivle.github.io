@@ -16,15 +16,15 @@ In this post (and its sequel) I will describe Hilbert's 3rd problem and show how
 
 Let's begin by considering a polygon in the Euclidean plane. Here is an example of such a polygon:
 
-{% include image.html url="/assets/images/posts/polygon.gif" %}
+{% include image.html url="/assets/images/posts/hilbert/polygon.png" %}
 
 We want to devise a method for somehow "measuring" the area of this and similar polygons.
 
 In order to do this, we begin by defining the area of a rectangle that is parallel to the coordinate axes as the product of its horizontal side by its vertical side.
 
-We now define the area of a polygon to be the infimum of the sum of all the areas of sets of rectangles that constitute a covering of the polygon. An example of such a covering is depicted here: 
+We now define the area of a polygon to be the infimum of the sum of all the areas of sets of rectangles that constitute a covering of the polygon. An example of such a covering (using 3 rectangles) is depicted here: 
 
-polygon_covering.gif
+{% include image.html url="/assets/images/posts/hilbert/polygon_covering.png" %}
 
 This is the Lebesgue measure of the polygon. This area happens to have some very desirable properties:
 
@@ -50,13 +50,25 @@ Now an interesting question arises: Given two polygons P and Q that have an equa
 The question can be given an affirmative answer. Let's give an outline of the proof:
 
 1. Every polygon can be divided to finitely many triangles. This is obvious in the case of a convex polygon. In the case of a concave polygon, select any diagonal that lies completely inside the polygon. This diagonal divides the polygon into two polygons each with fewer sides than the original. By induction we can divide the polygon into finitely many triangles. It still remains to be shown that we can always find a diagonal that lies completely inside our polygon, but that is not hard (I will leave this as an exercise to the reader :-) ).
-2. Every triangle is congruent in parts to a rectangle (see illustration below).
+2. Every triangle is congruent in parts to a rectangle (see illustrations below).
 3. Every rectangle is congruent in parts to a square.
 4. Two squares are congruent in parts to a square whose area is the sum of their areas.
 
-An illustration showing that a triangle is congruent in parts to a rectangle follows:
+Let's show that a triangle is congruent in parts to a rectangle. Start with a triangle:
 
-triangle_rectangle.gif
+{% include image.html url="/assets/images/posts/hilbert/triangle.png" %}
+
+Any triangle can be split to 2 right-angle triangles:
+
+{% include image.html url="/assets/images/posts/hilbert/right_triangles.png" %}
+
+So it's enough to consider right triangles. We cut the right triangle, parallel to the base, mid height:
+
+{% include image.html url="/assets/images/posts/hilbert/right_triangle_half_height.png" %}
+
+And we finish by noticing that these blue parts are the same:
+
+{% include image.html url="/assets/images/posts/hilbert/triangle_rectangle.png" %}
 
 We have shown that every polygon is congruent in parts to a square of the same area. We thus have the inverse of Theorem 1, namely,
 
@@ -82,9 +94,9 @@ The problem was indeed given a negative answer by Hilbert's student Max Dehn. De
 
 Dehn's invariant, D, is defined as follows:
 
-$$D(P) = \sum l(m)f(q(m))$$
+$$D(P) = \sum_{m \in edges(P)} l(m)f(q(m))$$
 
-Where the $$\sum$$ is taken over all edges m of the polyhedron, l(m) denotes the length of the edge, q(m) denotes the angle between the two planes formed by the facets m connects, and finally $$f:R \rightarrow Q$$ is a linear transformation (from the real line into the field of rational numbers, where R is regraded as an infinite dimensional vector space over Q) with the following properties:
+Where the $$\sum$$ is taken over all edges m of the polyhedron, l(m) denotes the length of the edge, q(m) denotes the angle between the two planes formed by the facets m connects, and finally $$f:\mathbb{R} \rightarrow \mathbb{Q}$$ is a linear transformation (from the real line into the field of rational numbers, where $$\mathbb{R}$$ is regraded as an infinite dimensional vector space over $$\mathbb{Q}$$) with the following properties:
 
 1. $$f(1) = 0$$
 2. $$f(qx) = qf(x), q \in \mathbb{Q}, x \in \mathbb{R}$$
