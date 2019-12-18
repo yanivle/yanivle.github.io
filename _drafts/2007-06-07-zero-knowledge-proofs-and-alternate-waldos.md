@@ -38,7 +38,7 @@ So now, after we have set our goals, let's dive in to the the first step:
 
 At this point, I rather not formally define the exact meaning of a ZKP. I will instead try to explain is intuitively. Say I know the answer to a complicated puzzle and you don't. The process of me convincing you that I know the answer, without you learning anything about it, is called a Zero Knowledge Proof.
 
-Let me give you this neat example (taken from [Applied Kid Cryptography](http://www.wisdom.weizmann.ac.il/~naor/PUZZLES/waldo.html)). Say we are playing the game of Where's Waldo? with [this picture](/assets/images/posts/zkp/waldo50x50.png) (click to zoom):
+Let me give you this neat example (inspired by [Applied Kid Cryptography](http://www.wisdom.weizmann.ac.il/~naor/PUZZLES/waldo.html)). Say we are playing the game of Where's Waldo? with [this picture](/assets/images/posts/zkp/waldo50x50.png) (click to zoom):
 
 {% include image.html url="/assets/images/posts/zkp/waldo50x50.png" %}
 
@@ -72,24 +72,54 @@ There are obvious drawbacks with this method:
 
 Suddenly it hits me! I know what to do! I take a big white piece of paper (much bigger than the original image, say twice as big in every direction). I then place the original image at a random location beneath it and cutout Waldo's location from the paper. I then place another big piece of paper on top of everything (this time, without the cutout):
 
-waldo_ilust.gif
+{% include image.html url="/assets/images/posts/zkp/waldo_layers.png" %}
 
-In my illustration the covering papers have the same size as the original image, but they should  be much bigger in reality.
+My illustration is not drawn to scale - the covering papers should be much bigger in reality.
 
-You then choose a number: 1 or 2. If you choose 1, I remove both pieces of paper, revealing to you the entire image. If you choose 2, I remove only the top piece of paper, revealing to you that I know where Waldo is, as such:
+You then choose a number: 1 or 2. If you choose 1, I remove both pieces of paper, revealing to you the entire image. If you choose 2, I remove only the top piece of paper, revealing to you that I know where Waldo is, as such (again, not drawn to scale):
 
-waldo_cover.gif (click thumbnail for big image)
+{% include image.html url="/assets/images/posts/zkp/waldo_revealed.png" %}
 
 What does this accomplish? Well, first of all, if indeed I know where Waldo is I can answer both of your questions. If, on the other hand, I was lying, and I put the original image under the papers, then I could not have cut out Waldo's location. In order to avoid this, I could have replaced the underlying image all together (as you do not see it at all!) with another image, in which I know where Waldo is. In this case, should you ask me to show you where Waldo is, I will be able to do so, but I will get busted if you selected 1, and made me reveal to you the entire image.
 
 What we got is this:
+* If I know where Waldo is, I can deliver a correct answer that you can verify 100% of the time.
+* If I am lying and I do not know where Waldo is, you will bust me (no matter what I'll do) with a probability of at least $$\frac{1}{2}$$.
 
-If I know where Waldo is, I can deliver a correct answer that you can verify 100% of the time.
-If I am lying and I do not know where Waldo is, you will bust me (no matter what I'll do) with a probability of at least 1/2.
-Well, being busted with a probability of only 1/2 is not very bad, but notice that we can repeat the process any number of times (each time placing the white papers at different locations over the original image). My chances of being correct are independent in each of the times, and so I will get busted with a probability (1/2)^n (where n is the number of iterations). If n is chosen high enough, you can be quite certain that I am not lying (10 iterations suffice for the probability of missing a liar to be less the 1/1000).
+Well, being busted with a probability of only $$\frac{1}{2}$$ is not very bad, but notice that we can repeat the process any number of times (each time placing the white papers at different locations over the original image). My chances of being correct are independent in each of the times, and so I will get busted with a probability $$(\frac{1}{2})^n$$ (where n is the number of iterations). If n is chosen high enough, you can be quite certain that I am not lying (10 iterations suffice for the probability of missing a liar to be less than $$\frac{1}{1000}$$).
 
-Note that the process is not really “Zero Knowledge” as by looking at the cutout version of Waldo you get an idea of his immediate surroundings and of his own posture (indeed, my cutout image above helps a little in finding him).
+#### Leaking Information
 
-In the next installment of the series I will further discuss the notion of ZKP, especially in relation to solutions of NPC problems.
+Note that the process is not really “Zero Knowledge” as you do get some information about Waldo's location. For example, by looking at the cutout version of Waldo you can tell his rotation. This can be easily solved by rotating the base image by a random amount. A bigger problem arises when the papers are not large enough. Indeed, if we repeat this process enough times, you can get some information about the location of Waldo by examining the positions of the cutouts. For example, if waldo is near the center of the original image, you will never be able to get a cutout next to the border. I leave it as an exercise for the reader to mitigate this leak.
 
-To be continued…
+## More Waldos!
+
+Now for the reason we're all here - solving some more Where's Waldo images! I wrote a script that gets a word (e.g. 'cartoon') and scrapes [publicdomainvectors.org](publicdomainvectors.org) for cliparts of that word and then prepares a Where's Waldo image from those cliparts. Enjoy!
+
+### Where's Pando?
+
+This is an easier version. This is Pando:
+
+{% include image.html url="/assets/images/posts/zkp/pando.png" %}
+
+Pando got lost in Cartoon World. Can you find him?
+
+{% include image.html url="/assets/images/posts/zkp/pando_hidden.png" %}
+
+### Where's Baldo?
+
+This is Baldo:
+
+{% include image.html url="/assets/images/posts/zkp/baldo.png" %}
+
+Baldo was walking around Ball World, and got lost! Can you find him?
+
+{% include image.html url="/assets/images/posts/zkp/baldo_hidden.png" %}
+
+### Where's Blackdo?
+
+Oh no! Pando got lost again! This time in Monochrome World! Can you find him?
+
+{% include image.html url="/assets/images/posts/zkp/blackdo_hidden.png" %}
+
+Thanks kids!

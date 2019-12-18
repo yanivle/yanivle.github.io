@@ -5,6 +5,7 @@ import math
 import random
 import progressbar
 import glob
+import numpy
 
 GRAY = (
     128,
@@ -248,8 +249,8 @@ class Arrow:
 
 class Label:
   @staticmethod
-  def draw(image: Image, txt: str, pos: Vec):
-    font = ImageFont.truetype('/Library/Fonts/Arial.ttf', 32)
+  def draw(image: Image, txt: str, pos: Vec, fontsize=32):
+    font = ImageFont.truetype('/Library/Fonts/Arial.ttf', fontsize)
     draw = ImageDraw.Draw(image)
     w, h = draw.textsize(txt, font)
     draw.text((pos - Vec(w, h) / 2).ituple2(),
@@ -258,17 +259,18 @@ class Label:
               fill=(0, 0, 0, 50))
 
 class WheresWaldo:
-  def __init__(self, file_filter, waldo_file, black_and_white_mode=True):
+  def __init__(self, file_filter, waldo_file, black_and_white_mode=True, thumbsize=(30, 30)):
     files = glob.glob(file_filter)
     print(files)
     self.thumbnails = []
     self.files = []
     for f in files:
-      im = Image.open(f).resize((30, 30), resample=Image.LANCZOS)
+      im = Image.open(f).resize(thumbsize, resample=Image.LANCZOS)
       if black_and_white_mode:
-        if im.mode in 'LA':
+        if im.mode in ['L', 'LA']:
           im = im.convert('RGBA')
-          if 2000 < im.histogram()[-256]:
+          # if 2000 < im.histogram()[-256]:
+          if True:
             if f == waldo_file:
               self.waldo = im
             else:
@@ -462,7 +464,6 @@ def pirates():
   image.save('../assets/images/posts/pirates_illustration.png')
   image.show()
 
-
 def zero_knowledge():
   random.seed(0)
   image = Image.new(mode='RGB', size=(1500, 1500), color=(
@@ -471,19 +472,78 @@ def zero_knowledge():
       255,
   ))
 
+  rt = WheresWaldo('scrapped_cliparts/*.png', 'scrapped_cliparts/pando.png', True, (75, 75))
+  rt.draw(image, 30, 30)
+  image.save('../assets/images/posts/zkp/blackdo_hidden.png')
+  image.show()
+
+  rt = WheresWaldo('scrapped_cliparts/ball/*.png', 'scrapped_cliparts/ball/baldo.png', False, (50, 50))
+  rt.draw(image, 100, 100)
+  image.save('../assets/images/posts/zkp/baldo_hidden.png')
+  image.show()
+
+  rt = WheresWaldo('scrapped_cliparts/cartoon/*.png', 'scrapped_cliparts/cartoon/pando.png', False, (100, 100))
+  rt.draw(image, 50, 50)
+  image.save('../assets/images/posts/zkp/pando_hidden.png')
+  image.show()
+
+  # image = Image.open('../assets/images/posts/zkp/waldo50x50.png')
   rt = WheresWaldo('scrapped_cliparts/cartoon/*.png', 'scrapped_cliparts/cartoon/waldo.png', False)
   rt.draw(image, 75, 75)
 
   image.save('../assets/images/posts/zkp/waldo50x50.png')
   image.show()
 
-  image2 = Image.new(mode='RGB', size=(1500, 1500), color=(
-      255,
-      255,
-      255,
-  ))
+  width, height = (200, 200)
+  image.thumbnail((width, height))
+  image = image.convert('RGBA')
+  draw = ImageDraw.Draw(image)
+  draw.rectangle((0, 0, 200, 200), fill=None,
+                 outline=(0, 0, 0, 255), width=2)
+  base_image = image.transform((width * 4, height * 3), Image.AFFINE,
+                          (1, 1, -400 - 200,
+                           0, 1, -30 - 200), Image.BICUBIC)
 
-  # image2.transform
+  white_paper_image = Image.new('RGBA', (200, 200), color=(255, 0, 0, 255))
+  draw = ImageDraw.Draw(white_paper_image)
+  draw.rectangle((0, 0, 200, 200),
+                 (255, 255, 255, 255),
+                 (0, 0, 0, 255), width=2)
+  white_paper_image = white_paper_image.transform((width * 4, height * 3), Image.AFFINE,
+                          (0.75, 1, -300,
+                           0, 0.95, -30), Image.BICUBIC)
+
+  white_paper_with_hole_image = Image.new('RGBA', (200, 200), color=(255, 0, 0, 255))
+  draw = ImageDraw.Draw(white_paper_with_hole_image)
+  draw.rectangle((0, 0, 200, 200),
+                 (255, 255, 255, 255),
+                 (0, 0, 0, 255), width=2)
+  draw.ellipse((100, 100, 120, 120),
+                fill=(0, 0, 0, 0),
+                outline=(0, 0, 0, 255))
+  white_paper_with_hole_image_sheared = white_paper_with_hole_image.transform((width * 4, height * 3), Image.AFFINE,
+                          (0.75, 1, -300 - 100,
+                           0, 0.95, -30 - 100), Image.BICUBIC)
+
+  composed = Image.new(mode='RGBA', size=(750, 500), color=(255, 255, 255, 255))
+  composed.paste(base_image, (-100, 0), mask=base_image)
+  composed.paste(white_paper_with_hole_image_sheared, (-60, 0), mask=white_paper_with_hole_image_sheared)
+  composed.paste(white_paper_image, (-60, 0), mask=white_paper_image)
+
+  Label.draw(composed, 'Top Layer: Large Paper', Vec(600, 100), 14)
+  Label.draw(composed, 'Middle Layer: Large Paper w/ Hole', Vec(600, 200), 14)
+  Label.draw(composed, 'Bottom Layer: Where\'s Waldo Image', Vec(600, 350), 14)
+
+  composed.save('../assets/images/posts/zkp/waldo_layers.png')
+  composed.show()
+
+  revealed_image = Image.new('RGBA', (250, 250), color=(255, 255, 255, 255))
+  waldo = Image.open('scrapped_cliparts/cartoon/waldo.png')
+  waldo.thumbnail((30, 30))
+  revealed_image.paste(waldo, (120, 120), waldo)
+  revealed_image.paste(white_paper_with_hole_image, (25, 25), white_paper_with_hole_image)
+  revealed_image.show()
+  revealed_image.save('../assets/images/posts/zkp/waldo_revealed.png')
 
 
 class Table:
@@ -645,9 +705,9 @@ def reverse_and_clean():
   reverse_and_clean_board('move2.png', [(1,2), (1, 1), (2, 0)], [(2, 2), (2, 1)])
 
 if __name__ == '__main__':
-  # zero_knowledge()
+  zero_knowledge()
   # pawns()
-  pirates()
+  # pirates()
   # table_cover()
   # planar_pairings()
   # reverse_and_clean()
