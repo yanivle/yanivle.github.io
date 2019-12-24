@@ -427,7 +427,9 @@ def pirates():
     image.paste(pirate_ship,
                 (grid.cell(*cell).center - (Vec(*pirate_ship.size) / 2) +
                  Vec(0, -25)).ituple2(), pirate_ship)
-    Label.draw(image, str(cell),
+    # doing 16 - y to make y-axis grow upwards.
+    label = str((cell[0], 16 - cell[1]))
+    Label.draw(image, label,
                grid.cell(*cell).center + Vec(0, grid.cell_height * 0.8))
 
   for i in range(1, len(cells)):
@@ -754,10 +756,10 @@ def hilbert():
   image.save('../assets/images/posts/hilbert/triangle_rectangle.png')
 
 if __name__ == '__main__':
-  hilbert()
+  # hilbert()
   # zero_knowledge()
   # pawns()
-  # pirates()
+  pirates()
   # table_cover()
   # planar_pairings()
   # reverse_and_clean()
