@@ -44,7 +44,7 @@ Let me give you this neat example (inspired by [Applied Kid Cryptography](http:/
 
 BTW - for the purposes of this post, I built a Where's Waldo generator - some more on that below. In this specific case, waldo looks like this:
 
-{% include image.html url="/assets/images/posts/zkp/waldo.png" %}
+{% include image.html url="/assets/images/posts/zkp/waldo.png" height=7 %}
 
 After minutes of contemplation, I suddenly find him! The following dialog then takes place between us:
 
@@ -100,7 +100,7 @@ Now for the reason we're all here - solving some more Where's Waldo images! I wr
 
 This is an easier version. This is Pando:
 
-{% include image.html url="/assets/images/posts/zkp/pando.png" %}
+{% include image.html url="/assets/images/posts/zkp/pando.png" height=7 %}
 
 Pando got lost in Cartoon World. Can you find him?
 
@@ -110,7 +110,7 @@ Pando got lost in Cartoon World. Can you find him?
 
 This is Baldo:
 
-{% include image.html url="/assets/images/posts/zkp/baldo.png" %}
+{% include image.html url="/assets/images/posts/zkp/baldo.png" height=7 %}
 
 Baldo was walking around Ball World, and got lost! Can you find him?
 

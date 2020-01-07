@@ -14,7 +14,7 @@ syntaxHighlighter: no
 ---
 I visited my parents yesterday, for the Jewish holiday of Shavuot. I found there a picture of myself and some friends from the time we sailed on the [Tuichi River](https://en.wikipedia.org/wiki/Tuichi_River) in Bolivia on a raft we built ourselves with machetes. Here is the picture and a legend:
 
-{% include image.html url="/assets/images/posts/prison_legend.gif" %}
+{% include image.html url="/assets/images/posts/prison_legend.gif" height=7 %}
 
 {% include image.html url="/assets/images/posts/prison.jpg" %}
 

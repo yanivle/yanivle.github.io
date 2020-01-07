@@ -74,7 +74,7 @@ The process of reducing an image’s size via repeated deletions of the least im
 
 Let's compare all three versions side by side - for convenience the carved version is in the middle (with the cropped version on the left and the scaled version on the right):
 
-{% include image.html url="/assets/images/posts/seam_carving/pagoda_sxs.png" %}
+{% include image.html url="/assets/images/posts/seam_carving/pagoda_sxs.png" height=10 %}
 
 Here we see the carving process animated:
 
@@ -128,7 +128,7 @@ The carved version:
 
 The side-by-side comparison:
 
-{% include image.html url="/assets/images/posts/seam_carving/surf_sxs.png" %}
+{% include image.html url="/assets/images/posts/seam_carving/surf_sxs.png" height=7 %}
 
 And the animated version:
 
@@ -136,11 +136,11 @@ And the animated version:
 
 Another surfing pic:
 
-{% include image.html url="/assets/images/posts/seam_carving/two_surfers.png" %}
+{% include image.html url="/assets/images/posts/seam_carving/two_surfers.png" height=7 %}
 
 Note how the first seams go around all the important details in the image:
 
-{% include image.html url="/assets/images/posts/seam_carving/two_surfers_min_seams.png" %}
+{% include image.html url="/assets/images/posts/seam_carving/two_surfers_min_seams.png" height=7 %}
 
 And the carved version (which keeps both surfers):
 
@@ -148,7 +148,7 @@ And the carved version (which keeps both surfers):
 
 This is the best example of the strength of seam carving, compared to the other methods that do really badly here:
 
-{% include image.html url="/assets/images/posts/seam_carving/two_surfers_sxs.png" %}
+{% include image.html url="/assets/images/posts/seam_carving/two_surfers_sxs.png" height=7 %}
 
 <iframe width="100%" height="315" src="https://www.youtube.com/embed/AYeHv9gWvCA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
@@ -176,6 +176,6 @@ And carved (note that the birds and the sun are bigger):
 
 {% include image.html url="/assets/images/posts/seam_carving/birds_carved2.png" %}
 
-And side-by-side:
+And I'll leave you with this sunset side-by-side:
 
 {% include image.html url="/assets/images/posts/seam_carving/birds_sxs.png" %}

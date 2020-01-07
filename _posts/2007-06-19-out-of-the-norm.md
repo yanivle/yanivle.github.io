@@ -130,7 +130,7 @@ Can you supply some more values?
 
 While the unit circles above are very informative, I wanted to see how the norms look like in the entire plane. I therefore plotted the $$l_1$$, $$l_2$$, $$l_3$$, and $$l_\infty$$ norms in the entire plane, using this scale:
 
-{% include image.html url="/assets/images/posts/norm/unit_circles_scale.png" %}
+{% include image.html url="/assets/images/posts/norm/unit_circles_scale.png" height=7 %}
 
 So purple is 0, and red is 1. This is the $$l_1$$ norm:
 

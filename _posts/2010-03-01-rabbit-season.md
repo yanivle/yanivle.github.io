@@ -31,7 +31,7 @@ What happens if the graph is a general tree?
 
 Let's consider the simple case of a linear graph with 10 cells:
 
-{% include image.html url="/assets/images/posts/linear_10.gv.svg" %}
+{% include image.html url="/assets/images/posts/linear_10.gv.svg" height=7 %}
 
 How can we ever rule out a position? Well, if there is a cell that has only one neighbor where the bunny can be, and we shoot that neighbor, than we can be sure that the bunny will not be in that cell afterwards. For example, consider the cell to the very left. It has only one neighbor (immediately to its right) and if we shoot that neighbor than we can be sure that the bunny won't be in the left most cell on the next turn. Once we ruled out that cell, the cell to its right now only has one neighbor where the bunny can be. We can continue in this fashion and hit the bunny in 16 shots (the red cells denote where we shoot, the white cells denote possible locations for the rabbit):
 
@@ -41,11 +41,11 @@ The above reasoning also makes it clear that we cannot eliminate the rabbit in a
 
 So graphs with cycles don't have a solution, but what about trees? Some trees are trivial, for example Star Graphs like this one:
 
-{% include image.html url="/assets/images/posts/star_8.gv.svg" %}
+{% include image.html url="/assets/images/posts/star_8.gv.svg" height=10 %}
 
 We just need to shoot the center twice in a row:
 
-{% include image.html url="/assets/images/posts/star_8_solution.gv.svg" %}
+{% include image.html url="/assets/images/posts/star_8_solution.gv.svg" height=7 %}
 
 What about more complicated trees? Well, it turns out we can solve all trees with 9 or less nodes. For example, can you solve this one (solution right below):
 
@@ -57,7 +57,7 @@ The reason I know that all trees with up to 9 nodes are solvable is unfortunatel
 
 Here is the solution for the tree above:
 
-{% include image.html url="/assets/images/posts/random_tree_solution.gv.svg" %}
+{% include image.html url="/assets/images/posts/random_tree_solution.gv.svg" height=7 %}
 
 It turns out though, that we can't solve all the trees. The smallest tree that isn't solvable has 10 nodes. Here it is:
 
