@@ -20,6 +20,8 @@ Define a sequence of points, $$p_n$$ as follows. Choose $$p_0$$ anywhere on the 
 
 Here you can see the first few iterations:
 
+{% include image.html url="/assets/images/posts/sierpinski/sierpinski_initial.png" %}
+
 ***What will the set $$\{p_n\}$$ look like?***
 
 #### Extra Credit
