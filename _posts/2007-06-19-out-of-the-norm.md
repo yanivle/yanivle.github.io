@@ -126,6 +126,28 @@ Something else to think about is the volume of the unit circles. The volume of t
 
 Can you supply some more values?
 
+### Visualizing the Norms
+
+While the unit circles above are very informative, I wanted to see how the norms look like in the entire plane. I therefore plotted the $$l_1$$, $$l_2$$, $$l_3$$, and $$l_\infty$$ norms in the entire plane, using this scale:
+
+{% include image.html url="/assets/images/posts/norm/unit_circles_scale.png" %}
+
+So purple is 0, and red is 1. This is the $$l_1$$ norm:
+
+{% include image.html url="/assets/images/posts/norm/unit_circles_l1_norm.png" %}
+
+This is the $$l_2$$ norm:
+
+{% include image.html url="/assets/images/posts/norm/unit_circles_l2_norm.png" %}
+
+This is the $$l_3$$ norm:
+
+{% include image.html url="/assets/images/posts/norm/unit_circles_l3_norm.png" %}
+
+And finally, this is the $$l_\infty$$ norm:
+
+{% include image.html url="/assets/images/posts/norm/unit_circles_linf_norm.png" %}
+
 That’s it for now!
 
 I might update this article, so check the updates section!
