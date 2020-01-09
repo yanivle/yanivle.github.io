@@ -3,7 +3,7 @@ layout: post
 title:  "Whole Rectangles"
 date:   2007-05-25 01:00:00
 excerpt: "A combinatorics puzzle"
-categories: Puzzle
+categories: Puzzles
 tags:  Puzzle Hard Math Combinatorics
 image:
   feature: rectangles.jpg

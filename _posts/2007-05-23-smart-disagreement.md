@@ -3,7 +3,7 @@ layout: post
 title:  "Smart Disagreement"
 date:   2007-05-23 01:00:00
 excerpt: "A philosophy puzzle"
-categories: Puzzle
+categories: Puzzles
 tags:  Puzzle Hard Math Philosophy Probability
 image:
   feature: dice.jpg

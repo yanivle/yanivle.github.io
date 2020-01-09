@@ -3,7 +3,7 @@ layout: post
 title:  "Blindfolded Flipping"
 date:   2007-07-25 01:00:00
 excerpt: "An easy puzzle"
-categories: Puzzle
+categories: Puzzles
 tags:  Puzzle Math Easy
 image:
   feature: blindfolded.jpg

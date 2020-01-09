@@ -3,7 +3,7 @@ layout: post
 title:  "Monty Hall Revised"
 date:   2008-12-09 01:00:00
 excerpt: "Twist on a well known puzzle"
-categories: Puzzle
+categories: Puzzles
 tags:  Puzzle Variant Twist Mine
 image:
   feature: curtain.jpg

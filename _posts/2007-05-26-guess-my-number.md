@@ -3,7 +3,7 @@ layout: post
 title:  "Guess My Number"
 date:   2007-05-26 01:00:00
 excerpt: "An easy combinatorics puzzle"
-categories: Puzzle
+categories: Puzzles
 tags:  Puzzle Easy Math Combinatorics
 image:
   feature: guess.jpg

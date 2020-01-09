@@ -3,7 +3,7 @@ layout: post
 title:  "Differing Neighbors"
 date:   2011-01-12 01:00:00
 excerpt: "An easy combinatorics puzzle"
-categories: Puzzle
+categories: Puzzles
 tags:  Algorithms Puzzles Easy
 image:
   feature: neighbors.jpg

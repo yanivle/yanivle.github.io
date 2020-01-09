@@ -3,7 +3,7 @@ layout: post
 title:  "The Bookie"
 date:   2012-06-06 01:00:00
 excerpt: "Two nice and easy gambling related riddles"
-categories: Puzzle
+categories: Puzzles
 tags:  Math Puzzles Combinatorics
 image:
   feature: gambling.jpg

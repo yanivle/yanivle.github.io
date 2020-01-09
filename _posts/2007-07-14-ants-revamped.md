@@ -3,7 +3,7 @@ layout: post
 title:  "Ants Revamped"
 date:   2007-07-14 01:00:00
 excerpt: "A cool continuation of an easy puzzle"
-categories: Puzzle
+categories: Puzzles
 tags:  Puzzle Math Easy
 image:
   feature: ants2.jpg

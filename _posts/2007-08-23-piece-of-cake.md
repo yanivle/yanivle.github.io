@@ -3,7 +3,7 @@ layout: post
 title:  "Piece of Cake"
 date:   2007-08-23 01:00:00
 excerpt: "A collection of very easy riddles"
-categories: Puzzle
+categories: Puzzles
 tags:  Math Puzzle Easy
 image:
   feature: cake.jpg

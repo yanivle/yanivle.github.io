@@ -3,7 +3,7 @@ layout: post
 title:  "What are the Odds?"
 date:   2007-07-20 01:00:00
 excerpt: "A hard combinatorics puzzle"
-categories: Puzzle
+categories: Puzzles
 tags:  Puzzle Math Hard
 image:
   feature: coins.jpg

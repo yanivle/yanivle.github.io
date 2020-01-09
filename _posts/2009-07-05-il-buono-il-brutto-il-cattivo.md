@@ -3,7 +3,7 @@ layout: post
 title:  "Il Buono, il Brutto, il Cattivo"
 date:   2009-07-05 01:00:00
 excerpt: "4 math puzzles"
-categories: Puzzle
+categories: Puzzles
 tags:  Math Puzzle
 image:
   feature: good_bad_ugly.jpg

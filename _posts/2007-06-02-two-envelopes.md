@@ -3,7 +3,7 @@ layout: post
 title:  "Two Envelopes"
 date:   2007-06-02 01:00:00
 excerpt: "An statistics puzzle"
-categories: Puzzle
+categories: Puzzles
 tags:  Puzzle Math Statistics
 image:
   feature: envelopes.jpg

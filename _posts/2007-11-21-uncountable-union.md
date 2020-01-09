@@ -3,7 +3,7 @@ layout: post
 title:  "Uncountable Union"
 date:   2007-11-21 01:00:00
 excerpt: "A set theory puzzle"
-categories: Puzzle
+categories: Puzzles
 tags:  Math Puzzle Set-Theory
 image:
   feature: union.jpg

@@ -3,7 +3,7 @@ layout: post
 title:  "Valid Planar Pairing"
 date:   2007-11-24 01:00:00
 excerpt: "Easy computational geometry puzzle."
-categories: Puzzle
+categories: Puzzles
 tags:  Puzzle Geometry
 image:
   feature: pairs.jpg

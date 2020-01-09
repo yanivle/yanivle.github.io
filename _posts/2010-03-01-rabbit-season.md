@@ -3,7 +3,7 @@ layout: post
 title:  "Rabbit Season"
 date:   2010-03-01 01:00:00
 excerpt: "A cool puzzle"
-categories: Puzzle
+categories: Puzzles
 tags:  Math Puzzle Graphs
 image:
   feature: rabbit.jpg

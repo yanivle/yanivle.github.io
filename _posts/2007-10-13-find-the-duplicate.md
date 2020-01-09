@@ -3,7 +3,7 @@ layout: post
 title:  "Find the Duplicate"
 date:   2007-08-23 01:00:00
 excerpt: "An easy algorithmic riddle"
-categories: Puzzle
+categories: Puzzles
 tags:  Algorithms Puzzle Easy Coding
 image:
   feature: twins.jpg

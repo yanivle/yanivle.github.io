@@ -2,7 +2,7 @@
 layout: post
 title:  "Table Cover"
 excerpt: "A cool geometric puzzle"
-categories: Puzzle
+categories: Puzzles
 tags:  Puzzle Geometry
 image:
   feature: coins-on-table.jpg

@@ -3,7 +3,7 @@ layout: post
 title:  "Really Equal? Naturally!"
 date:   2010-01-03 01:00:00
 excerpt: "A algebraic puzzle"
-categories: Puzzle
+categories: Puzzles
 tags:  Math Puzzle Algebra
 image:
   feature: numbers.jpg

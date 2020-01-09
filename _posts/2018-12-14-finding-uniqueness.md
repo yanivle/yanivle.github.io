@@ -3,7 +3,7 @@ layout: post
 title:  "Finding Uniqueness"
 date:   2018-12-14 01:00:00
 excerpt: "An easy programming puzzle"
-categories: Puzzle
+categories: Puzzles
 tags:  Puzzles Programming
 image:
   feature: unique.jpg

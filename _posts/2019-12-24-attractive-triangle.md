@@ -3,7 +3,7 @@ layout: post
 title:  "Attractive Triangle"
 date:   2019-12-24 01:00:00
 excerpt: "A fractal puzzle"
-categories: Puzzle
+categories: Puzzles
 tags:  Math Puzzles Fractals
 image:
   feature: triangle.jpg

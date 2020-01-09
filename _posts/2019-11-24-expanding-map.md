@@ -2,7 +2,7 @@
 layout: post
 title:  "Expanding Map"
 excerpt: "A cool algorithmic combinatorics puzzle"
-categories: Puzzle
+categories: Puzzles
 tags:  Puzzle Coding
 image:
   feature: map.jpg

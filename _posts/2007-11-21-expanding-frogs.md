@@ -3,7 +3,7 @@ layout: post
 title:  "Expanding Frogs"
 date:   2007-11-21 01:00:00
 excerpt: "An easy geometric math puzzle"
-categories: Puzzle
+categories: Puzzles
 tags:  Math Puzzles Easy
 image:
   feature: frog.jpg

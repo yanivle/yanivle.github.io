@@ -3,7 +3,7 @@ layout: post
 title:  "Hats in a line"
 date:   2008-11-16 01:00:00
 excerpt: "A generalization of an easy puzzle"
-categories: Puzzle
+categories: Puzzles
 tags:  Math Puzzle Set-Theory
 image:
   feature: hats.jpg

@@ -3,7 +3,7 @@ layout: post
 title:  "Spot the Not"
 date:   2007-07-25 01:00:00
 excerpt: "A topology and real-snalysis math puzzle"
-categories: Puzzle
+categories: Puzzles
 tags:  Math Puzzles Topology Real-Analysis
 image:
   feature: odd_one_out.jpg

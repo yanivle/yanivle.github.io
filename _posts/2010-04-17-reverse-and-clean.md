@@ -3,7 +3,7 @@ layout: post
 title:  "Reverse & Clean"
 date:   2010-04-17 01:00:00
 excerpt: "An easy puzzle"
-categories: Puzzle
+categories: Puzzles
 tags:  Puzzles
 image:
   feature: checkers.jpg
