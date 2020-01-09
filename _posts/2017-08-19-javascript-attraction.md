@@ -12,7 +12,7 @@ bgGradientOpacity: lighter
 syntaxHighlighter: yes
 ---
 
-During a long transatlantic flight, I wrote this simple graphics simulation for my wife Zlata.
+During a transatlantic flight, I wrote this simple particle attraction simulation for my wife Zlata (to symbolize the attraction between us :)).
 
 <canvas width="800" height="600" id="zlata" style="width:100%;"></canvas>
 <script src="/assets/javascripts/attraction.js"></script>
