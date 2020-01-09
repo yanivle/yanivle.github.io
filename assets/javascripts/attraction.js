@@ -2,15 +2,15 @@ var canvas = document.getElementById('zlata');
 var context = canvas.getContext('2d');
 
 const CHARS = new Map([
-                      ['Z', '*****   *   *   *   *****'],
-                      ['L', '*    *    *    *    *****'],
-                      ['A', '  *   * * *   *******   *'],
-                      ['T', '*****  *    *    *    *  '],
-                      ['Y', '*   * * *   *    *    *  '],
-                      ['N', '*   ***  ** * **  ***   *'],
-                      ['I', '  *    *    *    *    *  '],
-                      ['V', '*   * * *  * *   *    *  ']
-                    ]);
+  ['Z', '*****   *   *   *   *****'],
+  ['L', '*    *    *    *    *****'],
+  ['A', '  *   * * *   *******   *'],
+  ['T', '*****  *    *    *    *  '],
+  ['Y', '*   * * *   *    *    *  '],
+  ['N', '*   ***  ** * **  ***   *'],
+  ['I', '  *    *    *    *    *  '],
+  ['V', '*   * * *  * *   *    *  ']
+]);
 
 // const RAINBOW = [
 //   [0x94, 0x00, 0xD3],
@@ -20,6 +20,9 @@ const CHARS = new Map([
 //   [0xff, 0xff, 0],
 //   [0xff, 0x7f, 0],
 //   [0xff, 0, 0]];
+
+const CANVAS_WIDTH = 800;
+const CANVAS_HEIGHT = 600;
 
 class Vec2 {
   constructor(x = 0, y = 0) {
@@ -37,6 +40,32 @@ class Vec2 {
     this.y *= frac;
   }
 }
+
+class Circle {
+  constructor(x = 0, y = 0, r = 1, color = 'red') {
+    this.x = x;
+    this.y = y;
+    this.r = r;
+    this.color = color;
+  }
+
+  draw(context) {
+    context.fillStyle = this.color;
+    context.beginPath();
+    context.arc(this.x, this.y, this.r, 0, 2 * Math.PI);
+    context.fill();
+  }
+
+  contains(x, y) {
+    if (new Vec2(x - this.x, y - this.y).len <= this.r) {
+      return true;
+    }
+    return false;
+  }
+}
+
+var top_circle = new Circle(CANVAS_WIDTH / 2, 0, 50);
+// var bottom_circle = new Circle(CANVAS_WIDTH / 2, CANVAS_HEIGHT, 50);
 
 class Rect {
   constructor(width, height) {
@@ -66,7 +95,7 @@ function toColorString(rgb) {
   return 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';
 }
 const COLORS = ['red', 'blue', 'yellow', 'green', 'orange',
-                'purple', 'pink', 'white', 'cyan', 'magenta'];
+  'purple', 'pink', 'white', 'cyan', 'magenta'];
 
 
 class Particle {
@@ -94,41 +123,41 @@ class Particle {
   attractToward(point) {
     var org_len = this.vel.len;
     var accel = new Vec2(point.x - this.box.pos.x,
-                         point.y - this.box.pos.y);
+      point.y - this.box.pos.y);
     this.vel.x += accel.x;
     this.vel.y += accel.y;
     this.vel.len = org_len;
     this.vel.len = Math.min(org_len, accel.len * 20); // xxx
   }
 
-    constructor() {
-      this.box = new Rect(WIDTH, HEIGHT);
-      this.box.pos.x = Math.random() * canvas.width;
-      this.box.pos.y = Math.random() * canvas.height;
-      this.vel = new Vec2(Math.random() - 0.5, Math.random() - 0.5);
-      this.vel.len = 100;
-      // this.vel.len = 300;xxx
-      this._attractor = null;
-      this.color = COLORS[Math.floor(Math.random() * COLORS.length)];
-      // this.color = toColorString([255,
-      //                             255,
-      //                             Math.floor(Math.random() * 128 + 128)]);
-    }
+  constructor() {
+    this.box = new Rect(WIDTH, HEIGHT);
+    this.box.pos.x = Math.random() * canvas.width;
+    this.box.pos.y = Math.random() * canvas.height;
+    this.vel = new Vec2(Math.random() - 0.5, Math.random() - 0.5);
+    this.vel.len = 100;
+    // this.vel.len = 300;xxx
+    this._attractor = null;
+    this.color = COLORS[Math.floor(Math.random() * COLORS.length)];
+    // this.color = toColorString([255,
+    //                             255,
+    //                             Math.floor(Math.random() * 128 + 128)]);
+  }
 
-    draw(context) {
-      context.fillStyle = this.color;
-      context.fillRect(this.box.left, this.box.top,
-        this.box.width, this.box.height);
-    }
+  draw(context) {
+    context.fillStyle = this.color;
+    context.fillRect(this.box.left, this.box.top,
+      this.box.width, this.box.height);
+  }
 
-    update(delta_time) {
-      this.box.pos.x += this.vel.x * delta_time;
-      this.box.pos.y += this.vel.y * delta_time;
-      if (this._attractor) {
-        this.attractToward(this._attractor);
-      }
-      this.collide();
+  update(delta_time) {
+    this.box.pos.x += this.vel.x * delta_time;
+    this.box.pos.y += this.vel.y * delta_time;
+    if (this._attractor) {
+      this.attractToward(this._attractor);
     }
+    this.collide();
+  }
 }
 
 var particles = [];
@@ -141,6 +170,9 @@ function initParticles(num_particles) {
 function draw() {
   context.fillStyle = 'rgba(0, 0, 0, 0.1)';
   context.fillRect(0, 0, canvas.width, canvas.height);
+
+  top_circle.draw(context);
+  // bottom_circle.draw(context);
 
   particles.forEach(particle => {
     particle.draw(context);
@@ -160,7 +192,7 @@ function resetAttractors() {
 }
 
 function createAttractors() {
-  const strs = ['ZLATA','YANIV','ZLATANIV'];
+  const strs = ['ZLATA', 'YANIV', 'ZLATANIV'];
   var str = strs[Math.floor(Math.random() * strs.length)];
   particles.forEach(particle => {
     var letter_idx = Math.floor(Math.random() * str.length);
@@ -173,8 +205,8 @@ function createAttractors() {
     var letter_center_x = (letter_idx + 1) * canvas.width /
       (str.length + 2);
     var letter_center_y = canvas.height / 2;
-    particle.attractor = new Vec2(letter_center_x + row * 15 + Math.random()*15,
-                                  letter_center_y + col * 15 + Math.random()*15);
+    particle.attractor = new Vec2(letter_center_x + row * 15 + Math.random() * 15,
+      letter_center_y + col * 15 + Math.random() * 15);
   });
 }
 
@@ -184,17 +216,29 @@ function Zlata() {
 
   function getCursorPosition(canvas, event) {
     const rect = canvas.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
+    let e = event;
+    if (event.type == 'touchstart' || event.type == 'touchmove') {
+      e = event.touches[0];
+    }
+    const x = canvas.getAttribute('width') * (e.clientX - rect.left) / rect.width;
+    const y = canvas.getAttribute('height') * (e.clientY - rect.top) / rect.height;
     return new Vec2(x, y);
   }
 
   var mouse_is_down = false;
   function onMouseDown(event) {
+    let pos = getCursorPosition(canvas, event);
     mouse_is_down = true;
-    particles.forEach(particle => {
-      particle.attractor = getCursorPosition(canvas, event);
-    });
+    if (top_circle.contains(pos.x, pos.y)) {
+      createAttractors();
+      // } else if (bottom_circle.contains(pos.x, pos.y)) {
+      //   resetAttractors();
+    } else {
+      particles.forEach(particle => {
+        particle.attractor = pos;
+      });
+    }
+    event.preventDefault();
   }
 
   canvas.addEventListener('mousedown', onMouseDown);
@@ -202,10 +246,15 @@ function Zlata() {
 
   function onMouseMove(event) {
     if (mouse_is_down) {
+      let pos = getCursorPosition(canvas, event);
+      if (top_circle.contains(pos.x, pos.y)) {
+      } else {
         particles.forEach(particle => {
-          particle.attractor = getCursorPosition(canvas, event);
+          particle.attractor = pos;
         });
+      }
     }
+    event.preventDefault();
   }
 
   canvas.addEventListener('mousemove', onMouseMove);
@@ -216,12 +265,13 @@ function Zlata() {
     particles.forEach(particle => {
       particle.attractor = null;
     });
+    event.preventDefault();
   }
 
   canvas.addEventListener('mouseup', onMouseUp);
   canvas.addEventListener('touchend', onMouseUp);
 
-  document.addEventListener('keydown', function(event) {
+  document.addEventListener('keydown', function (event) {
     if (event.code == 'Space') {
       createAttractors();
     }
@@ -230,8 +280,8 @@ function Zlata() {
     }
   });
 
-  window.addEventListener('keydown', function(e) {
-    if(e.keyCode == 32 && e.target == document.body) {
+  window.addEventListener('keydown', function (e) {
+    if (e.keyCode == 32 && e.target == document.body) {
       e.preventDefault();
     }
   });
