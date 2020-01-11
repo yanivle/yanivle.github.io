@@ -18,10 +18,12 @@ During a transatlantic flight, I wrote this simple particle attraction simulatio
 <script src="/assets/javascripts/attraction.js"></script>
 
 #### Interaction
-**Space** - Set attractors (try clicking it repeatedly). On a mobile device you can hold the red semi-circle at the top of the canvas instead.
+**Space** - Set attractors (try clicking it repeatedly). On a mobile device you can hold the red semi-circle at the top of the canvas.
 
 **Enter** - Reset attractors. On a mobile device just let go.
 
 **Mouse Click** or **Mouse Drag** - Set attractors to mouse. On a mobile device just touch the canvas - try dragging your finger!
+
+It's pretty fun to try and create certain shapes. For example, can you create 2 stable distinct concentric circles? How about 3? Can you reverse their order? Can you create a rectangle?
 
 Enjoy!

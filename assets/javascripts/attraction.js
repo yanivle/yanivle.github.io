@@ -4,15 +4,29 @@ var context = canvas.getContext('2d');
 // var max_accel = 50;
 // var min_accel = 1;
 
-const CHARS = new Map([
-  ['Z', '*****   *   *   *   *****'],
-  ['L', '*    *    *    *    *****'],
-  ['A', '  *   * * *   *******   *'],
-  ['T', '*****  *    *    *    *  '],
-  ['Y', '*   * * *   *    *    *  '],
-  ['N', '*   ***  ** * **  ***   *'],
-  ['I', '  *    *    *    *    *  '],
-  ['V', '*   * * *  * *   *    *  ']
+// const CHARS = new Map([
+//   ['Z', '*****   *   *   *   *****'],
+//   ['L', '*    *    *    *    *****'],
+//   ['A', '  *   * * *   *******   *'],
+//   ['T', '*****  *    *    *    *  '],
+//   ['Y', '*   * * *   *    *    *  '],
+//   ['N', '*   ***  ** * **  ***   *'],
+//   ['I', '  *    *    *    *    *  '],
+//   ['V', '*   * * *  * *   *    *  ']
+// ]);
+
+const CHAR_DIRS = new Map([
+  ['Z', '-----   /   /   /   -----'],
+  ['L', '|    |    |    |    -----'],
+  ['A', '  -   / \\ |   |-----|   |'],
+  ['T', '-----  |    |    |    |  '],
+  ['Y', '\\   / \\ /   |    |    |  '],
+  ['N', '|   ||\\  || \\ ||  \\||   |'],
+  ['I', '  |    |    |    |    |  '],
+  ['V', '\\   / | |  \\ /  | |   -  '],
+  ['O', '  -   / \\ |   | \\ /   -  '],
+  ['S', ' /---|     \\-\\     |---/ '],
+  ['E', '-----|    |----|    -----'],
 ]);
 
 // const RAINBOW = [
@@ -155,10 +169,13 @@ class Particle {
   set attractor(attractor) {
     this._attractor = attractor;
     if (attractor == null) {
+      // this.damp = 0.95;
       this.vel.len = this.max_idle_vel; // xxx
       let v = this.box.pos.sub(this.prev_pos);
       v.len = this.max_idle_vel;
       this.prev_pos = this.box.pos.sub(v.mul(1 / 60));
+      // } else {
+      //   this.damp = 0.99;
     }
     // // this.color = COLORS[Math.floor(COLORS.length * (Math.random() * 100 + attractor.x) / 800)];
   }
@@ -191,15 +208,35 @@ class Particle {
     this.box = new Rect(WIDTH, HEIGHT);
     this.box.pos.x = Math.random() * canvas.width;
     this.box.pos.y = Math.random() * canvas.height;
-    this.vel = new Vec2(Math.random() - 0.5, Math.random() - 0.5);
-    this.vel.len = 100;
+    // this.vel = new Vec2(Math.random() - 0.5, Math.random() - 0.5);
+    // this.vel.len = 100;
+    this.vel = new Vec2(0, 0);
     this.force = new Vec2(0, 0);
     this.prev_pos = this.box.pos.sub(this.vel.mul(1 / 60));
     // this.prev_delta_time = 1;
     this._attractor = null;
+    // this.damp = 0.95;// + Math.random() * 0.01;
+    // while (Math.random() < 0.3 && this.damp < 0.98) {
+    //   this.damp += Math.random() * 0.01;
+    // }
+    this.damp = 0.95 + Math.random() * Math.random() * Math.random() * 0.04;
+    // if (Math.random() < 0.003) {
+    //   this.damp = 0.99;
+    // }
+    // this.damp = 0.95;
+    // while (Math.random() < 0.25 && this.damp < 0.99) {
+    //   this.damp += 0.01;
+    // }
+    // this.size = 2;
+    // while (Math.random() < 0.5) {
+    //   this.size += 1;
+    // }
+    // this.size = Math.floor(Math.random() * 3) + 3;
 
-    let prototype = prototypes[Math.floor(Math.random() * prototypes.length)];
+    let prototype_idx = Math.floor(Math.random() * prototypes.length);
+    let prototype = prototypes[prototype_idx];
     this.color = prototype['color'];
+    // this.color = toColorString([150 + Math.random() * 105, 150 + Math.random() * 105, 150 + Math.random() * 105]);
     this.min_accel = prototype['min_accel'];
     this.max_accel = prototype['max_accel'];
     this.use_verlet = prototype['verlet'];
@@ -226,12 +263,15 @@ class Particle {
     if (px == x && y == py) {
       context.fillStyle = this.color;
       context.fillRect(x, y, 2, 2);
+      // context.fillRect(x - this.size / 2 + 1, y - this.size / 2 + 1, this.size, this.size);
     } else {
       context.strokeStyle = this.color;
       context.lineWidth = 2;
       context.beginPath();
       context.moveTo(px, py);
       context.lineTo(x, y);
+      // context.moveTo(px - this.size / 2 + 1, py - this.size / 2 + 1);
+      // context.lineTo(x - this.size / 2 + 1, y - this.size / 2 + 1);
       context.stroke();
     }
   }
@@ -239,12 +279,12 @@ class Particle {
   update(delta_time) {
     this.prev_pos = this.box.pos;
     if (!this.use_verlet) {
-      this.vel = this.vel.mul(0.95).add(this.force);
+      this.vel = this.vel.mul(this.damp).add(this.force);
       // this.vel = this.force;
       this.box.pos = this.box.pos.add(this.vel.mul(delta_time));
     } else {
       let new_prev_pos = this.box.pos;
-      let v = this.box.pos.sub(this.prev_pos).mul(60).mul(0.95).add(this.force);
+      let v = this.box.pos.sub(this.prev_pos).mul(60).mul(this.damp).add(this.force);
       this.box.pos = this.box.pos.add(v.mul(1 / 60));
       // this.box.pos = this.box.pos.add(v);
       this.prev_pos = new_prev_pos;
@@ -276,7 +316,11 @@ function draw() {
   });
 }
 
+var abs_time = 0;
 function update(delta_time) {
+  abs_time += delta_time * 1.5;
+  top_circle.r = 50 + 4 + Math.sin(abs_time) * 4;
+
   particles.forEach(particle => {
     particle.update(delta_time);
   });
@@ -288,22 +332,68 @@ function resetAttractors() {
   });
 }
 
+function isNeighbor(row, col, nrow, ncol) {
+  return Math.max(Math.abs(row - nrow), Math.abs(col - ncol)) == 1;
+}
+
+var word = 0;
 function createAttractors() {
-  const strs = ['ZLATA', 'YANIV', 'ZLATANIV'];
-  var str = strs[Math.floor(Math.random() * strs.length)];
+  const strs = ['YANIV', 'LOVES', 'ZLATA', 'LOVES'];
+  var str = strs[word];
+  word += 1;
+  if (word == strs.length) {
+    word = 0;
+  }
+  // var str = strs[Math.floor(Math.random() * strs.length)];
   particles.forEach(particle => {
     var letter_idx = Math.floor(Math.random() * str.length);
     var row = Math.floor(Math.random() * 5);
     var col = Math.floor(Math.random() * 5);
-    while (CHARS.get(str[letter_idx])[col * 5 + row] == ' ') {
+    var char_dir = CHAR_DIRS.get(str[letter_idx])[col * 5 + row];
+    while (char_dir == ' ') {
       row = Math.floor(Math.random() * 5);
       col = Math.floor(Math.random() * 5);
+      char_dir = CHAR_DIRS.get(str[letter_idx])[col * 5 + row];
+    }
+    // var nrow, ncol;
+    // switch (char_dir) {
+    //   case '|':
+    //     nrow = row;
+    //     ncol = col + 1;
+    //     break;
+    //   case '-':
+    //     nrow = row + 1;
+    //     ncol = col;
+    //     break;
+    //   case '/':
+    //     nrow = row + 1;
+    //     ncol = col - 1;
+    //     break;
+    //   case '\\':
+    //     nrow = row + 1;
+    //     ncol = col + 1;
+    //     break;
+    // }
+    var nrow = Math.floor(Math.random() * 5);
+    var ncol = Math.floor(Math.random() * 5);
+    while (!isNeighbor(row, col, nrow, ncol) || CHAR_DIRS.get(str[letter_idx])[ncol * 5 + nrow] == ' ') {
+      nrow = Math.floor(Math.random() * 5);
+      ncol = Math.floor(Math.random() * 5);
     }
     var letter_center_x = (letter_idx + 1) * canvas.width /
       (str.length + 2);
     var letter_center_y = canvas.height / 2;
-    particle.attractor = new Vec2(letter_center_x + row * 15 + Math.random() * 15,
-      letter_center_y + col * 15 + Math.random() * 15);
+    let offset = new Vec2(Math.random() - 0.5, Math.random() - 0.5);
+    offset.len = Math.random() * 15;
+    // particle.attractor = new Vec2(letter_center_x + row * 15,
+    //   letter_center_y + col * 15).add(offset);
+    // particle.attractor = new Vec2(letter_center_x + row * 15 + Math.random() * 15,
+    //   letter_center_y + col * 15 + Math.random() * 15);
+    let v = new Vec2(row, col).sub(new Vec2(nrow, ncol));
+    // let u = new Vec2(-v.y, v.x).mul((Math.random() - 0.5) * 0);
+    v = v.mul((Math.random() - 0.5) * 15);
+    particle.attractor = new Vec2(letter_center_x + row * 15,
+      letter_center_y + col * 15).add(v).add(offset);//.add(u);
   });
 }
 
