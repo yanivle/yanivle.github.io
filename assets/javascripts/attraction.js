@@ -27,6 +27,7 @@ const CHAR_DIRS = new Map([
   ['O', '  -   / \\ |   | \\ /   -  '],
   ['S', ' /---|     \\-\\     |---/ '],
   ['E', '-----|    |----|    -----'],
+  ['^', '/- -\\| - || - | \\ /   -  '],
 ]);
 
 // const RAINBOW = [
@@ -338,7 +339,7 @@ function isNeighbor(row, col, nrow, ncol) {
 
 var word = 0;
 function createAttractors() {
-  const strs = ['YANIV', 'LOVES', 'ZLATA', 'LOVES'];
+  const strs = ['Y^Z', 'YANIV', 'LOVES', 'ZLATA', 'LOVES', 'YANIV'];
   var str = strs[word];
   word += 1;
   if (word == strs.length) {
@@ -380,20 +381,25 @@ function createAttractors() {
       nrow = Math.floor(Math.random() * 5);
       ncol = Math.floor(Math.random() * 5);
     }
-    var letter_center_x = (letter_idx + 1) * canvas.width /
-      (str.length + 2);
-    var letter_center_y = canvas.height / 2;
+    var pixel_size = 15;
+    if (str.length < 5) {
+      pixel_size = 20;
+    }
+    var letter_size = 5 * pixel_size;
+    var letter_center_x = (letter_idx + 1.5) * canvas.width /
+      (str.length + 2) - letter_size / 2;
+    var letter_center_y = canvas.height / 2 - letter_size / 2;
     let offset = new Vec2(Math.random() - 0.5, Math.random() - 0.5);
-    offset.len = Math.random() * 15;
+    offset.len = Math.random() * pixel_size;
     // particle.attractor = new Vec2(letter_center_x + row * 15,
     //   letter_center_y + col * 15).add(offset);
     // particle.attractor = new Vec2(letter_center_x + row * 15 + Math.random() * 15,
     //   letter_center_y + col * 15 + Math.random() * 15);
     let v = new Vec2(row, col).sub(new Vec2(nrow, ncol));
     // let u = new Vec2(-v.y, v.x).mul((Math.random() - 0.5) * 0);
-    v = v.mul((Math.random() - 0.5) * 15);
-    particle.attractor = new Vec2(letter_center_x + row * 15,
-      letter_center_y + col * 15).add(v).add(offset);//.add(u);
+    v = v.mul((Math.random() - 0.5) * pixel_size);
+    particle.attractor = new Vec2(letter_center_x + row * pixel_size,
+      letter_center_y + col * pixel_size).add(v).add(offset);//.add(u);
   });
 }
 
