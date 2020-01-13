@@ -309,12 +309,12 @@ function draw() {
   context.fillStyle = 'rgba(0, 0, 0, 0.1)';
   context.fillRect(0, 0, canvas.width, canvas.height);
 
-  top_circle.draw(context);
-  // bottom_circle.draw(context);
-
   particles.forEach(particle => {
     particle.draw(context);
   });
+
+  top_circle.draw(context);
+  // bottom_circle.draw(context);
 }
 
 var abs_time = 0;
