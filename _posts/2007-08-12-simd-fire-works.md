@@ -3,7 +3,7 @@ layout: post
 title:  "SIMD (Fire)Works!"
 date:   2007-08-12 01:00:00
 excerpt: "A simple fireworks demo using Pentium's SIMD extensions"
-categories: Graphics
+categories: Computing
 tags:  Graphics Assembly
 image:
   feature: mmx_blur.jpg

@@ -3,8 +3,8 @@ layout: post
 title:  "Galois Theory for Dummies"
 date:   2007-09-27 12:00:00
 excerpt: "A short introduction to Galois Theory"
-categories: Code
-tags:  Cryptography Programming Hacking Coding
+categories: Math
+tags:  Math Algebra
 image:
   feature: galois.jpg
   topPosition: -500px

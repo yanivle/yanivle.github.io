@@ -3,7 +3,7 @@ layout: post
 title:  "Understanding Soccer with the Hough Transform"
 date:   2007-06-03 01:00:00
 excerpt: "A post about the Hough Transform"
-categories: Algorithms
+categories: Computing
 tags:  Coding Algorithms
 image:
   feature: soccer_stand_edges.png
