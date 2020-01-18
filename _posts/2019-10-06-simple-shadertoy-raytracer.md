@@ -12,7 +12,7 @@ bgContrast: dark
 bgGradientOpacity: darker
 syntaxHighlighter: yes
 ---
-I recently discovered [Shadertoy](https://www.shadertoy.com/) which let's you write pixel shaders in a super convenient way in your browser. It is so easy to use that from discovering it, in a bit over an hour I had a simple ray tracer rendering some lit spheres with the obligatory reflections. This is the end result:
+I recently discovered [Shadertoy](https://www.shadertoy.com/) which let's you write pixel shaders in a super convenient way in your browser. It is so easy to use that from discovering it, in a bit over an hour I had a simple ray tracer rendering some lit spheres with the obligatory reflections (thanks Matan Kalman for the inspiration!). This is the end result:
 
 ### Demo
 
@@ -22,7 +22,7 @@ Let's deconstruct it and see how it works.
 
 ### Colors
 
-We'll have our spheres change color with time. Changing color in a nice way in the RGB domain is hard, because really what we want is to just change the hue (keeping the saturation and value fixed). Lukily the transformation from the HSV space to the RGB space is super simple:
+We'll have our spheres change color with time. Changing color in a nice way in the RGB domain is hard, because really what we want is to just change the hue (keeping the saturation and value fixed). Luckily the transformation from the HSV space to the RGB space is super simple:
 
 ```glsl
 vec3 hsv2rgb(vec3 c) {
