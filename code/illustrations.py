@@ -755,11 +755,36 @@ def hilbert():
   image.show()
   image.save('../assets/images/posts/hilbert/triangle_rectangle.png')
 
+def higher_dimensions():
+  width = 800
+  height = 100
+  image = Image.new(mode='RGBA', size=(width, height), color=(255, 255, 255, 255,))
+  draw = ImageDraw.Draw(image)
+
+  num_squares = 8
+  grid_width = width / num_squares
+  square_side = int(grid_width * 0.75)
+  for x in range(num_squares):
+    center = Vec(grid_width // 2 + grid_width * x, height // 2)
+    points = polygonFromRelativePoints(
+        center,
+        [Vec(-square_side // 2, -square_side // 2),
+         Vec(square_side, 0),
+         Vec(0, square_side),
+         Vec(-square_side, 0)])
+    draw.polygon(points,
+                 fill=ImageColor.getrgb('lightblue'),
+                 outline=ImageColor.getrgb('black'))
+
+  image.show()
+  image.save('../assets/images/posts/higher_dimensions/cube_slices.png')
+
 if __name__ == '__main__':
+  higher_dimensions()
   # hilbert()
   # zero_knowledge()
   # pawns()
-  pirates()
+  # pirates()
   # table_cover()
   # planar_pairings()
   # reverse_and_clean()
