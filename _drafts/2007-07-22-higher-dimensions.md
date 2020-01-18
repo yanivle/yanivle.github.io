@@ -3,7 +3,7 @@ layout: post
 title:  "Higher Dimensions"
 date:   2007-07-22 01:00:00
 excerpt: "A post about visualizing objects in 4 dimensions and above"
-categories: Graphics
+categories: Math
 tags:  Math Graphics Coding Python
 image:
   feature: 4d_cube.png
