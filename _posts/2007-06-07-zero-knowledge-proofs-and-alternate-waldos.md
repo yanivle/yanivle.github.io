@@ -3,7 +3,7 @@ layout: post
 title:  "Zero Knowledge Proofs and Alternate Waldos"
 date:   2007-06-07 12:00:00
 excerpt: "Secure computing"
-categories: Comp
+categories: Computing
 tags:  Cryptography Programming Hacking Coding
 image:
   feature: zkp.png
