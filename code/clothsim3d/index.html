@@ -1,0 +1,66 @@
+<html>
+  <head>
+    <style>
+      #wrapper {
+        position: relative;
+      }
+
+      canvas {
+        position: absolute;
+        left: 0;
+      }
+
+      #insert_point {
+        position: absolute;
+        right: 0;
+      }
+
+      #reset {
+        position: absolute;
+        right: 0;
+      }
+
+      #screenshot {
+        position: absolute;
+        right: 0;
+      }
+      #screenshot_button {
+        position: absolute;
+        right: 0;
+      }
+
+      input {
+        margin: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Cloth Sim</h1>
+    <p>
+      <strong>Tear</strong>: mouse click<br/>
+      <strong>Shoot</strong>: space bar (aim with mouse!)<br/>
+    </p>
+    <div id="wrapper">
+      <canvas width=800 height=600 id="canvas"></canvas>
+      <script src="require.js"></script>
+      <script src="clothsim.js" type="module"></script>
+      <script>
+        requirejs(['clothsim']);
+      </script>
+      <br/>
+      <button type="button" id="reset" onclick="init()">Reset</button><br/>
+      <button type="button" id="screenshot_button" onclick="screenshot()">Screenshot</button><br/>
+      <img id="screenshot">
+      <div id="insert_point">
+      </div>
+    </div>
+
+    <script>
+      function screenshot() {
+        var canvas = document.getElementById('canvas');
+        var img = document.getElementById('screenshot');
+        img.src = canvas.toDataURL("image/png");
+      }
+    </script>
+    <body>
+</html>
