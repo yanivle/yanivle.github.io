@@ -16,6 +16,8 @@ const sphere = new Sphere(new Vec3(0, 0, 1), 50);
 const sphere_mesh = Mesh.BuildSphere();
 sphere_mesh.scale(100);
 
+const debug_mode = true;
+
 export default class Cloth {
   springs: Spring[];
   joints: Particle[];
@@ -139,42 +141,40 @@ export default class Cloth {
   }
 
   draw(context:CanvasRenderingContext2D):void {
-    // sphere.draw(context);
-    sphere_mesh.render(this.renderer, context);
-    // sphere_mesh.color.r = (1 + Math.cos(this.elapsed_time / 2)) * 255 / 4 + 128;
-
-    let w = context.canvas.width;
-    let h = context.canvas.height;
-    this.renderer.light_source.x = w / 2 + Math.cos(this.elapsed_time / 5) * 200;
-    this.renderer.light_source.y = h / 2 + Math.sin(this.elapsed_time / 5) * 200;
-
-    // this.wind.draw(context, 'yellow', this.offset.add(new Vec3(500, 0)));
-    // this.gravity.draw(context, 'orange', this.offset.add(new Vec3(500, 0)));
-
-    // this.triangles.sort((t1, t2) => {
-    //   let max_z1 = Math.max(t1.p1.pos.z, t1.p2.pos.z, t1.p3.pos.z);
-    //   let max_z2 = Math.max(t2.p1.pos.z, t2.p2.pos.z, t2.p3.pos.z);
-    //   if(max_z1 < max_z2) return -1;
-    //   if(max_z1 > max_z2) return 1;
-    //   return 0;
-    // });
-
-    this.triangles.forEach(triangle => {
-      this.renderer.draw(triangle, context);
-    });
-
-    // this.springs.forEach(spring => {
-    //   spring.draw(context, '#888', this.string_width);
-    // });
-
-    context.fillStyle = 'red';
-    context.fillRect(this.renderer.light_source.x - 1,
-                     this.renderer.light_source.y - 1,
-                     10, 10);
-
-    // this.joints.forEach(joint => {
-    //   joint.draw(context, this.color);
-    // });
+    if (debug_mode) {
+      sphere.draw(context); // draw hollow sphere
+      // this.wind.draw(context, 'yellow', this.offset.add(new Vec3(500, 0)));
+      // this.gravity.draw(context, 'orange', this.offset.add(new Vec3(500, 0)));
+      this.springs.forEach(spring => {
+        spring.draw(context, '#888', this.string_width);
+      });
+      this.joints.forEach(joint => {
+        joint.draw(context, this.color);
+      });
+    } else {
+      sphere_mesh.render(this.renderer, context);
+      // sphere_mesh.color.r = (1 + Math.cos(this.elapsed_time / 2)) * 255 / 4 + 128;
+      let w = context.canvas.width;
+      let h = context.canvas.height;
+      this.renderer.light_source.x = w / 2 + Math.cos(this.elapsed_time / 5) * 200;
+      this.renderer.light_source.y = h / 2 + Math.sin(this.elapsed_time / 5) * 200;
+  
+      // this.triangles.sort((t1, t2) => {
+      //   let max_z1 = Math.max(t1.p1.pos.z, t1.p2.pos.z, t1.p3.pos.z);
+      //   let max_z2 = Math.max(t2.p1.pos.z, t2.p2.pos.z, t2.p3.pos.z);
+      //   if(max_z1 < max_z2) return -1;
+      //   if(max_z1 > max_z2) return 1;
+      //   return 0;
+      // });
+      this.triangles.forEach(triangle => {
+        this.renderer.draw(triangle, context);
+      });
+  
+      context.fillStyle = 'red';
+      context.fillRect(this.renderer.light_source.x - 1,
+                        this.renderer.light_source.y - 1,
+                        10, 10);
+    }
   }
 
   pull(point, dir, influence):void {

@@ -25,10 +25,10 @@ export default class Spring {
 
   public get tension() : number {
     let len_diff = this.len - this.resting_len;
-    if (len_diff < 0) {
-      return 0;
-    }
-    return len_diff * len_diff;
+    // if (len_diff < 0) {
+    //   return 0;
+    // }
+    return len_diff * len_diff * Math.sign(len_diff);
   }
 
   draw(context, color:string='purple', width=3) {
@@ -48,7 +48,11 @@ export default class Spring {
     let t = this.tension * 10000;
     let r, g, b;
     r = g = b = 150;
-    if (t < 0.5) {
+    if (t < 0) {
+      r = -t * 255;
+      g = b = 200;
+    }
+    else if (t < 0.5) {
       r = t * 255;
     } else if (t < 0.75) {
       r = 255;
