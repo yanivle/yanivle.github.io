@@ -10,13 +10,16 @@ import Rect from './Rect.js'
 import Mouse from './Mouse.js'
 import AirResistance from './AirResistance.js'
 import Mesh from './Mesh.js'
-import {WHITE, RED, BLUE, BLACK} from './Color.js'
+import { WHITE, RED, BLUE, BLACK } from './Color.js'
 
 const sphere = new Sphere(new Vec3(0, 0, 1), 50);
 const sphere_mesh = Mesh.BuildSphere();
 sphere_mesh.scale(100);
 
-const debug_mode = true;
+declare global {
+  interface Window { debug_mode: boolean; }
+}
+window.debug_mode = false;
 
 export default class Cloth {
   springs: Spring[];
@@ -32,7 +35,7 @@ export default class Cloth {
   string_width: number;
   renderer: Renderer = new Renderer();
 
-  constructor(name:string, offset:Vec3, width:number, height:number, color:string, mouse:Mouse, lock_side:string, string_width:number=1) {
+  constructor(name: string, offset: Vec3, width: number, height: number, color: string, mouse: Mouse, lock_side: string, string_width: number = 1) {
     this.name = name;
     this.offset = offset;
     this.color = color;
@@ -50,7 +53,7 @@ export default class Cloth {
     this.init(width, height, lock_side);
   }
 
-  init(width, height, lock_side):void {
+  init(width, height, lock_side): void {
     // const GRID_WIDTH = UIValue("GRID_WIDTH", 25, 10, 50, 1);
     const GRID_WIDTH = width;
     // const GRID_HEIGHT = UIValue("GRID_HEIGHT", 15, 10, 50, 1);
@@ -68,15 +71,15 @@ export default class Cloth {
         let joint;
         if (lock_side == 'x') {
           joint = new Particle(new Vec3(this.offset.x + x * STRING_LEN,
-                                        this.offset.y,
-                                        y * STRING_LEN));
+            this.offset.y,
+            y * STRING_LEN));
           if (x == 0) {
             joint.lock = true;
           }
         } else if (lock_side == 'y') {
           joint = new Particle(new Vec3(this.offset.x + x * STRING_LEN,
-                                        this.offset.y + y * STRING_LEN,
-                                        0));
+            this.offset.y + y * STRING_LEN,
+            0));
           if (y == 0) {
             joint.lock = true;
             // joints[0].lock = true;
@@ -93,11 +96,11 @@ export default class Cloth {
         if (x > 0 && y > 0) {
           connect_to.push(joints[x - 1 + (y - 1) * GRID_WIDTH]);
           let t = new Triangle(joint.pos,
-                               joints[x + (y - 1) * GRID_WIDTH].pos,
-                               joints[x - 1 + (y - 1) * GRID_WIDTH].pos);
+            joints[x + (y - 1) * GRID_WIDTH].pos,
+            joints[x - 1 + (y - 1) * GRID_WIDTH].pos);
           let t2 = new Triangle(joint.pos,
-                                joints[x - 1 + (y - 1) * GRID_WIDTH].pos,
-                                joints[x - 1 + y * GRID_WIDTH].pos);
+            joints[x - 1 + (y - 1) * GRID_WIDTH].pos,
+            joints[x - 1 + y * GRID_WIDTH].pos);
           triangles.push(t);
           triangles.push(t2);
           // if (x % 3 == 1) {
@@ -127,7 +130,7 @@ export default class Cloth {
     // joints[GRID_WIDTH-1].lock = true;
   }
 
-  findClosest(point:Vec3) {
+  findClosest(point: Vec3) {
     let closest_dist2 = 1000000000;
     let closest_joint = this.joints[0];
     this.joints.forEach(joint => {
@@ -140,8 +143,8 @@ export default class Cloth {
     return closest_joint;
   }
 
-  draw(context:CanvasRenderingContext2D):void {
-    if (debug_mode) {
+  draw(context: CanvasRenderingContext2D): void {
+    if (window.debug_mode) {
       sphere.draw(context); // draw hollow sphere
       // this.wind.draw(context, 'yellow', this.offset.add(new Vec3(500, 0)));
       // this.gravity.draw(context, 'orange', this.offset.add(new Vec3(500, 0)));
@@ -158,7 +161,7 @@ export default class Cloth {
       let h = context.canvas.height;
       this.renderer.light_source.x = w / 2 + Math.cos(this.elapsed_time / 5) * 200;
       this.renderer.light_source.y = h / 2 + Math.sin(this.elapsed_time / 5) * 200;
-  
+
       // this.triangles.sort((t1, t2) => {
       //   let max_z1 = Math.max(t1.p1.pos.z, t1.p2.pos.z, t1.p3.pos.z);
       //   let max_z2 = Math.max(t2.p1.pos.z, t2.p2.pos.z, t2.p3.pos.z);
@@ -169,15 +172,15 @@ export default class Cloth {
       this.triangles.forEach(triangle => {
         this.renderer.draw(triangle, context);
       });
-  
+
       context.fillStyle = 'red';
       context.fillRect(this.renderer.light_source.x - 1,
-                        this.renderer.light_source.y - 1,
-                        10, 10);
+        this.renderer.light_source.y - 1,
+        10, 10);
     }
   }
 
-  pull(point, dir, influence):void {
+  pull(point, dir, influence): void {
     this.joints.forEach(joint => {
       let dist = point.sub(joint.pos).len;
       if (dist <= influence) {
@@ -186,7 +189,7 @@ export default class Cloth {
     });
   }
 
-  tear(point, influence2):void {
+  tear(point, influence2): void {
     let joints_to_remove = [];
     this.joints.forEach(joint => {
       let dist2 = point.sub(joint.pos.toVec2()).len2;
@@ -255,7 +258,7 @@ export default class Cloth {
     });
   }
 
-  simulate(delta_time):void {
+  simulate(delta_time): void {
     // this.pull(this.mouse.pos.toVec3(), this.mouse.direction.div(100).toVec3(), 10);
     sphere.center.x = this.mouse.pos.x;
     sphere.center.y = this.mouse.pos.y;
