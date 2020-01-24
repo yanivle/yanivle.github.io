@@ -69,9 +69,9 @@ And when the sphere is moving:
 
 I gave each of the springs a maximum stretch factor, and if it stretches more than that, it would tear:
 
-TODO
+{% include image.html url="/assets/images/posts/clothsim3d/torn.png" %}
 
-{% include image.html url="/assets/images/posts/torn.png" %}
+{% include image.html url="/assets/images/posts/clothsim3d/torn4.png" %}
 
 #### Verlet Integration
 At the core of my physics engine is a function that advances the state of the world. My initial implementation for that function consisted of simply applying Newton's laws of motion directly (the initial conditions are given by $$x_0, v_0$$):
@@ -126,15 +126,23 @@ For this project I created my own rasterization renderer. Everything (the cloth,
 
 Here we see a scene with perspective projection enabled:
 
-TODO
+{% include image.html url="/assets/images/posts/clothsim3d/proj.png" %}
+
+Here I exaggerated the effect:
+
+{% include image.html url="/assets/images/posts/clothsim3d/proj_extra.png" %}
 
 And here we see orthographic projection:
 
-TODO
+{% include image.html url="/assets/images/posts/clothsim3d/no_proj.png" %}
 
 I implemented a simple lightning model, supporting just ambient and diffuse lightning. Here is the cloth with just ambient lightning on:
 
 {% include image.html url="/assets/images/posts/clothsim3d/ambient_only.png" %}
+
+Here is the same scene with just diffuse lightning on:
+
+{% include image.html url="/assets/images/posts/clothsim3d/diffuse_only_no_sphere.png" %}
 
 And here is the same with both diffuse and ambient on:
 
@@ -143,6 +151,10 @@ And here is the same with both diffuse and ambient on:
 Here is a version with exaggerated diffuse lightning, without ambient light, to illustrate the difference:
 
 {% include image.html url="/assets/images/posts/clothsim3d/diffuse_only.png" %}
+
+And finally here's a version with even more diffuse light and some ambient light:
+
+{% include image.html url="/assets/images/posts/clothsim3d/overexposed.png" %}
 
 #### Triangulating the Sphere
 Another interesting aspect of this project was rendering the red sphere. While I am using a true sphere for the physics calculations (it is much easier to have my vertices collide with a true sphere than a polygonal mesh), since my engine for this project was rasterization based, I need some way to approximate a sphere with triangles. What I ended up doing (and produced the best results) was to create an icosahedron and tesselate it. I really tried to avoid this though (I didn't have connection on the flight and writing the equations for the vertices of the icosahedron was not trivial). My idea was to take any simple shape (a pyramid or a cube) for which calculating the positions of the vertices is trivial, and repeatedly subdivide the faces and normalize the vertices.
