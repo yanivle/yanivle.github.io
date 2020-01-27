@@ -7,7 +7,6 @@ categories: Graphics
 tags:  Graphics Coding Physics Simulation Javascript Typescript
 image:
   feature: clothsim3d.png
-  topPosition: 0px
 bgContrast: light
 bgGradientOpacity: lighter
 syntaxHighlighter: yes

@@ -7,7 +7,7 @@ categories: Puzzles
 tags:  Math Puzzle Graphs
 image:
   feature: rabbit.jpg
-  topPosition: -300px
+  topPosition: -300
 bgContrast: dark
 bgGradientOpacity: darker
 syntaxHighlighter: no

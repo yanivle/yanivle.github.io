@@ -7,7 +7,7 @@ categories: Puzzles
 tags:  Puzzles Programming
 image:
   feature: unique.jpg
-  topPosition: -100px
+  topPosition: -100
 bgContrast: dark
 bgGradientOpacity: darker
 syntaxHighlighter: no

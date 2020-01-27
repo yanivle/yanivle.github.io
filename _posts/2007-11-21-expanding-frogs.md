@@ -7,7 +7,7 @@ categories: Puzzles
 tags:  Math Puzzles Easy
 image:
   feature: frog.jpg
-  topPosition: -100px
+  topPosition: -100
 bgContrast: dark
 bgGradientOpacity: darker
 syntaxHighlighter: no

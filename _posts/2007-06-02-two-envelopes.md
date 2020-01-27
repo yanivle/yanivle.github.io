@@ -7,7 +7,7 @@ categories: Puzzles
 tags:  Puzzle Math Statistics
 image:
   feature: envelopes.jpg
-  topPosition: -100px
+  topPosition: -100
 bgContrast: dark
 bgGradientOpacity: darker
 syntaxHighlighter: no

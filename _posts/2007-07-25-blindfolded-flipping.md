@@ -7,7 +7,7 @@ categories: Puzzles
 tags:  Puzzle Math Easy
 image:
   feature: blindfolded.jpg
-  topPosition: -900px
+  topPosition: -900
 bgContrast: dark
 bgGradientOpacity: darker
 syntaxHighlighter: no

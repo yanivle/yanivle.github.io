@@ -1,7 +1,7 @@
 <nav role="navigation" class="sidebar sidebar--right">
   <a href="/" class="textLogo textLogo--white textLogo--sidebar">{{ site.name }}</a>
   <ul class="sidebar-recentPosts" style="margin-top:0;">
-    <h2 style="color:#ddd; margin-top: 0; margin-bottom: 1rem;">{{page.categories}}</h2>
+    <h3 style="color:#ddd; margin-top: 0; margin-bottom: 1rem;">More {{page.categories}}</h3>
     {% for post in site.posts offset:0 limit:100 %}
     {% if post.title == page.title %}
     <!-- exclude current post -->
@@ -10,7 +10,12 @@
     <li>
       {% if post.image.feature %}
       <a href="{{ post.url }}" class="sidebar-recentPosts-image-wrapper">
-        <img src="{{ post.image.feature | prepend: "/assets/images/thumbnail/" }}" style="" alt="">
+        <img src="{{ post.image.feature | prepend: "/assets/images/thumbnail/" }}" style="
+        {% if post.image.topPosition %}
+          {% assign top = post.image.topPosition | plus: 0 %}
+          top:{{ top | times: 0.2 }}px;
+        {% endif %}
+        " alt="">
       </a>
       {% endif %}
       <a href="{{ post.url }}">{{ post.title }}</a>

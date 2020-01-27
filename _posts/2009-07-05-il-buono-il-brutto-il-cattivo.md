@@ -7,7 +7,7 @@ categories: Puzzles
 tags:  Math Puzzle
 image:
   feature: good_bad_ugly.jpg
-  topPosition: -100px
+  topPosition: -100
 bgContrast: dark
 bgGradientOpacity: darker
 syntaxHighlighter: no

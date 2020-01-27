@@ -7,7 +7,7 @@ categories: Puzzles
 tags:  Math Puzzles Topology Real-Analysis
 image:
   feature: odd_one_out.jpg
-  topPosition: -100px
+  topPosition: -100
 bgContrast: dark
 bgGradientOpacity: darker
 syntaxHighlighter: no

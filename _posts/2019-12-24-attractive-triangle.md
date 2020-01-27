@@ -7,7 +7,7 @@ categories: Puzzles
 tags:  Math Puzzles Fractals
 image:
   feature: triangle.jpg
-  topPosition: -100px
+  topPosition: -100
 bgContrast: dark
 bgGradientOpacity: darker
 syntaxHighlighter: no

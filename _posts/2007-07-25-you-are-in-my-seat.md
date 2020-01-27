@@ -7,7 +7,7 @@ categories: Puzzles
 tags:  Puzzle Math Easy
 image:
   feature: airplane-seat.jpg
-  topPosition: -500px
+  topPosition: -500
 bgContrast: dark
 bgGradientOpacity: darker
 syntaxHighlighter: no

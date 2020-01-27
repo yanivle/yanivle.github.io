@@ -7,7 +7,7 @@ categories: Puzzles
 tags:  Math Puzzles Combinatorics
 image:
   feature: cucumbers.jpg
-  topPosition: -100px
+  topPosition: -100
 bgContrast: dark
 bgGradientOpacity: darker
 syntaxHighlighter: no

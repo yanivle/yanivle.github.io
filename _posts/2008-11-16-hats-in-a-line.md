@@ -7,7 +7,7 @@ categories: Puzzles
 tags:  Math Puzzle Set-Theory
 image:
   feature: hats.jpg
-  topPosition: -100px
+  topPosition: -100
 bgContrast: dark
 bgGradientOpacity: darker
 syntaxHighlighter: no

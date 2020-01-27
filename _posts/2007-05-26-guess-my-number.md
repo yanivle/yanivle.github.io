@@ -7,7 +7,7 @@ categories: Puzzles
 tags:  Puzzle Easy Math Combinatorics
 image:
   feature: guess.jpg
-  topPosition: -100px
+  topPosition: -100
 bgContrast: dark
 bgGradientOpacity: darker
 syntaxHighlighter: no

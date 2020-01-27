@@ -7,7 +7,7 @@ categories: Photos
 tags:  Photos Travel
 image:
   feature: jungle.jpg
-  topPosition: -100px
+  topPosition: -100
 bgContrast: light
 bgGradientOpacity: lighter
 syntaxHighlighter: no

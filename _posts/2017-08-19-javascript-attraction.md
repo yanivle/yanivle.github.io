@@ -6,7 +6,7 @@ categories: Graphics
 tags:  Graphics Javascript Coding
 image:
   feature: attraction.png
-  topPosition: -400px
+  topPosition: -400
 bgContrast: light
 bgGradientOpacity: lighter
 syntaxHighlighter: yes

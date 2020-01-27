@@ -8,7 +8,7 @@ layout: default
       {% if page.image.feature %}
       <img class="post-featuredImage" src="{{ page.image.feature | prepend: "/assets/images/largesize/" }}" style="
         {% if page.image.topPosition %}
-          top:{{ page.image.topPosition }};
+          top:{{ page.image.topPosition }}px;
         {% endif %}
         " alt="">
       {% endif %}

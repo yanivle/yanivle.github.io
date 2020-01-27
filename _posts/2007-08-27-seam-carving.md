@@ -6,7 +6,7 @@ categories: Graphics
 tags:  Graphics Algorithms Coding
 image:
   feature: seam_carving.png
-  topPosition: -300px
+  topPosition: -300
 bgContrast: light
 bgGradientOpacity: lighter
 syntaxHighlighter: no

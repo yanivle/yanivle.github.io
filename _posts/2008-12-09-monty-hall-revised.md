@@ -7,7 +7,7 @@ categories: Puzzles
 tags:  Puzzle Variant Twist Mine
 image:
   feature: curtain.jpg
-  topPosition: -100px
+  topPosition: -100
 bgContrast: dark
 bgGradientOpacity: darker
 syntaxHighlighter: no

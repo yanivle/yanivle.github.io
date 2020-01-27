@@ -7,7 +7,7 @@ categories: Puzzles
 tags:  Coding Puzzles Solved
 image:
   feature: python.jpg
-  topPosition: -300px
+  topPosition: -300
 bgContrast: dark
 bgGradientOpacity: darker
 syntaxHighlighter: yes

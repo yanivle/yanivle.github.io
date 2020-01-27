@@ -7,7 +7,7 @@ categories: Graphics
 tags:  Graphics Coding Shadertoy Shader GPU Raytracing Raytracer
 image:
   feature: spheres.png
-  topPosition: -100px
+  topPosition: -100
 bgContrast: dark
 bgGradientOpacity: darker
 syntaxHighlighter: yes

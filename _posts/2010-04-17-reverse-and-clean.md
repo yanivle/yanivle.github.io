@@ -7,7 +7,7 @@ categories: Puzzles
 tags:  Puzzles
 image:
   feature: checkers.jpg
-  topPosition: -500px
+  topPosition: -500
 bgContrast: dark
 bgGradientOpacity: darker
 syntaxHighlighter: no

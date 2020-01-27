@@ -7,7 +7,7 @@ categories: Puzzles
 tags:  Math Puzzle Easy
 image:
   feature: cake.jpg
-  topPosition: -1500px
+  topPosition: -1500
 bgContrast: light
 bgGradientOpacity: lighter
 syntaxHighlighter: no

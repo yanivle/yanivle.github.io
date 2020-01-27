@@ -7,7 +7,7 @@ categories: Math
 tags:  Math Graphics Coding Python
 image:
   feature: 4d_cube.png
-  topPosition: -300px
+  topPosition: -300
 bgContrast: dark
 bgGradientOpacity: darker
 syntaxHighlighter: yes

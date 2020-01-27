@@ -7,7 +7,7 @@ categories: Puzzles
 tags:  Algorithms Puzzles Easy
 image:
   feature: zero.jpg
-  topPosition: -100px
+  topPosition: -100
 bgContrast: dark
 bgGradientOpacity: darker
 syntaxHighlighter: yes

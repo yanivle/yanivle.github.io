@@ -7,7 +7,7 @@ categories: Computing
 tags:  Cryptography Programming Hacking Coding
 image:
   feature: zkp.png
-  topPosition: -100px
+  topPosition: -100
 bgContrast: dark
 bgGradientOpacity: darker
 syntaxHighlighter: no

@@ -7,7 +7,7 @@ categories: Math
 tags:  Math Logic Axiom-of-Choice
 image:
   feature: choice.jpg
-  topPosition: -100px
+  topPosition: -100
 bgContrast: dark
 bgGradientOpacity: darker
 syntaxHighlighter: no

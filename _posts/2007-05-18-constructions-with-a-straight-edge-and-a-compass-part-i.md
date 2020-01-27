@@ -7,7 +7,7 @@ categories: Math
 tags:  Math Proof Geometry Algebra
 image:
   feature: ruler.jpg
-  topPosition: -800px
+  topPosition: -800
 bgContrast: light
 bgGradientOpacity: lighter
 syntaxHighlighter: no

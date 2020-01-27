@@ -7,7 +7,7 @@ categories: Computing
 tags:  Graphics Assembly
 image:
   feature: mmx_blur.jpg
-  topPosition: -100px
+  topPosition: -100
 bgContrast: light
 bgGradientOpacity: lighter
 syntaxHighlighter: yes

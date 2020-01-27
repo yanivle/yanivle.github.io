@@ -7,7 +7,7 @@ categories: Math
 tags:  Math
 image:
   feature: hilbert.jpg
-  topPosition: -1000px
+  topPosition: -1000
 bgContrast: dark
 bgGradientOpacity: darker
 syntaxHighlighter: no

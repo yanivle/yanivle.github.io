@@ -7,7 +7,7 @@ categories: Computing
 tags:  Coding Python Theory Computer-Science
 image:
   feature: machine.jpg
-  topPosition: -100px
+  topPosition: -100
 bgContrast: dark
 bgGradientOpacity: darker
 syntaxHighlighter: yes

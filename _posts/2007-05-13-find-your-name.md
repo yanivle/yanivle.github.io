@@ -7,7 +7,7 @@ categories: Puzzles
 tags:  Math Puzzles Hard Classic
 image:
   feature: chest.jpg
-  topPosition: -300px
+  topPosition: -300
 bgContrast: light
 bgGradientOpacity: lighter
 syntaxHighlighter: no

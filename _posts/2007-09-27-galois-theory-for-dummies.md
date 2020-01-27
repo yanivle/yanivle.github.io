@@ -7,7 +7,7 @@ categories: Math
 tags:  Math Algebra
 image:
   feature: galois.jpg
-  topPosition: -500px
+  topPosition: -500
 bgContrast: dark
 bgGradientOpacity: darker
 syntaxHighlighter: no

@@ -7,7 +7,7 @@ categories: Puzzles
 tags:  Puzzle Math Hard
 image:
   feature: coins.jpg
-  topPosition: -100px
+  topPosition: -100
 bgContrast: dark
 bgGradientOpacity: darker
 syntaxHighlighter: no

@@ -7,7 +7,7 @@ categories: Puzzles
 tags:  Puzzle Hard Math Combinatorics
 image:
   feature: rectangles.jpg
-  topPosition: -100px
+  topPosition: -100
 bgContrast: dark
 bgGradientOpacity: darker
 syntaxHighlighter: no

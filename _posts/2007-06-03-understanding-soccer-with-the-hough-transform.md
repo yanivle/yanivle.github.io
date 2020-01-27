@@ -7,7 +7,7 @@ categories: Computing
 tags:  Coding Algorithms
 image:
   feature: soccer_stand_edges.png
-  topPosition: -100px
+  topPosition: -100
 bgContrast: light
 bgGradientOpacity: lighter
 syntaxHighlighter: no

@@ -7,7 +7,7 @@ categories: Math
 tags:  Math Hilbert-Spaces
 image:
   feature: norm.png
-  topPosition: -100px
+  topPosition: -100
 bgContrast: light
 bgGradientOpacity: lighter
 syntaxHighlighter: no

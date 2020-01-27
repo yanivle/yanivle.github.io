@@ -7,7 +7,7 @@ categories: Puzzles
 tags:  Puzzle Math Easy
 image:
   feature: ants2.jpg
-  topPosition: -100px
+  topPosition: -100
 bgContrast: dark
 bgGradientOpacity: darker
 syntaxHighlighter: no
