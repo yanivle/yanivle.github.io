@@ -155,6 +155,9 @@ export default class Cloth {
         joint.draw(context, this.color);
       });
     } else {
+      this.springs.forEach(spring => {
+        spring.draw(context, '#888', this.string_width);
+      });
       sphere_mesh.render(this.renderer, context);
       // sphere_mesh.color.r = (1 + Math.cos(this.elapsed_time / 2)) * 255 / 4 + 128;
       let w = context.canvas.width;
