@@ -17,7 +17,7 @@ export default class Spring {
         // }
         return len_diff * len_diff * Math.sign(len_diff);
     }
-    draw(context, color = 'purple', width = 3) {
+    draw(context, color = null, width = 3) {
         if (this.active === false) {
             return;
         }
@@ -29,32 +29,36 @@ export default class Spring {
         context.moveTo(e1.x, e1.y);
         context.lineTo(e2.x, e2.y);
         // let c = Math.abs(this.e1.pos.z - this.e2.pos.z) * 100;
-        let t = this.tension * 10000;
-        let r, g, b;
-        r = g = b = 150;
-        if (t < 0) {
-            r = -t * 255;
-            g = b = 200;
-        }
-        else if (t < 0.5) {
-            r = t * 255;
-        }
-        else if (t < 0.75) {
-            r = 255;
-            g = (t - 0.5) * 4 * 255;
+        if (color == null) {
+            let t = this.tension * 10000;
+            let r, g, b;
+            r = g = b = 150;
+            if (t < 0) {
+                r = -t * 255;
+                g = b = 200;
+            }
+            else if (t < 0.5) {
+                r = t * 255;
+            }
+            else if (t < 0.75) {
+                r = 255;
+                g = (t - 0.5) * 4 * 255;
+            }
+            else {
+                r = g = 255;
+                b = (t - 0.75) * 4 * 255;
+            }
+            if (r > 255)
+                r = 255;
+            if (g > 255)
+                g = 255;
+            if (b > 255)
+                b = 255;
+            context.strokeStyle = 'rgb(' + r + ',' + g + ',' + b + ')';
         }
         else {
-            r = g = 255;
-            b = (t - 0.75) * 4 * 255;
+            context.strokeStyle = color;
         }
-        if (r > 255)
-            r = 255;
-        if (g > 255)
-            g = 255;
-        if (b > 255)
-            b = 255;
-        context.strokeStyle = 'rgb(' + r + ',' + g + ',' + b + ')';
-        // context.strokeStyle = color;
         context.lineWidth = width;
         context.stroke();
     }

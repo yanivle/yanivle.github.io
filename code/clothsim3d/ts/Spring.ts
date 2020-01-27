@@ -1,6 +1,6 @@
 import UIValue from './UIValue.js'
 import Particle from './Particle.js'
-import {PerspectiveProjection} from './Renderer.js'
+import { PerspectiveProjection } from './Renderer.js'
 
 export default class Spring {
   e1: Particle;
@@ -18,12 +18,12 @@ export default class Spring {
     this.e2.springs.push(this);
   }
 
-  
-  public get len() : number {
+
+  public get len(): number {
     return this.e2.pos.sub(this.e1.pos).len;
   }
 
-  public get tension() : number {
+  public get tension(): number {
     let len_diff = this.len - this.resting_len;
     // if (len_diff < 0) {
     //   return 0;
@@ -31,7 +31,7 @@ export default class Spring {
     return len_diff * len_diff * Math.sign(len_diff);
   }
 
-  draw(context, color:string='purple', width=3) {
+  draw(context, color: string = null, width = 3) {
     if (this.active === false) {
       return;
     }
@@ -41,31 +41,34 @@ export default class Spring {
     // let e2 = PerspectiveProjection(this.e2.pos);
     let e1 = this.e1.pos;
     let e2 = this.e2.pos;
-    context.moveTo(e1.x,e1.y);
-    context.lineTo(e2.x,e2.y);
+    context.moveTo(e1.x, e1.y);
+    context.lineTo(e2.x, e2.y);
 
     // let c = Math.abs(this.e1.pos.z - this.e2.pos.z) * 100;
-    let t = this.tension * 10000;
-    let r, g, b;
-    r = g = b = 150;
-    if (t < 0) {
-      r = -t * 255;
-      g = b = 200;
-    }
-    else if (t < 0.5) {
-      r = t * 255;
-    } else if (t < 0.75) {
-      r = 255;
-      g = (t - 0.5) * 4 * 255;
+    if (color == null) {
+      let t = this.tension * 10000;
+      let r, g, b;
+      r = g = b = 150;
+      if (t < 0) {
+        r = -t * 255;
+        g = b = 200;
+      }
+      else if (t < 0.5) {
+        r = t * 255;
+      } else if (t < 0.75) {
+        r = 255;
+        g = (t - 0.5) * 4 * 255;
+      } else {
+        r = g = 255;
+        b = (t - 0.75) * 4 * 255;
+      }
+      if (r > 255) r = 255;
+      if (g > 255) g = 255;
+      if (b > 255) b = 255;
+      context.strokeStyle = 'rgb(' + r + ',' + g + ',' + b + ')';
     } else {
-      r = g = 255;
-      b = (t - 0.75) * 4 * 255;
+      context.strokeStyle = color;
     }
-    if (r > 255) r = 255;
-    if (g > 255) g = 255;
-    if (b > 255) b = 255;
-    context.strokeStyle = 'rgb(' + r + ',' + g + ',' + b + ')';
-    // context.strokeStyle = color;
     context.lineWidth = width;
     context.stroke();
   }

@@ -149,15 +149,12 @@ export default class Cloth {
       // this.wind.draw(context, 'yellow', this.offset.add(new Vec3(500, 0)));
       // this.gravity.draw(context, 'orange', this.offset.add(new Vec3(500, 0)));
       this.springs.forEach(spring => {
-        spring.draw(context, '#888', this.string_width);
+        spring.draw(context, null, this.string_width);
       });
       this.joints.forEach(joint => {
         joint.draw(context, this.color);
       });
     } else {
-      this.springs.forEach(spring => {
-        spring.draw(context, '#888', this.string_width);
-      });
       sphere_mesh.render(this.renderer, context);
       // sphere_mesh.color.r = (1 + Math.cos(this.elapsed_time / 2)) * 255 / 4 + 128;
       let w = context.canvas.width;
@@ -172,6 +169,10 @@ export default class Cloth {
       //   if(max_z1 > max_z2) return 1;
       //   return 0;
       // });
+      this.springs.forEach(spring => {
+        spring.draw(context, '#888', this.string_width);
+      });
+
       this.triangles.forEach(triangle => {
         this.renderer.draw(triangle, context);
       });
