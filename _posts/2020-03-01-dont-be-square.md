@@ -26,6 +26,6 @@ What happens if $$n$$ is a positive *real* instead of an *integer*?
 
 We'll just solve the real case (assuming $$n$$ is greater than 1, I leave the case $$n$$ is less than 1 as an easy exercise to the reader). Call your number $$x$$ and your friend's number $$y$$. Now set $$k_x$$ to be the largest integer such that:
 
-$$x^{k_x} \lt 2$$
+$$x^{2^{k_x}} \lt 2$$
 
 And similarly your friend calculates $$k_y$$ for his number. It holds that $$k_x = k_y + 1$$ or $$k_x = k_y - 1$$. You now transmit to your friend the second least bit of $$k_x$$ and since they already know the least bit of $$k_x$$ (it's the opposite of the least bit of $$k_y$$) they can trivially reconstruct $$k_y$$. $$\blacksquare$$
