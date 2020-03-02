@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Don't Be Square"
-date:   2020-03-01 12:00:00
+date:   2020-02-29 12:00:00
 excerpt: "An easy puzzle"
 categories: Puzzles
 tags:  Math Puzzles
