@@ -10,3 +10,6 @@ site:
   author:
     facebook:        yanivle
     linkedin:        yaniv-leviathan
+
+plugins:
+  - jekyll-sitemap
