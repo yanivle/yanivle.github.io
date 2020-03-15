@@ -70,6 +70,7 @@ loadImage('/memory_game/assets/hard.png');
 loadImage('/memory_game/assets/super_hard.png');
 loadImage('/memory_game/assets/corona.png');
 loadImage('/memory_game/assets/main_menu.png');
+loadImage('/memory_game/assets/cloud.png');
 
 class Button extends Sprite {
   constructor(url, pos, callback) {
@@ -122,19 +123,19 @@ class MainMenu {
     this.addButton('/memory_game/assets/easy.png', new Vec2(40, 40), 2, 0, 0);
     this.addChild(new UIText('2 of a kind', new Vec2(300, 100), 20, 'purple', false));
     if (this.max_level == 0) {
-      this.addChild(new UIText('LOCKED!', new Vec2(40, 100 + 200), 60, 'lightblue', false));
+      this.addChild(new UIText('Beat Easy mode to unlock next level!', new Vec2(40, 100 + 200), 60, 'lightblue', false));
       return;
     }
     this.addButton('/memory_game/assets/hard.png', new Vec2(40, 40 + 200), 3, 1 / 600, 0.1);
     this.addChild(new UIText('3 of a kind', new Vec2(300, 100 + 200), 20, 'lightblue', false));
     if (this.max_level == 1) {
-      this.addChild(new UIText('LOCKED!', new Vec2(40, 100 + 400), 60, 'orange', false));
+      this.addChild(new UIText('Beat Hard mode to unlock next level!', new Vec2(40, 100 + 400), 60, 'orange', false));
       return;
     }
     this.addButton('/memory_game/assets/super_hard.png', new Vec2(40, 40 + 400), 4, 1 / 300, 0.5);
     this.addChild(new UIText('4 of a kind', new Vec2(300, 100 + 400), 20, 'orange', false));
     if (this.max_level == 2) {
-      this.addChild(new UIText('LOCKED!', new Vec2(40, 100 + 600), 60, 'green', false));
+      this.addChild(new UIText('Beat Super Hard mode to unlock next level!', new Vec2(40, 100 + 600), 60, 'green', false));
       return;
     }
     this.addButton('/memory_game/assets/corona.png', new Vec2(40, 40 + 600), 5, 1 / 60, 2);
@@ -199,9 +200,12 @@ class Level {
     });
     this.buttonToMainMenu.height = 64;
     addObject(this.buttonToMainMenu);
+
+    if (countForEachCard == 5) addClouds();
   }
 
   end() {
+    removeClouds();
     destroyObjects([this.buttonToMainMenu, this.turnsText]);
     destroyObjects(this.cards);
   }
@@ -355,6 +359,23 @@ class MainMenuOnExit {
     if (keyboard.keysDown[27]) {
       resetGame();
     }
+  }
+}
+
+let clouds = [];
+function removeClouds() {
+  destroyObjects(clouds);
+}
+function addClouds() {
+  const numClouds = 5;
+  clouds = new Array(numClouds);
+  for (let i = 0; i < numClouds; ++i) {
+    let cloud = new Sprite(loadImage('/memory_game/assets/cloud.png'), new Vec2());
+    clouds.push(cloud);
+    addObject(cloud, { layer: 3 });
+    cloud.center = new Vec2(canvas.width / 2, canvas.height / 2).add(noiseVec2(200));
+    addObject(new PropertyWiggler(cloud, 'left', 1 / 2, 500));
+    addObject(new PropertyWiggler(cloud, 'top', 1 / 2, 500));
   }
 }
 

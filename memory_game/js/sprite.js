@@ -36,6 +36,14 @@ class Sprite {
     return this.pos.y + this.height;
   }
 
+  get center() {
+    return new Vec2(this.pos.x + this.width / 2, this.pos.y + this.height / 2);
+  }
+
+  set center(c) {
+    this.pos = c.sub(new Vec2(this.width / 2, this.height / 2));
+  }
+
   contains(point) {
     return (point.x >= this.pos.x && point.x < this.pos.x + this.width) && (point.y >= this.pos.y && point.y < this.pos.y + this.height);
   }
