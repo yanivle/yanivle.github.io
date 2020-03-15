@@ -239,7 +239,7 @@ class Level {
   gotIt(faceUpCards) {
     this.paused = true;
     if (this.cards.length > 0) {
-      let text = new UIText('Good job!', new Vec2(canvas.width / 2, 400), 32, 'green');
+      let text = new UIText('Good job!', new Vec2(canvas.width / 2, 200), 32, 'green');
       addObject(text, { layer: 3, duration: 2 });
     }
 
