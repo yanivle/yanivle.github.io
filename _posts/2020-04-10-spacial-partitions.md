@@ -36,7 +36,11 @@ And here is the same space after we added several such hyperplanes:
 
 {% include image.html url="/assets/images/posts/spacial_partitions/points_with_hyperplanes.png" %}
 
-Note BTW, that while the above diagram represents a possible *k*-d tree in $$R^2$$, it is under-specified - i.e. there can be several trees that share this diagram.
+Note that the above diagram represents a possible *k*-d tree in $$R^2$$, where if a hyperplane is the child of another, we only draw the part of it until it intersects its parent. This specific diagram defines a single *k*-d tree, as detailed in this diagram:
+
+{% include image.html url="/assets/images/posts/spacial_partitions/unique_tree.png" %}
+
+Here the root hyperplane is purple. Its child hyperlanes orange. One of them has no further children, while the other has a single child - the yellow plane, which has a single child - the green plane, which finally has a last child - the light blue plane. Note though, that while the above diagram defines a unique tree, in general these diagrams are under-specified - i.e. there can be several trees that share the same diagram. Can you see why? (hint - consider what happens if a parent and a child hyperplanes are orthogonal to the same axis, and thus parallel).
 
 Now when a target point is given, like this red one:
 
@@ -52,13 +56,15 @@ It is then recursively searched on the left side, comparing it to the root node'
 
 Now, you might say:
 
-> Wait, we still need to check the other side of all the hyperplanes! It's possible that a point is to one side of a hyperplane, but the closest point to it is on the other side!
+> Wait, I see where this is going - you want to do a binary search and only examine the branch of the tree that contains our target point - but there is a problem! We still need to check the other side of all the hyperplanes! It's possible that a point is to one side of a hyperplane, but the closest point to it is on the other side!
 
 You'd be very right in saying so, as this diagram depicts:
 
 {% include image.html url="/assets/images/posts/spacial_partitions/kdtree_search4.png" %}
 
-But, note that due to the [triangle inequality](https://en.wikipedia.org/wiki/Triangle_inequality), all the points on the other side of the plane from a point are ***farther away from the point than the plane***. In other words, the *k*-d tree algorithm works:
+So is all hope lost? Do we need to check the entire tree, and lose the logarithmic complexity? No! Note that due to the [triangle inequality](https://en.wikipedia.org/wiki/Triangle_inequality), all the points on the other side of the plane from a point are ***farther away from the point than the plane***. In other words, we only need to check the child node not containing our target point, if we already checked the child node that does contain it, and the closest point that we found is farther away from the target point than the separating hyperplane. This gives us hope that we might see logarithmic complexity with the *k*-d tree algorithm.
+
+Here is the above in pseudo-code:
 
 ```python
 def find(tree, target):
