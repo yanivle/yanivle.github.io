@@ -136,7 +136,7 @@ What I realized recently, and one of the coolest things imo in this post, is tha
 
 {% include image.html url="/assets/images/posts/spacial_partitions/arbitrary_hypersurface.png" %}
 
-Hyperplanes, and specifically axis-aligned hyperplanes have the huge benefit that it is very easy to calculate which side of them a point lies and the distance between them to the point. And while this might be hard to do for arbitrary hypersurfaces, for some hypersufaces this is easy. For example, it's super easy to calculate both of the above for spheres:
+Hyperplanes, and specifically axis-aligned hyperplanes have the huge benefit that it is very easy to calculate to which side of them a point lies and the distance between them to the point. And while this might be hard to do for arbitrary hypersurfaces, for some hypersufaces this is easy. For example, it's super easy to calculate both of the above for spheres:
 
 {% include image.html url="/assets/images/posts/spacial_partitions/sphere_example.png" %}
 
