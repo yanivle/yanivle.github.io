@@ -12,7 +12,7 @@ bgContrast: light
 bgGradientOpacity: lighter
 syntaxHighlighter: yes
 ---
-There several important dimensions that determine *how good an algorithm is*. Maybe the three most important ones are ***time complexity***, ***memory complexity***, and ***code complexity***. Since in almost all problems you can trade one for one of the others, it's usually impossible to find a solution that is actually the best, in the sense that it optimizes all three. Once in a while though, you find a nice trade-off, with low time, memory, *and* code complexities. In this post I'll describe one such algorithm, for the problem of efficiently finding the closest point to a target point in a metric space. This problem has many partical uses (e.g. I use it extensively in my General Relativity Renderer - I hope to write a post about it soon, and, as we'll see, it's also useful for accelerating problems such as finding the closest word in the dictionary to a given word with spelling mistakes).
+There are several important dimensions that determine *how good an algorithm is*. Maybe the three most important ones are ***time complexity***, ***memory complexity***, and ***code complexity***. Since in almost all problems you can trade one for one of the others, it's usually impossible to find a solution that is actually the best, in the sense that it optimizes all three. Once in a while though, you find a nice trade-off, with low time, memory, *and* code complexities. In this post I'll describe one such algorithm, for the problem of efficiently finding the closest point to a target point in a metric space. This problem has many partical uses (e.g. I use it extensively in my General Relativity Renderer - I hope to write a post about it soon, and, as we'll see, it's also useful for accelerating problems such as finding the closest word in the dictionary to a given word with spelling mistakes).
 
 ## An Example Problem
 Say you have a set of points in the plane $$R^2$$:
@@ -136,7 +136,7 @@ Taking this idea one step further, there is even arbitrariness in requiring a Eu
 
 $$D(p, s) = \min\{|x-p| \mid x \in s\}$$
 
-Nit note: since hypersurfaces are closed in $$R^n$$, the formula above actually gets its minimum value.
+Nit note: since we are dealing with closed hypersurfaces in $$R^n$$, the formula above actually gets its minimum value.
 
 Taking a step back - we can actually get the above data structure to work without mapping the items to points in some Euclidean space, but rather keeping them in an arbitrary metric space!
 
