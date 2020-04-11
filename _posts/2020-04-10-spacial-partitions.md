@@ -116,7 +116,7 @@ While this one seems better:
 #### Degrees of Freedom
 When choosing the hyperplanes there are two things we are actually choosing:
 1. Which axis the hyperplane will be perpendicular to ($$X$$, $$Y$$, or $$Z$$)?
-2. What is the intersection point of the hyperplane and that plane?
+2. What is the point of intersection of the hyperplane and that perpendicular axis?
 
 We have several ways for choosing both. For #1, we could, at every node choose randomly between the axes, or we could choose in a round-robin fashion, or we could always choose the same axis (this one doesn't sound very promising), or we could choose based on a criteria that depends on the actual points (e.g. take the axis upon which the projection of the points in the child has the largest difference between the minimum and maximum, or the axis with the highest entropy, etc.). See the benchmarking section below for experiment results with many of these.
 
@@ -126,7 +126,7 @@ Once we chose the axis, we need to choose the intersection point. Here again we 
 We discussed above supporting multiple points per leaf, instead of just a single point per leaf. Once we implement that, we can trivially add a really cool feature, that I found useful in several application: supporting *spheres* instead of *points*. Specifically, we want to allow each item that we insert to the tree to have a potentially non-zero radius. In order to enable that, it is enough to allow all nodes in the tree to contain items, not just the leafs, and whenever we add an item to the tree, if its sphere *intersects* the hyperplane (basically meaning it is both to the left and to the right of it) we simply keep it in the parent node, instead of in the child nodes.
 
 ## Beyond Hyperplanes
-I got to program *k*-d trees several times for various projects, for example, for my General Relativity Path Tracer, I needed to detect the collision of light photons with millions of stars, and storing them in a *k*-d tree enabled rendering such images as this one:
+I got to program *k*-d trees several times for various projects, for example, for my General Relativity Renderer, I needed to detect the collision of light photons with millions of stars, and storing them in a *k*-d tree enabled rendering such images as this one:
 
 {% include image.html url="/assets/images/posts/spacial_partitions/stars.jpg" %}
 
