@@ -653,6 +653,40 @@ The rest of the columns represent several tree configurations. The number in red
 The best performing tree in this setup is the round-robin axis aligned tree, with a total cost of 0.07 seconds for the 10K operations (including the building time). Building it costs only 2.3 milliseconds. The random-pivot tree and the max-spread tree perform very similarly. Interestingly, the sphere-tree (that completely ignores the fact that the points are in a Euclidean space) and chooses random pivots, performs really well - less than twice as bad as the round-robin tree.
 Also, interestingly, the x-axis only tree (which basically ignores the y and z coordinates completely and just binary-sorts all the points according to their X-coordinate) performs much worse than all of the other tree configurations, but still about an order of magnitude better than the baseline approach (0.36 seconds vs 2.7 seconds for the baseline approach).
 
+##### A Larger Data Set
+
+What happens on an even larger data set? Here we see the results for 100,000 points in $$R^3$$ and 100,000 finds. The baseline would have been way too slow for this one (estimated at around 5 minutes - more than I have patience for :)) so I am not including it:
+
+{% include image.html url="/assets/images/posts/spacial_partitions/results_large.png" %}
+
+Here too it's easy to see that the round-robin method dominates, with very fast build time, and the best find time. It is able to build the tree and perform the 100K *find-closest* operations in just over a second.
+
+##### A Different Distribution of Points
+
+What happens if the points aren't randomly sampled from the unit cube, like in the experiment above, but are rather organized on the surface of the unit sphere? For this experiment, I kept the slow baseline off, and used 10K points and 10K *find-closest* queries:
+
+{% include image.html url="/assets/images/posts/spacial_partitions/results_unit_sphere.png" %}
+
+As you can see, the round-robin method still dominates, with the random axis one still very close.
+
+I also tried making the points non-uniformly distributed, like so:
+
+```c++
+while (std::rand() % 2 == 0) {
+  (*points)[i] *= 2;
+}
+```
+
+So half of the points are around the unit cube (or on the surface of the unit sphere - I tried both configurations), a quarter are doubled, an eighth are quadrupled, etc. As it turns out, almost nothing changes. The above results are almost the same with very slight variations. Round-robin FTW!
+
+##### The Effect of the Cutoff
+
+We know there is one more interesting parameter to optimize - the cutoff value, below which we will not keep subdiving the nodes, but rather maintain a flat list. Here we see the results of 10K points in the unit cube in $$R^3$$ with 10K queries, using the round-robin axis selection method:
+
+{% include image.html url="/assets/images/posts/spacial_partitions/results_split_size.png" %}
+
+Well, not super surprisingly (that was actually the default I chose before running this experiment :)) it turns out that the best min split size is 32. Obviously the build cost keeps going down as this number increases, but at 32 we are almost minimizing the find cost, while keeping the build cost low.
+
 #### Closest Dictionary String
 What about the performance of the data-structure for finding the closest strings in the dictionary?
 
@@ -737,3 +771,9 @@ inline int EditDistanceNoCache(const std::string& s1, const std::string& s2) {
 Finally, since during tree building I am sometimes calculating the distance between the same pair of strings, I wrapped the above with a version that can cache the results (this is the reason for the *NoCache* suffix).
 
 Hope you enjoyed reading this as much as I enjoyed writing it!
+
+PS - until I write the full post about it, here is a quick teaser from my General Relativity Renderer, rendering a million stars with a black hole in the middle:
+
+{% include image.html url="/assets/images/posts/spacial_partitions/stars_gravity.jpg" %}
+
+More on that soon!
