@@ -101,9 +101,11 @@ Let's consider two desirable traits for the chosen hyperplanes:
 
 For example, the root hyperplane in the example above is chosen poorly as most points lie to its left, violating desirability trait #1:
 
-{% include image.html url="/assets/images/posts/spacial_partitions/points_with_hyperplane.png" %}
+{% include image.html url="/assets/images/posts/spacial_partitions/bad_hyperplane.png" %}
 
-It is clear how one could optimize for trait #1, but it's not very clear how to do so for trait #2.
+While this one seems better:
+
+{% include image.html url="/assets/images/posts/spacial_partitions/better_hyperplane.png" %}
 
 #### Degrees of Freedom
 When choosing the hyperplanes there are two things we are actually choosing:
