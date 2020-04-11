@@ -12,7 +12,7 @@ bgContrast: light
 bgGradientOpacity: lighter
 syntaxHighlighter: yes
 ---
-There several important axes that determine how good an algorithm is. Maybe the three most important ones are the complexities of Time, Memory, and Code. In almost all problems you can trade one of the others. Because of that, it's usually impossible to find a solution that is actually the best, in the sense that it optimizes all three complexities above, but once in a while you find a nice trade-off, with low Time, Memory, and Code complexities. In this post I'll describe one such algorithm, for the problem of efficiently finding the closest point to a target point in a metric space. This problem has many partical uses (e.g. I use it extensively in my General Relativity Renderer - I hope to write a post about it soon, and, as we'll see, it's also useful for accelerating problems such as finding the closest word in the dictionary to a given word with spelling mistakes).
+There several important dimensions that determine *how good an algorithm is*. Maybe the three most important ones are ***time complexity***, ***memory complexity***, and ***code complexity***. Since in almost all problems you can trade one for one of the others, it's usually impossible to find a solution that is actually the best, in the sense that it optimizes all three. Once in a while though, you find a nice trade-off, with low time, memory, *and* code complexities. In this post I'll describe one such algorithm, for the problem of efficiently finding the closest point to a target point in a metric space. This problem has many partical uses (e.g. I use it extensively in my General Relativity Renderer - I hope to write a post about it soon, and, as we'll see, it's also useful for accelerating problems such as finding the closest word in the dictionary to a given word with spelling mistakes).
 
 ## An Example Problem
 Say you have a set of points in the plane $$R^2$$:
@@ -96,7 +96,7 @@ A much more important optimization comes from the way we choose the hyperplanes.
 
 #### Good Hyperplanes
 Let's consider two desirable traits for the chosen hyperplanes:
-1. Most importantly, we'd like about half of the points to lie in each side of them. This criteria is obviously in order to get a logarithmic depth to the tree.
+1. Most importantly, we'd like about half of the points to lie in each side of them. This criteria is obviously needed in order to get a logarithmic depth to the tree.
 2. We'd like the points on each side of the hyperplane to be as far away as possible from the hyperplane. This criteria is important, as even if the tree has logarithmic depth, if the *find* algorithm above needs to explore both sides of the hyperplane often, it might run for more than a logarithmic number of steps.
 
 For example, the root hyperplane in the example above is chosen poorly as most points lie to its left, violating desirability trait #1:
@@ -110,7 +110,7 @@ When choosing the hyperplanes there are two things we are actually choosing:
 1. Which axis the hyperplane will be perpendicular to ($$X$$, $$Y$$, or $$Z$$)?
 2. What is the intersection point of the hyperplane and that plane?
 
-We have several ways for choose both. For #1, we could, at every node choose randomly between the axes, we could choose in a round-robin fashion, we could always choose the same axis (this one doesn't sound very promising), or we could choose based on a criteria that depends on the actual points (e.g. take the axis upon which the projection of the points in the child has the largest difference between the minimum and maximum, or the axis with the highest entropy, etc.). See the benchmarking section below for experiment results with many of these.
+We have several ways for choosing both. For #1, we could, at every node choose randomly between the axes, or we could choose in a round-robin fashion, or we could always choose the same axis (this one doesn't sound very promising), or we could choose based on a criteria that depends on the actual points (e.g. take the axis upon which the projection of the points in the child has the largest difference between the minimum and maximum, or the axis with the highest entropy, etc.). See the benchmarking section below for experiment results with many of these.
 
 Once we chose the axis, we need to choose the intersection point. Here again we can employ several strategies: we can choose a random point from the set and take its projection on the axis as the intersection point, or we can choose the median point's projection instead of a random point (sounds more promising). Here too, see the benchmarking section below for experiment results with a couple of these.
 
@@ -124,11 +124,11 @@ I got to program *k*-d trees several times for various projects, for example, fo
 
 I will write a full post about that project at some point.
 
-What I realized recently, and one of the coolest things imo in this post, is that there is a lot of arbitrariness in the fact that we're using axis-aligned hyperplanes for the *k*-d tree, in fact, there is a lot of arbitrariness in using hyperplanes altogether - we can actually use any [hypersurface](https://en.wikipedia.org/wiki/Hypersurface. For example:
+What I realized recently, and one of the coolest things imo in this post, is that there is a lot of arbitrariness in the fact that we're using axis-aligned hyperplanes for the *k*-d tree, in fact, there is a lot of arbitrariness in using hyperplanes altogether - we can actually use any [hypersurface](https://en.wikipedia.org/wiki/Hypersurface). For example:
 
 {% include image.html url="/assets/images/posts/spacial_partitions/arbitrary_hypersurface.png" %}
 
-Hyperplanes, and specifically axis-aligned hyperplanes have the huge benefit that it is very easy to calculate which side of them a point lies and the distance between them to the point. And while this might be hard to do for arbitrary hypersurfaces, some hypersufaces are as easy. For example, it's super easy to calculate both of the above for spheres:
+Hyperplanes, and specifically axis-aligned hyperplanes have the huge benefit that it is very easy to calculate which side of them a point lies and the distance between them to the point. And while this might be hard to do for arbitrary hypersurfaces, for some hypersufaces this is easy. For example, it's super easy to calculate both of the above for spheres:
 
 {% include image.html url="/assets/images/posts/spacial_partitions/sphere_example.png" %}
 
@@ -641,8 +641,8 @@ So here are the results for indexing 10,000 points in $$R^3$$ and performing 10,
 {% include image.html url="/assets/images/posts/spacial_partitions/results.png" %}
 
 For calibration, on my setup, creating the 10,000 random vec3s took 0.001 seconds (or 1 milli second).
-The rest of the columns represent several tree configurations. The number in red is the cost of building the tree, and the number in blue is the cost of performing the 10K find-closest operations. The baseline algorithm, has 0 build cost, and takes 2.7 seconds to perform 10K find closest.
-The best performing tree in this setup is the Round-robin axis aligned tree, with a total cost of 0.07 seconds for the 10K operations. Building it costs only 2.3 milliseconds. The random-pivot tree and the max-spread tree perform very similarly. Interestingly, the sphere-tree (that completely ignores the fact that the points are in a Euclidean space) and chooses random pivots, performs really well - less than twice as bad as the round-robin tree.
+The rest of the columns represent several tree configurations. The number in red is the cost of building the tree, and the number in blue is the cost of performing the 10K *find-closest* operations. The baseline algorithm, has 0 build cost, and takes 2.7 seconds to perform 10K *find-closest* operations.
+The best performing tree in this setup is the round-robin axis aligned tree, with a total cost of 0.07 seconds for the 10K operations (including the building time). Building it costs only 2.3 milliseconds. The random-pivot tree and the max-spread tree perform very similarly. Interestingly, the sphere-tree (that completely ignores the fact that the points are in a Euclidean space) and chooses random pivots, performs really well - less than twice as bad as the round-robin tree.
 Also, interestingly, the x-axis only tree (which basically ignores the y and z coordinates completely and just binary-sorts all the points according to their X-coordinate) performs much worse than all of the other tree configurations, but still about an order of magnitude better than the baseline approach (0.36 seconds vs 2.7 seconds for the baseline approach).
 
 #### Closest Dictionary String
@@ -686,7 +686,7 @@ int EditDistanceNaive(const std::string& s1, const std::string& s2,
 }
 ```
 
-This was so slow, I couldn't run anything but the most trivial of experiments. So I wrote this better implementation that the above experiment uses:
+This was so slow, I couldn't run anything but the most trivial of experiments. So I wrote this better implementation that the above experiments use:
 
 ```c++
 inline const size_t EDIT_DISTANCE_MAX_STRING_LEN = 1024;
