@@ -734,11 +734,10 @@ This was so slow, I couldn't run anything but the most trivial of experiments. S
 inline const size_t EDIT_DISTANCE_MAX_STRING_LEN = 1024;
 class EditDistanceMatrix {
  public:
-  char& operator()(int i1, int i2) { return data[i2][i1]; }
-  // char& operator()(int i1, int i2) { return data[i2 % 2][i1]; }
+  char& operator()(int i1, int i2) { return data[i2 % 2][i1]; }
 
  private:
-  char data[EDIT_DISTANCE_MAX_STRING_LEN][EDIT_DISTANCE_MAX_STRING_LEN];
+  char data[2][EDIT_DISTANCE_MAX_STRING_LEN];
 };
 
 inline int min(int a, int b, int c) { return std::min(a, std::min(b, c)); }
