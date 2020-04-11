@@ -438,7 +438,6 @@ struct MedianDistSphereSelector {
 
 template <int Size>
 struct SplitSize {
-  // TODO: think about this.
   static_assert(Size >= 3, "Size must be at least 3");
   const static int size = Size;
 };
@@ -452,11 +451,6 @@ template <
     DistanceFunc<ValueType> Distance = GetVec3Dist,
     class MaxSplit = SplitSize<32>>
 class SpacialTree {
-  // TODO: how to do this?
-  // static_assert(std::is_same(Hypersurface,
-  //                            HypersurfaceSelector::Hypersurface)::value,
-  //               "Inconsistent Hypersurface and HypersurfaceSelector.");
-
  public:
   void fromVector(const std::vector<ValueType>& vec) {
     for (const auto& item : vec) {
