@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Spacial Partitions"
+title:  "A Generic Spacial Data Structure for Efficient Nearest Neighbor Searches"
 date:   2020-04-10 15:00:00
 excerpt: "A data structure for finding closest points in space."
 categories: Computing
@@ -12,7 +12,10 @@ bgContrast: light
 bgGradientOpacity: lighter
 syntaxHighlighter: yes
 ---
-There are several important dimensions that determine *how good an algorithm is*. Maybe the three most important ones are ***time complexity***, ***memory complexity***, and ***code complexity***. Since in almost all problems you can trade one for one of the others, it's usually impossible to find a solution that is actually the best, in the sense that it optimizes all three. Once in a while though, you find a nice trade-off, with low time, memory, *and* code complexities. In this post I'll describe one such algorithm, for the problem of efficiently finding the closest point to a target point in a metric space. This problem has many partical uses (e.g. I use it extensively in my General Relativity Renderer - I hope to write a post about it soon, and, as we'll see, it's also useful for accelerating problems such as finding the closest word in the dictionary to a given word with spelling mistakes).
+Finding the [nearest neighbor](https://en.wikipedia.org/wiki/Nearest_neighbor_search) of a point in a [metric space](https://en.wikipedia.org/wiki/Metric_space) has [numerous applications](https://en.wikipedia.org/wiki/Nearest_neighbor_search#Applications), from *machine learning* (as a matter of fact, finding the nearest neighbor of an item in feature space is a complete machine learning alogrithm! We'll see a toy example below), to *graphics* and *physics simulation* (e.g. I use it extensively in my General Relativity Renderer - I hope to write a post about it soon), or, as we shall see later, for finding the closest word in the dictionary to a given word with spelling mistakes. In this post we will explore a generic data-structure for efficiently finding the nearest neighbor of a point in arbitrary metric spaces, and a modern c++ implementation.
+
+## A Good Algorithm?
+There are several important dimensions that determine *how good an algorithm is*. Maybe the three most important ones are ***time complexity***, ***memory complexity***, and ***code complexity***. Since in almost all problems you can trade one for one of the others, it's usually impossible to find a solution that is actually the best, in the sense that it optimizes all three. Once in a while though, you find a nice trade-off, with low time, memory, *and* code complexities. The solution I'll describe in this post is one such algorithm, for the problem of efficiently finding the closest point to a target point in a metric space.
 
 ## An Example Problem
 Say you have a set of points in the plane $$R^2$$:
@@ -122,6 +125,9 @@ We have several ways for choosing both. For #1, we could, at every node choose r
 
 Once we chose the axis, we need to choose the intersection point. Here again we can employ several strategies: we can choose a random point from the set and take its projection on the axis as the intersection point, or we can choose the median point's projection instead of a random point (sounds more promising). Here too, see the benchmarking section below for experiment results with a couple of these.
 
+#### Non Binary Trees
+Another simple optimization (which we won't implement) is to consider a set of *k* hyperplanes (say parallel to each other) at each of the nodes in the tree. Instead of just considering on which side of a single hyperplane an item is, we'd then need to determine between which *two* hyperplanes an item is. While adding support for this is trivial, the reason we won't be doing it is that it gets much more hairy if we want to support volume - which we do. Let's see what that means.
+
 ## Supporting Volume
 We discussed above supporting multiple points per leaf, instead of just a single point per leaf. Once we implement that, we can trivially add a really cool feature, that I found useful in several application: supporting *spheres* instead of *points*. Specifically, we want to allow each item that we insert to the tree to have a potentially non-zero radius. In order to enable that, it is enough to allow all nodes in the tree to contain items, not just the leafs, and whenever we add an item to the tree, if its sphere *intersects* the hyperplane (basically meaning it is both to the left and to the right of it) we simply keep it in the parent node, instead of in the child nodes.
 
@@ -152,431 +158,88 @@ For example, note that the [Levenshtein distance](https://en.wikipedia.org/wiki/
 1. $$d(s1, s2) \ge 0$$
 2. $$d(s1, s2) = 0 \Leftrightarrow s1 = s2$$
 3. $$d(s1, s2) = d(s2, s1)$$
-4. $$d(s1, s2) + d(s2, s3) \le d(s1, s3) \text{(triangle inequality)}$$
+4. $$d(s1, s2) + d(s2, s3) \le d(s1, s3) \\ \text{(triangle inequality)}$$
 
 So we could use this same spacial partitioning data structure (it's no longer a *k*-d tree really) to index all the words in the dictionary and efficiently find the closest word to a given word with potential spelling errors!
 
 Of course in a general metric space, the notions of *axes* and *hyperplanes* don't exist, so we can't use them as our hypersurfaces. But we can still use spheres!
 
-## Implementation
+## Gist of the Code
 
-Here is my implementation of the spacial partition data structure in C++:
+While the full implementation is pretty concise (you can find it at the end of the post), I wanted to give here just the gist of the code including just the most important parts:
 
 ```c++
-#pragma once
-
-#include <cmath>
-#include <memory>
-#include <numeric>
-#include <optional>
-#include <vector>
-
-#include "logging.h"
-#include "str_util.h"
-#include "vec3.h"
-
-namespace spacial_partition {
-
-template <class T, class Compare>
-size_t MedianIndexAndPartialSort(std::vector<T>& v,
-                                 const Compare& comp = std::less<T>()) {
-  size_t median_index = v.size() / 2;
-  std::nth_element(v.begin(), v.begin() + median_index, v.end(), comp);
-  return median_index;
-}
-
-// Non-negative distance between two points to be compared.
-template <class ValueType>
-using DistanceFunc = float (*)(const ValueType&, const ValueType&);
-
-// Returns negative or positive depending on which
-template <class HypersurfaceType, class ValueType>
-using RelationToHypersurfaceFunc = float (*)(const HypersurfaceType&,
-                                             const ValueType&);
-
-template <class ValueType>
-using GetPositionFunc = vec3 (*)(const ValueType&);
-
-template <class ValueType>
-using GetRadiusFunc = float (*)(const ValueType&);
-
-template <class ValueType>
-vec3 ValueTypeIsConvertibleToPoint(const ValueType& v) {
-  return v;
-}
-
-template <class ValueType>
-float ZeroRadius(const ValueType& t) {
-  return 0;
-}
-
-float GetVec3Dist(const vec3& v1, const vec3& v2) { return dist(v1, v2); }
-float GetEditDist(const std::string& s1, const std::string& s2) {
-  return EditDistance(s1, s2);
-}
-
+// A hyperplane in R3 perpendicular to one of the Axes.
 struct AxisAlignedHyperplane {
-  vec3::Axis axis = vec3::X;
-  float value;
-
-  std::string str() const {
-    return std::string("AxisAlignedHyperplane(") + to_string(axis) + " <> " +
-           std::to_string(value) + ")";
-  }
-
-  template <class ValueType,
-            GetPositionFunc<ValueType> PositionGetter =
-                ValueTypeIsConvertibleToPoint<ValueType>,
-            GetRadiusFunc<ValueType> RadiusGetter = ZeroRadius<ValueType>>
-  static float relationToItem(const AxisAlignedHyperplane& hyperplane,
-                              const vec3& item) {
-    float item_value_in_axis = item[hyperplane.axis];
-    float distance_from_pivot_in_axis = item_value_in_axis - hyperplane.value;
-    if (std::abs(distance_from_pivot_in_axis) >= RadiusGetter(item)) {
-      return distance_from_pivot_in_axis;
-    } else {
-      return 0;  // item intersects the hyperplane.
-    }
-  }
+  vec3::Axis perpendicular_axis = vec3::X;
+  float intersection_coord;
 };
 
 template <class ValueType>
 struct SphereHypersurface {
   ValueType center;
   float radius;
-
-  std::string str() const {
-    return std::string("SphereHypersurface(center: ") + center +
-           ", radius: " + std::to_string(radius) + ")";
-  }
-
-  template <DistanceFunc<ValueType> Distance,
-            GetRadiusFunc<ValueType> RadiusGetter = ZeroRadius<ValueType>>
-  static float relationToItem(const SphereHypersurface& sphere,
-                              const ValueType& item) {
-    float distance_from_center = Distance(item, sphere.center);
-    float distance_from_sphere_border = distance_from_center - sphere.radius;
-    if (std::abs(distance_from_sphere_border) >= RadiusGetter(item)) {
-      return distance_from_sphere_border;
-    } else {
-      return 0;  // item intersects the bounding sphere.
-    }
-  }
 };
 
-template <class ValueType = vec3, GetPositionFunc<ValueType> GetPosition =
-                                      ValueTypeIsConvertibleToPoint<ValueType>>
-struct AxisComparator {
-  AxisComparator(vec3::Axis axis) : axis(axis) {}
-  vec3::Axis axis;
-  bool operator()(const ValueType& a, const ValueType& b) {
-    return GetPosition(a)[axis] < GetPosition(b)[axis];
-  }
-};
-
-template <class ValueType = vec3, GetPositionFunc<ValueType> GetPosition =
-                                      ValueTypeIsConvertibleToPoint<ValueType>>
-struct MaxSpreadAxisSelector {
-  vec3::Axis selectAxis(const std::vector<ValueType>& items) const {
-    std::vector<float> xs, ys, zs;
-    for (const ValueType& item : items) {
-      const vec3 pos = GetPosition(item);
-      xs.push_back(pos.x);
-      ys.push_back(pos.y);
-      zs.push_back(pos.z);
-    }
-    float x_spread = spread(xs);
-    float y_spread = spread(ys);
-    float z_spread = spread(zs);
-    if (x_spread > y_spread && x_spread > z_spread) {
-      return vec3::X;
-    } else if (y_spread > z_spread) {
-      return vec3::Y;
-    } else {
-      return vec3::Z;
-    }
-  }
-
-  MaxSpreadAxisSelector child() const { return *this; }
-
- private:
-  static float spread(const std::vector<float>& v) {
-    const auto [min, max] = std::minmax_element(begin(v), end(v));
-    return *max - *min;
-  }
-};
-
-template <class ValueType = vec3, GetPositionFunc<ValueType> GetPosition =
-                                      ValueTypeIsConvertibleToPoint<ValueType>>
-struct XAxisSelector {
-  vec3::Axis selectAxis(const std::vector<ValueType>& items) const {
-    return vec3::X;
-  }
-
-  XAxisSelector child() const { return *this; }
-};
-
-template <class ValueType = vec3, GetPositionFunc<ValueType> GetPosition =
-                                      ValueTypeIsConvertibleToPoint<ValueType>>
-struct RandomAxisSelector {
-  vec3::Axis selectAxis(const std::vector<ValueType>& items) const {
-    return vec3::Axis(std::rand() % 3);
-  }
-
-  RandomAxisSelector child() const { return *this; }
-};
-
-template <class ValueType = vec3, GetPositionFunc<ValueType> GetPosition =
-                                      ValueTypeIsConvertibleToPoint<ValueType>>
-struct RoundRobinAxisSelector {
-  vec3::Axis axis = vec3::X;
-  vec3::Axis selectAxis(const std::vector<ValueType>& items) const {
-    return axis;
-  }
-
-  RoundRobinAxisSelector child() const {
-    return RoundRobinAxisSelector{vec3::Axis((axis + 1) % 3)};
-  }
-};
-
-template <class ValueType = vec3, class AxisSelector = RoundRobinAxisSelector<>,
-          GetPositionFunc<ValueType> PositionGetter =
-              ValueTypeIsConvertibleToPoint<ValueType>>
-struct AxisAlignedHyperplaneSelector {
-  AxisSelector axis_selector;
-
-  typedef AxisAlignedHyperplane Hypersurface;
-
-  AxisAlignedHyperplane selectHypersurface(
-      std::vector<ValueType>& items) const {
-    vec3::Axis axis = axis_selector.selectAxis(items);
-    AxisComparator<ValueType> cmp(axis);
-    int median_index = MedianIndexAndPartialSort(items, cmp);
-    ValueType median_item = items[median_index];
-    float value = PositionGetter(median_item)[axis];
-    return AxisAlignedHyperplane{axis, value};
-  }
-
-  AxisAlignedHyperplaneSelector child() const {
-    return AxisAlignedHyperplaneSelector{axis_selector.child()};
-  }
-};
-
-template <class ValueType = vec3, class AxisSelector = RoundRobinAxisSelector<>,
-          GetPositionFunc<ValueType> PositionGetter =
-              ValueTypeIsConvertibleToPoint<ValueType>>
-struct RandomAxisAlignedHyperplaneSelector {
-  AxisSelector axis_selector;
-
-  using Hypersurface = AxisAlignedHyperplane;
-
-  AxisAlignedHyperplane selectHypersurface(
-      std::vector<ValueType>& items) const {
-    int index = std::rand() % items.size();
-    const ValueType& item = items[index];
-    vec3::Axis axis = axis_selector.selectAxis(items);
-    float value = PositionGetter(item)[axis];
-    return AxisAlignedHyperplane{axis, value};
-  }
-
-  RandomAxisAlignedHyperplaneSelector child() const {
-    return RandomAxisAlignedHyperplaneSelector{axis_selector.child()};
-  }
-};
-
-template <class ValueType = vec3,
-          DistanceFunc<ValueType> Distance = GetVec3Dist>
-struct HalfMaxDistSphereSelector {
-  using Hypersurface = SphereHypersurface<ValueType>;
-
-  Hypersurface selectHypersurface(std::vector<ValueType>& items) const {
-    int index = std::rand() % items.size();
-    const ValueType& pivot_item = items[index];
-    float max_dist = 0;
-    for (const ValueType& item : items) {
-      float cur_dist = Distance(item, pivot_item);
-      max_dist = std::max(max_dist, cur_dist);
-    }
-    float radius = max_dist / 2;
-    return SphereHypersurface<ValueType>{pivot_item, radius};
-  }
-
-  HalfMaxDistSphereSelector child() const {
-    return HalfMaxDistSphereSelector{};
-  }
-};
-
-template <class ValueType = vec3,
-          DistanceFunc<ValueType> Distance = GetVec3Dist>
-struct DistanceFromFixedElementComparator {
-  DistanceFromFixedElementComparator(const ValueType& pivot) : pivot(pivot) {}
-  ValueType pivot;
-  bool operator()(const ValueType& a, const ValueType& b) {
-    return Distance(pivot, a) < Distance(pivot, b);
-  }
-};
-
-template <class ValueType = vec3,
-          DistanceFunc<ValueType> Distance = GetVec3Dist>
-struct MedianDistSphereSelector {
-  using Hypersurface = SphereHypersurface<ValueType>;
-
-  Hypersurface selectHypersurface(std::vector<ValueType>& items) const {
-    int index = std::rand() % items.size();
-    const ValueType& pivot_item = items[index];
-
-    int median_index = MedianIndexAndPartialSort(
-        items,
-        DistanceFromFixedElementComparator<ValueType, Distance>(pivot_item));
-    float median_dist = Distance(pivot_item, items[median_index]);
-    float radius = median_dist;
-    return SphereHypersurface<ValueType>{pivot_item, radius};
-  }
-
-  MedianDistSphereSelector child() const { return MedianDistSphereSelector{}; }
-};
-
-template <int Size>
-struct SplitSize {
-  static_assert(Size >= 3, "Size must be at least 3");
-  const static int size = Size;
-};
-
-template <
-    class ValueType = vec3, class Hypersurface = AxisAlignedHyperplane,
-    class HypersurfaceSelector = AxisAlignedHyperplaneSelector<
-        ValueType, RoundRobinAxisSelector<ValueType>>,
-    RelationToHypersurfaceFunc<Hypersurface, ValueType> RelationToHypersurface =
-        AxisAlignedHyperplane::relationToItem<ValueType>,
-    DistanceFunc<ValueType> Distance = GetVec3Dist,
-    class MaxSplit = SplitSize<32>>
-class SpacialTree {
+template <class ValueType = vec3, class Hypersurface = AxisAlignedHyperplane,
+          class HypersurfaceSelector = AxisAlignedHyperplaneSelector<
+              ValueType, RoundRobinAxisSelector<ValueType>>,
+          DistanceFunc<ValueType> Distance = dist,
+          class MaxSplit = SplitSize<32>>
+class Tree {
  public:
-  void fromVector(const std::vector<ValueType>& vec) {
-    for (const auto& item : vec) {
-      addChild(item);
-    }
-    compile();
-  }
-
-  void addChild(const ValueType& child) {
-    CHECK(!_compiled) << "Trying to add elements after tree compilation";
-    items.push_back(child);
-  }
-
-  SpacialTree* left() {
-    if (!_left) {
-      _left = std::make_unique<SpacialTree>();
-    }
-    return _left.get();
-  }
-
-  SpacialTree* right() {
-    if (!_right) {
-      _right = std::make_unique<SpacialTree>();
-    }
-    return _right.get();
-  }
-
   void compile(const HypersurfaceSelector& hypersurface_selector =
                    HypersurfaceSelector()) {
-    _compiled = true;
-    if (items.size() <= MaxSplit::size) {
-      return;
-    }
+    if (items.size() <= MaxSplit::size) return;
     hypersurface = hypersurface_selector.selectHypersurface(items);
-    compileGivenHypersurface(hypersurface_selector);
+    splitItemsToChildren();
+    if (_children[0] != 0) {
+      _children[0]->compile(hypersurface_selector.child());
+    }
+    if (_children[1] != 0) {
+      _children[1]->compile(hypersurface_selector.child());
+    }
   }
 
-  void compileGivenHypersurface(
-      const HypersurfaceSelector& hypersurface_selector =
-          HypersurfaceSelector()) {
-    std::vector<ValueType> new_items;
-    // Note: although MaxSplit.size should be >= 3, it's still possible for one
-    // or even both of the subtrees to not be created (if using radii > 0).
-    for (int i = 0; i < items.size(); ++i) {
-      const ValueType& item = items[i];
-
-      float relation_to_item = RelationToHypersurface(*hypersurface, item);
-      if (relation_to_item < 0) {
-        left()->addChild(item);
-      } else if (relation_to_item > 0) {
-        right()->addChild(item);
+  void splitItemsToChildren() {
+    std::vector<ValueType> all_items;
+    std::swap(items, all_items);
+    for (const ValueType& item : all_items) {
+      RelationToHypersurface item_to_hypersurface =
+          relation(*hypersurface, item);
+      if (item_to_hypersurface.intersects()) {
+        items.push_back(item);
       } else {
-        new_items.push_back(item);
+        child(item_to_hypersurface.side())->add(item);
       }
     }
-    items = new_items;
-    if (_left != 0) {
-      _left->compile(hypersurface_selector.child());
-    }
-    if (_right != 0) {
-      _right->compile(hypersurface_selector.child());
-    }
   }
 
-  struct ItemWithDistance {
-    ValueType item;
-    float distance = std::numeric_limits<float>::max();
-
-    std::string str() const {
-      return std::string("ItemWithDistance(") + item +
-             ", dist: " + std::to_string(distance) + ")";
-    }
-  };
-
   ItemWithDistance findClosest(const ValueType& target) const {
-    CHECK(_compiled) << "Trying to use SpacialTree without compiling it first.";
     ItemWithDistance res;
     for (const ValueType& item : items) {
       float distance = std::max<float>(0, Distance(item, target));
-      if (distance < res.distance) {
-        res.distance = distance;
-        res.item = item;
+      res = ItemWithDistance::min(res, ItemWithDistance{item, distance});
+      if (res.distance == 0) return res;
+    }
+    if (!isLeaf()) {
+      RelationToHypersurface target_to_hypersurface =
+          relation(*hypersurface, target);
+
+      Tree* child_with_target = _children[target_to_hypersurface.side()].get();
+      if (child_with_target) {
+        res =
+            ItemWithDistance::min(res, child_with_target->findClosest(target));
         if (res.distance == 0) return res;
       }
-    }
-    if (hypersurface.has_value()) {
-      SpacialTree* subtree = _left.get();
-      SpacialTree* other_subtree = _right.get();
 
-      float relation_to_item = RelationToHypersurface(*hypersurface, target);
-      if (relation_to_item > 0) {
-        subtree = _right.get();
-        other_subtree = _left.get();
+      Tree* child_without_target =
+          _children[target_to_hypersurface.otherSide()].get();
+      if (child_without_target &&
+          target_to_hypersurface.distance() < res.distance) {
+        res = ItemWithDistance::min(res,
+                                    child_without_target->findClosest(target));
       }
-      if (subtree != nullptr) {
-        ItemWithDistance subtree_res = subtree->findClosest(target);
-        if (subtree_res.distance < res.distance) {
-          res = subtree_res;
-          if (res.distance == 0) return res;
-        }
-      }
-      if (other_subtree != nullptr &&
-          std::abs(relation_to_item) < res.distance) {
-        ItemWithDistance other_subtree_res = other_subtree->findClosest(target);
-        if (other_subtree_res.distance < res.distance) {
-          res = other_subtree_res;
-        }
-      }
-    }
-    return res;
-  }
-
-  std::string str(int depth = 0) const {
-    std::string res = std::string(depth, ' ');
-    if (hypersurface.has_value()) {
-      res += hypersurface->str() + "\n";
-    }
-    if (_left != 0) {
-      res += std::string(depth, ' ') + "left:\n" + _left->str(depth + 1);
-    }
-    if (_right != 0) {
-      res += std::string(depth, ' ') + "right:\n" + _right->str(depth + 1);
-    }
-    if (items.size() > 0) {
-      res += std::to_string(items.size()) +
-             " items:" + JoinAsStrings<ValueType>(items) + "\n";
     }
     return res;
   }
@@ -584,35 +247,11 @@ class SpacialTree {
  private:
   std::vector<ValueType> items;
   std::optional<Hypersurface> hypersurface;
-  std::unique_ptr<SpacialTree> _left;
-  std::unique_ptr<SpacialTree> _right;
-  bool _compiled = false;
+  std::unique_ptr<Tree> _children[2];
 };
-
-template <class AxisSelector, class MaxSplit = SplitSize<32>>
-using CustomVec3KDTree =
-    SpacialTree<vec3, AxisAlignedHyperplane,
-                AxisAlignedHyperplaneSelector<vec3, AxisSelector>,
-                AxisAlignedHyperplane::relationToItem<vec3>, GetVec3Dist,
-                MaxSplit>;
-
-using Vec3KDTree = CustomVec3KDTree<RoundRobinAxisSelector<>>;
-using Vec3VPTree = SpacialTree<
-    vec3, SphereHypersurface<vec3>, MedianDistSphereSelector<vec3, GetVec3Dist>,
-    SphereHypersurface<vec3>::relationToItem<GetVec3Dist, ZeroRadius<vec3>>,
-    GetVec3Dist, SplitSize<32>>;
-
-using StringVPTree =
-    SpacialTree<std::string, SphereHypersurface<std::string>,
-                MedianDistSphereSelector<std::string, GetEditDist>,
-                SphereHypersurface<std::string>::relationToItem<
-                    GetEditDist, ZeroRadius<std::string>>,
-                GetEditDist, SplitSize<1024>>;
-
-}  // namespace spacial_partition
 ```
 
-So how would this be used? Here's an example:
+So how would this be used? Here's an example (see the full implementation below for the details):
 
 ```c++
 spacial_partition::Vec3KDTree tree;
@@ -631,6 +270,66 @@ tree.fromVector(words);
 tree_closest = tree.findClosest("Yaniv").item;
 std::cerr << "The closest word in the dictionary to 'Yaniv' is: " << tree_closest << std::endl;
 ```
+
+## Toy Example - Machine Learning a Corona Detector
+
+Before we start with serious benchmarks, let's use our spacial data structure to build a simple machine learned model to detect weather someone has corona. We'll generate some random data for the body temperature, the number of times a person coughs in a day, and a completely irrelevant feature of a person's favorite number. If a person is healthy, we'll assume that their body temperature is normally distributed with a mean of 98.6°F and a standard deviation of 0.45°F (and for a sick person we'll assume the same stddev but a mean of 1°F higher). We'll assume that the number of times a healthy human coughs in a day is geometrically distributed with a parameter of 0.5 (the parameter for a sick person will be 0.25). Finally we'll let the favorite number be an integer uniformly distributed between 1 and 100, regardless of whether a person is sick or not (we should really have given 17 a higher chance...).
+
+Here's all of that in code:
+
+```c++
+struct Point {
+  vec3 features;
+  enum Type { Healthy = 0, Sick = 1 } type;
+};
+
+Point getRandomHealthy() {
+  std::normal_distribution<double> temperature(98.6, 0.45);
+  std::geometric_distribution<int> coughs_per_hours(0.5);
+  std::uniform_int_distribution<double> favorite_number(1, 100);
+  return Point{vec3(temperature(generator), coughs_per_hours(generator),
+                    favorite_number(generator)),
+               Point::Healthy};
+}
+
+Point getRandomSick() {
+  std::normal_distribution<double> temperature(98.6 + 1, 0.45);
+  std::geometric_distribution<int> coughs_per_hours(0.25);
+  std::uniform_int_distribution<double> favorite_number(1, 100);
+  return Point{vec3(temperature(generator), coughs_per_hours(generator),
+                    favorite_number(generator)),
+               Point::Sick};
+}
+```
+
+And here is our toy machine learning model:
+
+```c++
+struct NearestNeighbor {
+  spacial_partition::KDTree<Point, dist> tree;
+
+  void train(const std::vector<Point>& training_data) {
+    tree.fromVector(training_data);
+  }
+
+  int classify(const Point& point) { return tree.findClosest(point).item.type; }
+
+  float eval(std::vector<Point>& eval_set) {
+    int correct = 0;
+    for (const Point& point : eval_set) {
+      if (classify(point) == point.type) {
+        correct++;
+      }
+    }
+
+    return float(correct) / eval_set.size();
+  }
+};
+```
+
+And that's it! So how well does this perform? Running is with a training set of just 10 points, gives us just a slightly-better-than-random predictor with a correct prediction only about 55% of the time. This isn't too surprising as we're completely thrown off by the favorite number, that is large in magnitude, compared to the other features (it might be a good idea to normalize all the features, but that's a topic for a different post). Increasing the training size to 100 samples, the model already predicts correctly around 65% of the time. With 1,000 samples, the model gets it right around 76% of the time. With 10,000 samples, the model predicts correctly around 82% of the time! Not to shabby for just a couple of lines of code!
+
+{% include image.html url="/assets/images/posts/spacial_partitions/corona_precision.png" %}
 
 ## Benchmarking
 So how does this implementation compare to trivial baselines (of basically just iterating over the data and taking the closest point, with only minor optimizations, like bailing early as soon as a point of distance 0 is found)?
@@ -682,6 +381,7 @@ We know there is one more interesting parameter to optimize - the cutoff value, 
 Well, not super surprisingly (that was actually the default I chose before running this experiment :)) it turns out that the best min split size is 32. Obviously the build cost keeps going down as this number increases, but at 32 we are almost minimizing the find cost, while keeping the build cost low.
 
 #### Closest Dictionary String
+
 What about the performance of the data-structure for finding the closest strings in the dictionary?
 
 For this experiment I used a dictionary with 194,000 English words (from [here](http://www.gwicks.net/dictionaries.htm)). I built the index, and performed 100 closest-word lookups (this was so slow, with such a huge dict, that I only had patience to run 100 iterations). For the target strings, I used random strings of uniform random length between 3 and 10.
@@ -692,9 +392,17 @@ Here are the results:
 
 As you can see, this elegant implementation already does much better than the naive approach! There are specialized algorithms for this problem of finding the closest string in a dictionary like [SymSpell](https://github.com/wolfgarbe/SymSpell), [LinSpell](https://github.com/wolfgarbe/LinSpell), or [Norvig's algorithm](https://norvig.com/spell-correct.html), but for their gains in time complexity, they pay heavily in memory and code complexity.
 
-## Appendix - Calculating Levenshtein distance
+## Appendix - Calculating Levenshtein Distance
 
-I originally wrote a trivial recursive (without memoization) Levenshtein distance implementation:
+Recall that the Levenshtein distance is a metric on string space (i.e. a distance function between two strings) aiming to measure how similar two strings are. The vanilla Levenshtein distance (that I used for all experiments in this post) is the minimal number of ***Insert***, ***Remove***, and ***Replace*** operations required to transform one string into the other (this is the vanilla version in the sense that e.g. all the operations have the same weights, independent on the characters involved, etc.). Here are examples of the three operations:
+
+- **Insert**: aniv ⟶ Yaniv
+- **Remove**: Yaniiv ⟶ Yaniv
+- **Replace**: Yaniq ⟶ Yaniv
+
+You can easily verify that indeed the Levenshtein distance satisfies all the requirements for a metric.
+
+I originally wrote a trivial recursive (without memoization) Levenshtein distance implementation, like so:
 
 ```c++
 int EditDistanceNaive(const std::string& s1, const std::string& s2,
@@ -722,7 +430,11 @@ int EditDistanceNaive(const std::string& s1, const std::string& s2,
 }
 ```
 
-This was so slow, I couldn't run anything but the most trivial of experiments. So I wrote this better implementation that the above experiments use:
+This was so slow, that I couldn't run anything but the most trivial of experiments. So I wrote this better implementation, that employees three tricks:
+
+1. The naive recursive implementation above recalculates the distance between the same 2 substrings over and over again - this can be easily remedied by using dynamic programming and caching the results of these sub-string comparisons.
+2. Instead of using an $$n \ times m$$ matrix (where $$n$$ and $$m$$ are the lengths of the strings we are comparing), it is enough to use an $$2 \times m$$ matrix, as we can scan it top to bottom (see the implementation below), so we use linear memory instead of quadratic memory.
+3. Finally, since during tree building I am sometimes calculating the distance between the same pair of strings, I wrapped the entire implementation with a version that can cache the full result, so the same strings are never compared more than once in the entire lifetime of the program (for brevity, I omitted this from the implementation below, it's a simple wrapper on top of EditDistanceNoCache below).
 
 ```c++
 inline const size_t EDIT_DISTANCE_MAX_STRING_LEN = 1024;
@@ -761,7 +473,469 @@ inline int EditDistanceNoCache(const std::string& s1, const std::string& s2) {
 }
 ```
 
-Finally, since during tree building I am sometimes calculating the distance between the same pair of strings, I wrapped the above with a version that can cache the results (this is the reason for the *NoCache* suffix).
+All the above experiments use this implementation.
+
+## Implementation
+
+Finally, here is my implementation of the spacial partition data structure in C++:
+
+```c++
+/*
+Generic spacial-partition binary tree.
+*/
+
+#pragma once
+
+#include <cmath>
+#include <memory>
+#include <numeric>
+#include <optional>
+#include <vector>
+
+#include "logging.h"
+#include "str_util.h"
+#include "vec3.h"
+
+namespace spacial_partition {
+
+template <class T, class Compare>
+size_t MedianIndexAndPartialSort(std::vector<T>& v,
+                                 const Compare& comp = std::less<T>()) {
+  size_t median_index = v.size() / 2;
+  std::nth_element(v.begin(), v.begin() + median_index, v.end(), comp);
+  return median_index;
+}
+
+// Non-negative distance between two points to be compared.
+template <class ValueType>
+using DistanceFunc = float (*)(const ValueType&, const ValueType&);
+
+template <class ValueType>
+using GetRadiusFunc = float (*)(const ValueType&);
+
+template <class ValueType>
+float ZeroRadius(const ValueType& t) {
+  return 0;
+}
+
+struct RelationToHypersurface {
+  RelationToHypersurface(float signed_distance, float radius) {
+    if (radius == 0) this->signed_distance = signed_distance;
+    float distance_from_radius = std::abs(signed_distance) - radius;
+    if (distance_from_radius > 0) {
+      this->signed_distance =
+          std::copysign(distance_from_radius, signed_distance);
+    } else {  // item intersects the hyperplane.
+      this->signed_distance = 0;
+    }
+  }
+
+  bool intersects() { return signed_distance == 0; }
+  size_t side() { return signed_distance < 0 ? 0 : 1; }
+  size_t otherSide() { return 1 - side(); }
+  float distance() const { return std::abs(signed_distance); }
+
+ private:
+  float signed_distance;
+};
+
+template <class ValueType>
+using RelationToHypersurfaceFunc = RelationToHypersurface (*)(const ValueType&);
+
+// A hyperplane in R3 perpendicular to one of the Axes.
+struct AxisAlignedHyperplane {
+  vec3::Axis perpendicular_axis = vec3::X;
+  float intersection_coord;
+
+  std::string str() const {
+    return std::string("AxisAlignedHyperplane(") +
+           to_string(perpendicular_axis) + '@' +
+           std::to_string(intersection_coord) + ')';
+  }
+};
+
+template <class ValueType>
+struct SphereHypersurface {
+  ValueType center;
+  float radius;
+
+  std::string str() const {
+    return std::string("SphereHypersurface(center: ") + center +
+           ", radius: " + std::to_string(radius) + ")";
+  }
+};
+
+template <class ValueType, class Hypersurface>
+RelationToHypersurface relation(const Hypersurface& hypersurface,
+                                const ValueType& item) {
+  float item_value_in_axis =
+      static_cast<vec3>(item)[hypersurface.perpendicular_axis];
+  float distance_from_pivot_in_axis =
+      item_value_in_axis - hypersurface.intersection_coord;
+  return RelationToHypersurface(distance_from_pivot_in_axis, 0);
+}
+
+template <>
+RelationToHypersurface relation<vec3, AxisAlignedHyperplane>(
+    const AxisAlignedHyperplane& hyperplane, const vec3& item) {
+  float item_value_in_axis = item[hyperplane.perpendicular_axis];
+  float distance_from_pivot_in_axis =
+      item_value_in_axis - hyperplane.intersection_coord;
+  return RelationToHypersurface(distance_from_pivot_in_axis, 0);
+}
+
+template <class ValueType, DistanceFunc<ValueType> Distance>
+RelationToHypersurface relationToSphere(
+    const SphereHypersurface<ValueType>& sphere, const ValueType& item) {
+  float distance_from_center = Distance(item, sphere.center);
+  float distance_from_sphere_border = distance_from_center - sphere.radius;
+  return RelationToHypersurface(distance_from_sphere_border, 0);
+}
+
+template <>
+RelationToHypersurface relation<vec3, SphereHypersurface<vec3>>(
+    const SphereHypersurface<vec3>& sphere, const vec3& item) {
+  return relationToSphere<vec3, dist>(sphere, item);
+}
+
+float EditDistanceFloat(const std::string& s1, const std::string& s2) {
+  return EditDistance(s1, s2);
+}
+
+template <>
+RelationToHypersurface relation<std::string, SphereHypersurface<std::string>>(
+    const SphereHypersurface<std::string>& sphere, const std::string& item) {
+  return relationToSphere<std::string, EditDistanceFloat>(sphere, item);
+}
+
+template <class ValueType = vec3>
+struct AxisComparator {
+  AxisComparator(vec3::Axis axis) : axis(axis) {}
+  vec3::Axis axis;
+  bool operator()(const ValueType& a, const ValueType& b) {
+    return static_cast<vec3>(a)[axis] < static_cast<vec3>(b)[axis];
+  }
+};
+
+template <class ValueType = vec3>
+struct MaxSpreadAxisSelector {
+  vec3::Axis selectAxis(const std::vector<ValueType>& items) const {
+    std::vector<float> xs, ys, zs;
+    for (const ValueType& item : items) {
+      const vec3 pos = static_cast<vec3>(item);
+      xs.push_back(pos.x);
+      ys.push_back(pos.y);
+      zs.push_back(pos.z);
+    }
+    float x_spread = spread(xs);
+    float y_spread = spread(ys);
+    float z_spread = spread(zs);
+    if (x_spread > y_spread && x_spread > z_spread) {
+      return vec3::X;
+    } else if (y_spread > z_spread) {
+      return vec3::Y;
+    } else {
+      return vec3::Z;
+    }
+  }
+
+  MaxSpreadAxisSelector child() const { return *this; }
+
+ private:
+  static float spread(const std::vector<float>& v) {
+    const auto [min, max] = std::minmax_element(begin(v), end(v));
+    return *max - *min;
+  }
+};
+
+template <class ValueType = vec3>
+struct XAxisSelector {
+  vec3::Axis selectAxis(const std::vector<ValueType>& items) const {
+    return vec3::X;
+  }
+
+  XAxisSelector child() const { return *this; }
+};
+
+template <class ValueType = vec3>
+struct RandomAxisSelector {
+  vec3::Axis selectAxis(const std::vector<ValueType>& items) const {
+    return vec3::Axis(std::rand() % 3);
+  }
+
+  RandomAxisSelector child() const { return *this; }
+};
+
+template <class ValueType = vec3>
+struct RoundRobinAxisSelector {
+  vec3::Axis axis = vec3::X;
+  vec3::Axis selectAxis(const std::vector<ValueType>& items) const {
+    return axis;
+  }
+
+  RoundRobinAxisSelector child() const {
+    return RoundRobinAxisSelector{vec3::Axis((axis + 1) % 3)};
+  }
+};
+
+template <class ValueType = vec3, class AxisSelector = RoundRobinAxisSelector<>>
+struct AxisAlignedHyperplaneSelector {
+  AxisSelector axis_selector;
+
+  typedef AxisAlignedHyperplane Hypersurface;
+
+  AxisAlignedHyperplane selectHypersurface(
+      std::vector<ValueType>& items) const {
+    vec3::Axis axis = axis_selector.selectAxis(items);
+    AxisComparator<ValueType> cmp(axis);
+    int median_index = MedianIndexAndPartialSort(items, cmp);
+    ValueType median_item = items[median_index];
+    float value = static_cast<vec3>(median_item)[axis];
+    return AxisAlignedHyperplane{axis, value};
+  }
+
+  AxisAlignedHyperplaneSelector child() const {
+    return AxisAlignedHyperplaneSelector{axis_selector.child()};
+  }
+};
+
+template <class ValueType = vec3, class AxisSelector = RoundRobinAxisSelector<>>
+struct RandomAxisAlignedHyperplaneSelector {
+  AxisSelector axis_selector;
+
+  using Hypersurface = AxisAlignedHyperplane;
+
+  AxisAlignedHyperplane selectHypersurface(
+      std::vector<ValueType>& items) const {
+    int index = std::rand() % items.size();
+    const ValueType& item = items[index];
+    vec3::Axis axis = axis_selector.selectAxis(items);
+    float value = ToVec3(item)[axis];
+    return AxisAlignedHyperplane{axis, value};
+  }
+
+  RandomAxisAlignedHyperplaneSelector child() const {
+    return RandomAxisAlignedHyperplaneSelector{axis_selector.child()};
+  }
+};
+
+template <class ValueType = vec3, DistanceFunc<ValueType> Distance = dist>
+struct HalfMaxDistSphereSelector {
+  using Hypersurface = SphereHypersurface<ValueType>;
+
+  Hypersurface selectHypersurface(std::vector<ValueType>& items) const {
+    int index = std::rand() % items.size();
+    const ValueType& pivot_item = items[index];
+    // std::cerr << "HalfMaxDistSphereSelector selected random pivot: "
+    //           << pivot_item << std::endl;
+    float max_dist = 0;
+    for (const ValueType& item : items) {
+      float cur_dist = Distance(item, pivot_item);
+      max_dist = std::max(max_dist, cur_dist);
+      // std::cerr << pivot_item << ' ' << item << ' ' << cur_dist << ' '
+      //           << max_dist << std::endl;
+    }
+    float radius = max_dist / 2;
+    return SphereHypersurface<ValueType>{pivot_item, radius};
+  }
+
+  HalfMaxDistSphereSelector child() const {
+    return HalfMaxDistSphereSelector{};
+  }
+};
+
+template <class ValueType = vec3, DistanceFunc<ValueType> Distance = dist>
+struct DistanceFromFixedElementComparator {
+  DistanceFromFixedElementComparator(const ValueType& pivot) : pivot(pivot) {}
+  ValueType pivot;
+  bool operator()(const ValueType& a, const ValueType& b) {
+    return Distance(pivot, a) < Distance(pivot, b);
+  }
+};
+
+template <class ValueType = vec3, DistanceFunc<ValueType> Distance = dist>
+struct MedianDistSphereSelector {
+  using Hypersurface = SphereHypersurface<ValueType>;
+
+  Hypersurface selectHypersurface(std::vector<ValueType>& items) const {
+    int index = std::rand() % items.size();
+    const ValueType& pivot_item = items[index];
+
+    int median_index = MedianIndexAndPartialSort(
+        items,
+        DistanceFromFixedElementComparator<ValueType, Distance>(pivot_item));
+    float median_dist = Distance(pivot_item, items[median_index]);
+    float radius = median_dist;
+    return SphereHypersurface<ValueType>{pivot_item, radius};
+  }
+
+  MedianDistSphereSelector child() const { return MedianDistSphereSelector{}; }
+};
+
+template <int Size>
+struct SplitSize {
+  // TODO: think about this.
+  static_assert(Size >= 3, "Size must be at least 3");
+  const static int size = Size;
+};
+
+template <class ValueType = vec3, class Hypersurface = AxisAlignedHyperplane,
+          class HypersurfaceSelector = AxisAlignedHyperplaneSelector<
+              ValueType, RoundRobinAxisSelector<ValueType>>,
+          DistanceFunc<ValueType> Distance = dist,
+          class MaxSplit = SplitSize<32>>
+class Tree {
+ public:
+  void fromVector(const std::vector<ValueType>& vec) {
+    for (const auto& item : vec) {
+      add(item);
+    }
+    compile();
+  }
+
+  void add(const ValueType& item) {
+    CHECK(!_compiled) << "Trying to add elements after tree compilation";
+    items.push_back(item);
+  }
+
+  Tree* child(int index) {
+    CHECK(index < 2) << "Invalid index for child " << index;
+    if (!_children[index]) {
+      _children[index] = std::make_unique<Tree>();
+    }
+    return _children[index].get();
+  }
+
+  void compile(const HypersurfaceSelector& hypersurface_selector =
+                   HypersurfaceSelector()) {
+    _compiled = true;
+    if (items.size() <= MaxSplit::size) {
+      return;
+    }
+    hypersurface = hypersurface_selector.selectHypersurface(items);
+    splitItemsToChildren();
+    if (_children[0] != 0) {
+      _children[0]->compile(hypersurface_selector.child());
+    }
+    if (_children[1] != 0) {
+      _children[1]->compile(hypersurface_selector.child());
+    }
+  }
+
+  void splitItemsToChildren() {
+    std::vector<ValueType> all_items;
+    std::swap(items, all_items);
+    for (const ValueType& item : all_items) {
+      RelationToHypersurface item_to_hypersurface =
+          relation(*hypersurface, item);
+      if (item_to_hypersurface.intersects()) {
+        items.push_back(item);
+      } else {
+        child(item_to_hypersurface.side())->add(item);
+      }
+    }
+  }
+
+  struct ItemWithDistance {
+    ValueType item;
+    float distance = std::numeric_limits<float>::infinity();
+
+    std::string str() const {
+      return std::string("ItemWithDistance(") + item +
+             ", dist: " + std::to_string(distance) + ")";
+    }
+
+    static const ItemWithDistance& min(const ItemWithDistance& i1,
+                                       const ItemWithDistance& i2) {
+      if (i1.distance < i2.distance) return i1;
+      return i2;
+    }
+  };
+
+  bool isLeaf() const { return !hypersurface.has_value(); }
+
+  ItemWithDistance findClosest(const ValueType& target) const {
+    CHECK(_compiled) << "Trying to use Tree without compiling it first.";
+    ItemWithDistance res;
+    for (const ValueType& item : items) {
+      float distance = std::max<float>(0, Distance(item, target));
+      res = ItemWithDistance::min(res, ItemWithDistance{item, distance});
+      if (res.distance == 0) return res;
+    }
+    if (!isLeaf()) {
+      RelationToHypersurface target_to_hypersurface =
+          relation(*hypersurface, target);
+
+      Tree* child_with_target = _children[target_to_hypersurface.side()].get();
+      if (child_with_target) {
+        res =
+            ItemWithDistance::min(res, child_with_target->findClosest(target));
+        if (res.distance == 0) return res;
+      }
+
+      Tree* child_without_target =
+          _children[target_to_hypersurface.otherSide()].get();
+      if (child_without_target &&
+          target_to_hypersurface.distance() < res.distance) {
+        res = ItemWithDistance::min(res,
+                                    child_without_target->findClosest(target));
+      }
+    }
+    return res;
+  }
+
+  std::string str(int depth = 0) const {
+    std::string res = std::string(depth, ' ');
+    if (hypersurface.has_value()) {
+      res += hypersurface->str() + "\n";
+    }
+    if (_children[0] != 0) {
+      res += std::string(depth, ' ') + "left:\n" + _children[0]->str(depth + 1);
+    }
+    if (_children[1] != 0) {
+      res +=
+          std::string(depth, ' ') + "right:\n" + _children[1]->str(depth + 1);
+    }
+    if (items.size() > 0) {
+      res += std::to_string(items.size()) +
+             " items:" + JoinAsStrings<ValueType>(items) + "\n";
+    }
+    return res;
+  }
+
+ private:
+  std::vector<ValueType> items;
+  std::optional<Hypersurface> hypersurface;
+  std::unique_ptr<Tree> _children[2];
+  bool _compiled = false;
+};
+
+template <class ValueType, DistanceFunc<ValueType> Distance,
+          class MaxSplit = SplitSize<32>>
+using KDTree = Tree<
+    ValueType, AxisAlignedHyperplane,
+    AxisAlignedHyperplaneSelector<ValueType, RoundRobinAxisSelector<ValueType>>,
+    Distance, MaxSplit>;
+
+template <class AxisSelector, class MaxSplit = SplitSize<32>>
+using CustomVec3KDTree = Tree<vec3, AxisAlignedHyperplane,
+                              AxisAlignedHyperplaneSelector<vec3, AxisSelector>,
+                              dist, SplitSize<32>>;
+
+template <class ValueType, DistanceFunc<ValueType> Distance,
+          class MaxSplit = SplitSize<32>>
+using VPTree =
+    Tree<ValueType, SphereHypersurface<ValueType>,
+         MedianDistSphereSelector<ValueType, Distance>, Distance, MaxSplit>;
+
+using Vec3KDTree = KDTree<vec3, dist>;
+
+using Vec3VPTree = VPTree<vec3, dist>;
+
+using StringVPTree = VPTree<std::string, EditDistanceFloat, SplitSize<1024>>;
+
+}  // namespace spacial_partition
+```
 
 Hope you enjoyed reading this as much as I enjoyed writing it!
 
