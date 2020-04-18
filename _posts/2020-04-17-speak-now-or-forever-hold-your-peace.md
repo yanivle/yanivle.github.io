@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Speak Now or Forever Hold Your Peace"
-date:   2020-04-13 15:00:00
+date:   2020-04-17 15:00:00
 excerpt: "A hard combinatorics puzzle"
 categories: Puzzles
 tags:  Puzzles Computing Algorithms Codes
