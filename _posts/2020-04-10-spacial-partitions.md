@@ -12,21 +12,21 @@ bgContrast: light
 bgGradientOpacity: lighter
 syntaxHighlighter: yes
 ---
-Finding the [nearest neighbor](https://en.wikipedia.org/wiki/Nearest_neighbor_search) of a point in a [metric space](https://en.wikipedia.org/wiki/Metric_space) has [numerous applications](https://en.wikipedia.org/wiki/Nearest_neighbor_search#Applications), from *machine learning* (as a matter of fact, finding the nearest neighbor of an item in feature space is a complete machine learning alogrithm! We'll see a toy example below), to *graphics* and *physics simulation* (e.g. I use it extensively in my General Relativity Renderer - I hope to write a post about it soon), or, as we shall see later, for finding the closest word in the dictionary to a given word with spelling mistakes. In this post we will explore a generic data-structure for efficiently finding the nearest neighbor of a point in arbitrary metric spaces, and a modern c++ implementation.
+Finding the [nearest neighbor](https://en.wikipedia.org/wiki/Nearest_neighbor_search) of a point in a [metric space](https://en.wikipedia.org/wiki/Metric_space) has [numerous applications](https://en.wikipedia.org/wiki/Nearest_neighbor_search#Applications), from *machine learning* (as a matter of fact, finding the nearest neighbor of an item in feature space is a complete machine learning alogrithm! We'll see a toy example below), to *graphics* and *physics simulation* (e.g. I use it extensively in my General Relativity Renderer - I hope to write a post about it soon), or, as we shall see later, for finding the closest word in the dictionary to a given word with spelling mistakes. In this post we will explore a generic data structure for efficiently finding the nearest neighbor of a point in arbitrary metric spaces, and a modern c++ implementation.
 
 ## A Good Algorithm?
 There are several important dimensions that determine *how good an algorithm is*. Maybe the three most important ones are ***time complexity***, ***memory complexity***, and ***code complexity***. Since in almost all problems you can trade one for one of the others, it's usually impossible to find a solution that is actually the best, in the sense that it optimizes all three. Once in a while though, you find a nice trade-off, with low time, memory, *and* code complexities. The solution I'll describe in this post is one such algorithm, for the problem of efficiently finding the closest point to a target point in a metric space.
 
 ## An Example Problem
-Say you have a set of points in the plane $$R^2$$:
+Say we have a set of points in the plane $$R^2$$:
 
 {% include image.html url="/assets/images/posts/spacial_partitions/points.png" %}
 
-You can do some preprocessing on them, and build some data-structure, such that when I give you a new target point in the plane (e.g. the red one):
+Our goal would be to preprocess them and build a data structure, such that when we get a new target point in the plane (e.g. the red one):
 
 {% include image.html url="/assets/images/posts/spacial_partitions/points_with_target.png" %}
 
-You need to output the closest point from the original set (e.g. the one with the yellow highlight):
+We can efficiently output the closest point from the original set to our target point (e.g. the one with the yellow highlight):
 
 {% include image.html url="/assets/images/posts/spacial_partitions/points_with_target_and_solution.png" %}
 
@@ -89,13 +89,13 @@ One standard and simple optimization, is that instead of storing only a single p
 The adjustment to the pseudo-code above is trivial, we would just change one line:
 
 ```python
-  if tree.isLeaf(): return tree.point
+if tree.isLeaf(): return tree.point
 ```
 
 To:
 
 ```python
-  if tree.isLeaf(): return closestPointInList(tree.points, target)
+if tree.isLeaf(): return closestPointInList(tree.points, target)
 ```
 
 See the Benchmarking section below for some results of how this number affects the performance.
@@ -116,6 +116,12 @@ While this one seems better:
 
 {% include image.html url="/assets/images/posts/spacial_partitions/better_hyperplane.png" %}
 
+What about criteria #2? Consider the blue and the green hyperplanes in this diagram:
+
+{% include image.html url="/assets/images/posts/spacial_partitions/criteria_2.png" %}
+
+While the green line separates the points more evenly (so is better according to criteria #1), according to criteria #2, the blue line is better. Indeed, if we are trying to find the nearest neighbor for a point with a similar distribution to that of the original set of points, e.g. the red target point, we are likely to need to check both sides of the green hyperplane, whereas we are likely to only need to check one side of the blue hyperplane.
+
 #### Degrees of Freedom
 When choosing the hyperplanes there are two things we are actually choosing:
 1. Which axis the hyperplane will be perpendicular to ($$X$$, $$Y$$, or $$Z$$)?
@@ -126,7 +132,7 @@ We have several ways for choosing both. For #1, we could, at every node choose r
 Once we chose the axis, we need to choose the intersection point. Here again we can employ several strategies: we can choose a random point from the set and take its projection on the axis as the intersection point, or we can choose the median point's projection instead of a random point (sounds more promising). Here too, see the benchmarking section below for experiment results with a couple of these.
 
 #### Non Binary Trees
-Another simple optimization (which we won't implement) is to consider a set of *k* hyperplanes (say parallel to each other) at each of the nodes in the tree. Instead of just considering on which side of a single hyperplane an item is, we'd then need to determine between which *two* hyperplanes an item is. While adding support for this is trivial, the reason we won't be doing it is that it gets much more hairy if we want to support volume - which we do. Let's see what that means.
+Another simple optimization (which we won't implement) is to consider a set of *k* hyperplanes (say parallel to each other) at each of the nodes of the tree. Instead of just considering on which side of a single hyperplane an item is, we'd then need to determine between which *two* hyperplanes an item is. While adding support for this is trivial, the reason we won't be doing this is that it gets much more hairy if we want to support volume - which we do. Let's see what that means.
 
 ## Supporting Volume
 We discussed above supporting multiple points per leaf, instead of just a single point per leaf. Once we implement that, we can trivially add a really cool feature, that I found useful in several application: supporting *spheres* instead of *points*. Specifically, we want to allow each item that we insert to the tree to have a potentially non-zero radius. In order to enable that, it is enough to allow all nodes in the tree to contain items, not just the leafs, and whenever we add an item to the tree, if its sphere *intersects* the hyperplane (basically meaning it is both to the left and to the right of it) we simply keep it in the parent node, instead of in the child nodes.
@@ -273,32 +279,35 @@ std::cerr << "The closest word in the dictionary to 'Yaniv' is: " << tree_closes
 
 ## Toy Example - Machine Learning a Corona Detector
 
-Before we start with serious benchmarks, let's use our spacial data structure to build a simple machine learned model to detect weather someone has corona. We'll generate some random data for the body temperature, the number of times a person coughs in a day, and a completely irrelevant feature of a person's favorite number. If a person is healthy, we'll assume that their body temperature is normally distributed with a mean of 98.6°F and a standard deviation of 0.45°F (and for a sick person we'll assume the same stddev but a mean of 1°F higher). We'll assume that the number of times a healthy human coughs in a day is geometrically distributed with a parameter of 0.5 (the parameter for a sick person will be 0.25). Finally we'll let the favorite number be an integer uniformly distributed between 1 and 100, regardless of whether a person is sick or not (we should really have given 17 a higher chance...).
+Before we start with serious benchmarks, let's use our spacial data structure to build a simple machine learned model to detect whether someone has corona. The features we'll use are the person's body temperature, the number of times the person coughs in a day, and a completely irrelevant feature of the person's favorite number. We'll generate some random data for these features like so:
+- If a person is healthy, we'll assume that their body temperature is normally distributed with a mean of 98.6°F and a standard deviation of 0.45°F. For a sick person we'll assume the same standard deviation but a mean of 1°F higher.
+- We'll assume that the number of times a healthy human coughs in a day is geometrically distributed with a parameter of 0.5. The parameter we'll use for a sick person will be 0.25.
+- Finally we'll let everyone's favorite number be an integer uniformly distributed between 1 and 100, regardless of whether a person is sick or not (we should really have given 17 a higher chance...).
 
 Here's all of that in code:
 
 ```c++
-struct Point {
+struct Example {
   vec3 features;
-  enum Type { Healthy = 0, Sick = 1 } type;
+  enum Label { Healthy = 0, Sick = 1 } label;
 };
 
-Point getRandomHealthy() {
+Example getRandomHealthy() {
   std::normal_distribution<double> temperature(98.6, 0.45);
   std::geometric_distribution<int> coughs_per_hours(0.5);
   std::uniform_int_distribution<double> favorite_number(1, 100);
-  return Point{vec3(temperature(generator), coughs_per_hours(generator),
+  return Example{vec3(temperature(generator), coughs_per_hours(generator),
                     favorite_number(generator)),
-               Point::Healthy};
+               Example::Healthy};
 }
 
-Point getRandomSick() {
+Example getRandomSick() {
   std::normal_distribution<double> temperature(98.6 + 1, 0.45);
   std::geometric_distribution<int> coughs_per_hours(0.25);
   std::uniform_int_distribution<double> favorite_number(1, 100);
-  return Point{vec3(temperature(generator), coughs_per_hours(generator),
+  return Example{vec3(temperature(generator), coughs_per_hours(generator),
                     favorite_number(generator)),
-               Point::Sick};
+               Example::Sick};
 }
 ```
 
@@ -306,18 +315,18 @@ And here is our toy machine learning model:
 
 ```c++
 struct NearestNeighbor {
-  spacial_partition::KDTree<Point, dist> tree;
+  spacial_partition::KDTree<Example, dist> tree;
 
-  void train(const std::vector<Point>& training_data) {
+  void train(const std::vector<Example>& training_data) {
     tree.fromVector(training_data);
   }
 
-  int classify(const Point& point) { return tree.findClosest(point).item.type; }
+  int classify(const Example& example) { return tree.findClosest(example).item.type; }
 
-  float eval(std::vector<Point>& eval_set) {
+  float eval(std::vector<Example>& eval_set) {
     int correct = 0;
-    for (const Point& point : eval_set) {
-      if (classify(point) == point.type) {
+    for (const Point& example : eval_set) {
+      if (classify(example) == example.type) {
         correct++;
       }
     }
@@ -327,9 +336,11 @@ struct NearestNeighbor {
 };
 ```
 
-And that's it! So how well does this perform? Running is with a training set of just 10 points, gives us just a slightly-better-than-random predictor with a correct prediction only about 55% of the time. This isn't too surprising as we're completely thrown off by the favorite number, that is large in magnitude, compared to the other features (it might be a good idea to normalize all the features, but that's a topic for a different post). Increasing the training size to 100 samples, the model already predicts correctly around 65% of the time. With 1,000 samples, the model gets it right around 76% of the time. With 10,000 samples, the model predicts correctly around 82% of the time! Not to shabby for just a couple of lines of code!
+And that's it! So how well does this perform? Running this with a training set of just 10 examples, gives us just a slightly-better-than-random predictor with a correct prediction only about 55% of the time. This isn't too surprising as we're completely thrown off by the favorite number, that is large in magnitude, compared to the other features (it might be a good idea to normalize all the features, but that's a topic for a different post). Increasing the training size to 100 samples, the model already predicts correctly around 65% of the time. With 1,000 samples, the model gets it right around 76% of the time. With 10,000 samples, the model predicts correctly around 82% of the time! Not too shabby for just a couple of lines of code!
 
 {% include image.html url="/assets/images/posts/spacial_partitions/corona_precision.png" %}
+
+The model's precision looks to saturate around the 8X% precision (with 100,000 training examples we get a precision of 83%). As an exercise for the reader, ***what is the theoretical maximal precision, of the ideal machine learned model on this data set?***
 
 ## Benchmarking
 So how does this implementation compare to trivial baselines (of basically just iterating over the data and taking the closest point, with only minor optimizations, like bailing early as soon as a point of distance 0 is found)?
@@ -382,7 +393,7 @@ Well, not super surprisingly (that was actually the default I chose before runni
 
 #### Closest Dictionary String
 
-What about the performance of the data-structure for finding the closest strings in the dictionary?
+What about the performance of the data structure for finding the closest strings in the dictionary?
 
 For this experiment I used a dictionary with 194,000 English words (from [here](http://www.gwicks.net/dictionaries.htm)). I built the index, and performed 100 closest-word lookups (this was so slow, with such a huge dict, that I only had patience to run 100 iterations). For the target strings, I used random strings of uniform random length between 3 and 10.
 
