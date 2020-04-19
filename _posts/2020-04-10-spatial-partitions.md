@@ -1,12 +1,12 @@
 ---
 layout: post
-title:  "A Generic Spacial Data Structure for Efficient Nearest Neighbor Searches"
+title:  "A Generic Spatial Data Structure for Efficient Nearest Neighbor Searches"
 date:   2020-04-10 15:00:00
 excerpt: "A data structure for finding closest points in space."
 categories: Computing
 tags:  Computing Algorithms Data-Structures
 image:
-  feature: spacial_partitions.jpg
+  feature: spatial_partitions.jpg
   topPosition: -100
 bgContrast: light
 bgGradientOpacity: lighter
@@ -20,42 +20,42 @@ There are several important dimensions that determine *how good an algorithm is*
 ## An Example Problem
 Say we have a set of points in the plane $$R^2$$:
 
-{% include image.html url="/assets/images/posts/spacial_partitions/points.png" %}
+{% include image.html url="/assets/images/posts/spatial_partitions/points.png" %}
 
 Our goal would be to preprocess them and build a data structure, such that when we get a new target point in the plane (e.g. the red one):
 
-{% include image.html url="/assets/images/posts/spacial_partitions/points_with_target.png" %}
+{% include image.html url="/assets/images/posts/spatial_partitions/points_with_target.png" %}
 
 We can efficiently output the closest point from the original set to our target point (e.g. the one with the yellow highlight):
 
-{% include image.html url="/assets/images/posts/spacial_partitions/points_with_target_and_solution.png" %}
+{% include image.html url="/assets/images/posts/spatial_partitions/points_with_target_and_solution.png" %}
 
 ## The Standard Solution
 Depending on the parameters of the question, the well-known solutions to this problem are usually things like the [*k*-d tree](https://en.wikipedia.org/wiki/K-d_tree). A *k*-d tree is a binary tree, such that each node is associated with a [hyperplane](https://en.wikipedia.org/wiki/Hyperplane) that's orthogonal to one of the axes, and splits the set of points to those on one side of the hyperplane and those on the other side that hyperplane. A hyperplane is simply a plane of dimension one less than that of the space, so in the case of our $$R^2$$ example, a hyperplane is just a line:
 
-{% include image.html url="/assets/images/posts/spacial_partitions/points_with_hyperplane.png" %}
+{% include image.html url="/assets/images/posts/spatial_partitions/points_with_hyperplane.png" %}
 
 And here is the same space after we added several such hyperplanes:
 
-{% include image.html url="/assets/images/posts/spacial_partitions/points_with_hyperplanes.png" %}
+{% include image.html url="/assets/images/posts/spatial_partitions/points_with_hyperplanes.png" %}
 
 Note that the above diagram represents a possible *k*-d tree in $$R^2$$, where if a hyperplane is the child of another, we only draw the part of it until it intersects its parent. This specific diagram defines a single *k*-d tree, as detailed in this diagram:
 
-{% include image.html url="/assets/images/posts/spacial_partitions/unique_tree.png" %}
+{% include image.html url="/assets/images/posts/spatial_partitions/unique_tree.png" %}
 
 Here the root hyperplane is purple. Its child hyperlanes orange. One of them has no further children, while the other has a single child - the yellow plane, which has a single child - the green plane, which finally has a last child - the light blue plane. Note though, that while the above diagram defines a unique tree, in general these diagrams are under-specified - i.e. there can be several trees that share the same diagram. Can you see why? (hint - consider what happens if a parent and a child hyperplanes are orthogonal to the same axis, and thus parallel).
 
 Now when a target point is given, like this red one:
 
-{% include image.html url="/assets/images/posts/spacial_partitions/kdtree_search1.png" %}
+{% include image.html url="/assets/images/posts/spatial_partitions/kdtree_search1.png" %}
 
 It is first compared to the root node's hyperplane, and in this case it is determined that it is on its left side:
 
-{% include image.html url="/assets/images/posts/spacial_partitions/kdtree_search2.png" %}
+{% include image.html url="/assets/images/posts/spatial_partitions/kdtree_search2.png" %}
 
 It is then recursively searched on the left side, comparing it to the root node's left child's hyperplane, here determined to be above it:
 
-{% include image.html url="/assets/images/posts/spacial_partitions/kdtree_search3.png" %}
+{% include image.html url="/assets/images/posts/spatial_partitions/kdtree_search3.png" %}
 
 Now, you might say:
 
@@ -63,7 +63,7 @@ Now, you might say:
 
 You'd be very right in saying so, as this diagram depicts:
 
-{% include image.html url="/assets/images/posts/spacial_partitions/kdtree_search4.png" %}
+{% include image.html url="/assets/images/posts/spatial_partitions/kdtree_search4.png" %}
 
 So is all hope lost? Do we need to check the entire tree, and lose the logarithmic complexity? No! Note that due to the [triangle inequality](https://en.wikipedia.org/wiki/Triangle_inequality), all the points on the other side of the plane from a point are ***farther away from the point than the plane***. In other words, we only need to check the child node not containing our target point, if we already checked the child node that does contain it, and the closest point that we found is farther away from the target point than the separating hyperplane. This gives us hope that we might see logarithmic complexity with the *k*-d tree algorithm.
 
@@ -110,15 +110,15 @@ Let's consider two desirable traits for the chosen hyperplanes:
 
 For example, the root hyperplane in the example above is chosen poorly as most points lie to its left, violating desirability trait #1:
 
-{% include image.html url="/assets/images/posts/spacial_partitions/bad_hyperplane.png" %}
+{% include image.html url="/assets/images/posts/spatial_partitions/bad_hyperplane.png" %}
 
 While this one seems better:
 
-{% include image.html url="/assets/images/posts/spacial_partitions/better_hyperplane.png" %}
+{% include image.html url="/assets/images/posts/spatial_partitions/better_hyperplane.png" %}
 
 What about criteria #2? Consider the blue and the green hyperplanes in this diagram:
 
-{% include image.html url="/assets/images/posts/spacial_partitions/criteria_2.png" %}
+{% include image.html url="/assets/images/posts/spatial_partitions/criteria_2.png" %}
 
 While the green line separates the points more evenly (so is better according to criteria #1), according to criteria #2, the blue line is better. Indeed, if we are trying to find the nearest neighbor for a point with a similar distribution to that of the original set of points, e.g. the red target point, we are likely to need to check both sides of the green hyperplane, whereas we are likely to only need to check one side of the blue hyperplane.
 
@@ -140,17 +140,17 @@ We discussed above supporting multiple points per leaf, instead of just a single
 ## Beyond Hyperplanes
 I got to program *k*-d trees several times for various projects, for example, for my General Relativity Renderer, I needed to detect the collision of light photons with millions of stars, and storing them in a *k*-d tree enabled rendering such images as this one:
 
-{% include image.html url="/assets/images/posts/spacial_partitions/stars.jpg" %}
+{% include image.html url="/assets/images/posts/spatial_partitions/stars.jpg" %}
 
 I will write a full post about that project at some point.
 
 What I realized recently, and one of the coolest things imo in this post, is that there is a lot of arbitrariness in the fact that we're using axis-aligned hyperplanes for the *k*-d tree, in fact, there is a lot of arbitrariness in using hyperplanes altogether - we can actually use any [hypersurface](https://en.wikipedia.org/wiki/Hypersurface). For example:
 
-{% include image.html url="/assets/images/posts/spacial_partitions/arbitrary_hypersurface.png" %}
+{% include image.html url="/assets/images/posts/spatial_partitions/arbitrary_hypersurface.png" %}
 
 Hyperplanes, and specifically axis-aligned hyperplanes have the huge benefit that it is very easy to calculate to which side of them a point lies and the distance between them to the point. And while this might be hard to do for arbitrary hypersurfaces, for some hypersufaces this is easy. For example, it's super easy to calculate both of the above for spheres:
 
-{% include image.html url="/assets/images/posts/spacial_partitions/sphere_example.png" %}
+{% include image.html url="/assets/images/posts/spatial_partitions/sphere_example.png" %}
 
 Taking this idea one step further, there is even arbitrariness in requiring a Euclidean space at all. Really what the above reasoning relies on is simply the properties of a [metric space](https://en.wikipedia.org/wiki/Metric_space). The triangle-inequality implies that all the points on the other side of a hypersurface from a point are ***farther away from the point than the hypersurface***. Recall that the distance of a point from a hypersurface is just:
 
@@ -166,7 +166,7 @@ For example, note that the [Levenshtein distance](https://en.wikipedia.org/wiki/
 3. $$d(s1, s2) = d(s2, s1)$$
 4. $$d(s1, s2) + d(s2, s3) \le d(s1, s3) \\ \text{(triangle inequality)}$$
 
-So we could use this same spacial partitioning data structure (it's no longer a *k*-d tree really) to index all the words in the dictionary and efficiently find the closest word to a given word with potential spelling errors!
+So we could use this same spatial partitioning data structure (it's no longer a *k*-d tree really) to index all the words in the dictionary and efficiently find the closest word to a given word with potential spelling errors!
 
 Of course in a general metric space, the notions of *axes* and *hyperplanes* don't exist, so we can't use them as our hypersurfaces. But we can still use spheres!
 
@@ -260,7 +260,7 @@ class Tree {
 So how would this be used? Here's an example (see the full implementation below for the details):
 
 ```c++
-spacial_partition::Vec3KDTree tree;
+spatial_partition::Vec3KDTree tree;
 tree.fromVector(vector_of_vec3s);
 vec3 target = ...;
 vec3 closest = tree.findClosest(target);
@@ -271,7 +271,7 @@ And how about using it for finding the closest string from a dictionary?
 ```c++
 std::vector<std::string> words;
 LoadWordsFromDictionary(&words);
-spacial_partition::StringVPTree tree;
+spatial_partition::StringVPTree tree;
 tree.fromVector(words);
 tree_closest = tree.findClosest("Yaniv").item;
 std::cerr << "The closest word in the dictionary to 'Yaniv' is: " << tree_closest << std::endl;
@@ -279,7 +279,7 @@ std::cerr << "The closest word in the dictionary to 'Yaniv' is: " << tree_closes
 
 ## Toy Example - Machine Learning a Corona Detector
 
-Before we start with serious benchmarks, let's use our spacial data structure to build a simple machine learned model to detect whether someone has corona. The features we'll use are the person's body temperature, the number of times the person coughs in a day, and a completely irrelevant feature of the person's favorite number. We'll generate some random data for these features like so:
+Before we start with serious benchmarks, let's use our spatial data structure to build a simple machine learned model to detect whether someone has corona. The features we'll use are the person's body temperature, the number of times the person coughs in a day, and a completely irrelevant feature of the person's favorite number. We'll generate some random data for these features like so:
 - If a person is healthy, we'll assume that their body temperature is normally distributed with a mean of 98.6°F and a standard deviation of 0.45°F. For a sick person we'll assume the same standard deviation but a mean of 1°F higher.
 - We'll assume that the number of times a healthy human coughs in a day is geometrically distributed with a parameter of 0.5. The parameter we'll use for a sick person will be 0.25.
 - Finally we'll let everyone's favorite number be an integer uniformly distributed between 1 and 100, regardless of whether a person is sick or not (we should really have given 17 a higher chance...).
@@ -315,7 +315,7 @@ And here is our toy machine learning model:
 
 ```c++
 struct NearestNeighbor {
-  spacial_partition::KDTree<Example, dist> tree;
+  spatial_partition::KDTree<Example, dist> tree;
 
   void train(const std::vector<Example>& training_data) {
     tree.fromVector(training_data);
@@ -338,7 +338,7 @@ struct NearestNeighbor {
 
 And that's it! So how well does this perform? Running this with a training set of just 10 examples, gives us just a slightly-better-than-random predictor with a correct prediction only about 55% of the time. This isn't too surprising as we're completely thrown off by the favorite number, that is large in magnitude, compared to the other features (it might be a good idea to normalize all the features, but that's a topic for a different post). Increasing the training size to 100 samples, the model already predicts correctly around 65% of the time. With 1,000 samples, the model gets it right around 76% of the time. With 10,000 samples, the model predicts correctly around 82% of the time! Not too shabby for just a couple of lines of code!
 
-{% include image.html url="/assets/images/posts/spacial_partitions/corona_precision.png" %}
+{% include image.html url="/assets/images/posts/spatial_partitions/corona_precision.png" %}
 
 The model's precision looks to saturate around the 8X% precision (with 100,000 training examples we get a precision of 83%). As an exercise for the reader, ***what is the theoretical maximal precision, of the ideal machine learned model on this data set?***
 
@@ -350,7 +350,7 @@ For practical applications, where indeed finding the closest point is the bottle
 #### Trees in Euclidean Spaces
 So here are the results for indexing 10,000 points in $$R^3$$ and performing 10,000 finds:
 
-{% include image.html url="/assets/images/posts/spacial_partitions/results.png" %}
+{% include image.html url="/assets/images/posts/spatial_partitions/results.png" %}
 
 For calibration, on my setup, creating the 10,000 random vec3s took 0.001 seconds (or 1 milli second).
 The rest of the columns represent several tree configurations. The number in red is the cost of building the tree, and the number in blue is the cost of performing the 10K *find-closest* operations. The baseline algorithm, has 0 build cost, and takes 2.7 seconds to perform 10K *find-closest* operations.
@@ -361,7 +361,7 @@ Also, interestingly, the x-axis only tree (which basically ignores the y and z c
 
 What happens on an even larger data set? Here we see the results for 100,000 points in $$R^3$$ and 100,000 finds. The baseline would have been way too slow for this one (estimated at around 5 minutes - more than I have patience for :)) so I am not including it:
 
-{% include image.html url="/assets/images/posts/spacial_partitions/results_large.png" %}
+{% include image.html url="/assets/images/posts/spatial_partitions/results_large.png" %}
 
 Here too it's easy to see that the round-robin method dominates, with very fast build time, and the best find time. It is able to build the tree and perform the 100K *find-closest* operations in just over a second.
 
@@ -369,7 +369,7 @@ Here too it's easy to see that the round-robin method dominates, with very fast 
 
 What happens if the points aren't randomly sampled from the unit cube, like in the experiment above, but are rather organized on the surface of the unit sphere? For this experiment, I kept the slow baseline off, and used 10K points and 10K *find-closest* queries:
 
-{% include image.html url="/assets/images/posts/spacial_partitions/results_unit_sphere.png" %}
+{% include image.html url="/assets/images/posts/spatial_partitions/results_unit_sphere.png" %}
 
 As you can see, the round-robin method still dominates, with the random axis one still very close.
 
@@ -387,7 +387,7 @@ So half of the points are around the unit cube (or on the surface of the unit sp
 
 We know there is one more interesting parameter to optimize - the cutoff value, below which we will not keep subdiving the nodes, but rather maintain a flat list. Here we see the results of 10K points in the unit cube in $$R^3$$ with 10K queries, using the round-robin axis selection method:
 
-{% include image.html url="/assets/images/posts/spacial_partitions/results_split_size.png" %}
+{% include image.html url="/assets/images/posts/spatial_partitions/results_split_size.png" %}
 
 Well, not super surprisingly (that was actually the default I chose before running this experiment :)) it turns out that the best min split size is 32. Obviously the build cost keeps going down as this number increases, but at 32 we are almost minimizing the find cost, while keeping the build cost low.
 
@@ -399,7 +399,7 @@ For this experiment I used a dictionary with 194,000 English words (from [here](
 
 Here are the results:
 
-{% include image.html url="/assets/images/posts/spacial_partitions/results_dict.png" %}
+{% include image.html url="/assets/images/posts/spatial_partitions/results_dict.png" %}
 
 As you can see, this elegant implementation already does much better than the naive approach! There are specialized algorithms for this problem of finding the closest string in a dictionary like [SymSpell](https://github.com/wolfgarbe/SymSpell), [LinSpell](https://github.com/wolfgarbe/LinSpell), or [Norvig's algorithm](https://norvig.com/spell-correct.html), but for their gains in time complexity, they pay heavily in memory and code complexity.
 
@@ -488,11 +488,11 @@ All the above experiments use this implementation.
 
 ## Implementation
 
-Finally, here is my implementation of the spacial partition data structure in C++:
+Finally, here is my implementation of the spatial partition data structure in C++:
 
 ```c++
 /*
-Generic spacial-partition binary tree.
+Generic spatial-partition binary tree.
 */
 
 #pragma once
@@ -507,7 +507,7 @@ Generic spacial-partition binary tree.
 #include "str_util.h"
 #include "vec3.h"
 
-namespace spacial_partition {
+namespace spatial_partition {
 
 template <class T, class Compare>
 size_t MedianIndexAndPartialSort(std::vector<T>& v,
@@ -945,13 +945,13 @@ using Vec3VPTree = VPTree<vec3, dist>;
 
 using StringVPTree = VPTree<std::string, EditDistanceFloat, SplitSize<1024>>;
 
-}  // namespace spacial_partition
+}  // namespace spatial_partition
 ```
 
 Hope you enjoyed reading this as much as I enjoyed writing it!
 
 PS - until I write the full post about it, here is a quick teaser from my General Relativity Renderer, rendering a million stars with a black hole in the middle:
 
-{% include image.html url="/assets/images/posts/spacial_partitions/stars_gravity.jpg" %}
+{% include image.html url="/assets/images/posts/spatial_partitions/stars_gravity.jpg" %}
 
 More on that soon!
