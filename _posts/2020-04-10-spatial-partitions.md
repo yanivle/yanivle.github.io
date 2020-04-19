@@ -6,7 +6,7 @@ excerpt: "A data structure for finding closest points in space."
 categories: Computing
 tags:  Computing Algorithms Data-Structures
 image:
-  feature: spatial_partitions.jpg
+  feature: spacial_partitions.jpg
   topPosition: -100
 bgContrast: light
 bgGradientOpacity: lighter
