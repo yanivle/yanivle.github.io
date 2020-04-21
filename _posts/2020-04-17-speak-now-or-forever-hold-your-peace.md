@@ -10,7 +10,7 @@ image:
   topPosition: -100
 bgContrast: dark
 bgGradientOpacity: darker
-syntaxHighlighter: yes
+syntaxHighlighter: no
 ---
 The warden is playing another cruel game with a group of prisoners. He makes 100 of them stand in a circle, and draws a dot, either white or black, on each of their foreheads. They all see everyone else's dots, but not their own. The warden then counts: "1, 2, 3!" and they all need to simultaneously, either say nothing, or guess the color of the dot on their foreheads. If at least one of them guesses wrong they are all killed. If no one guesses correctly they are all killed as well.
 
