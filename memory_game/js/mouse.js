@@ -68,6 +68,7 @@ class Mouse {
     let self = this;
     function onMouseDown(event) {
       event.preventDefault();
+      self.pos = self.getCursorPosition(canvas, event);
       self.down = true;
       self.clickHandlers.forEach(handler => handler.click());
     }
