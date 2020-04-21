@@ -19,9 +19,9 @@ function main() {
     context.fillStyle = 'rgb(0, 0, 0)';
     context.fillRect(0, 0, canvas.width, canvas.height);
 
-    objects.forEach(object => object.update ? object.update(delta_time) : null);
+    objects.forEach(object => typeof object.update == 'function' ? object.update(delta_time) : null);
     for (let i = 0; i < layers.length; ++i) {
-      layers[i].forEach(object => object.draw ? object.draw(context) : null);
+      layers[i].forEach(object => typeof object.draw == 'function' ? object.draw(context) : null);
     }
     requestAnimationFrame(animate);
   }
@@ -39,14 +39,14 @@ function addObject(object, { layer = 2, duration = Infinity } = {}) {
   objects.push(object);
   object._layer = layer;
   layers[layer].push(object);
-  if (object.start) object.start();
+  if (typeof object.start == 'function') object.start();
   if (duration != Infinity) {
     setTimeout(() => { destroyObject(object) }, duration * 1000);
   }
 }
 
 function destroyObject(object) {
-  if (object.end) object.end();
+  if (typeof object.end == 'function') object.end();
   removeByValueInplace(objects, object);
   removeByValueInplace(layers[object._layer], object);
 }
