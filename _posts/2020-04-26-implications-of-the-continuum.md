@@ -15,7 +15,7 @@ syntaxHighlighter: no
 *This cute set theory puzzle requires some mathematical maturity.*
 
 Does a function $f:[0, 1]\to [0, 1]$ with the following properties exist:
-1. $$\forall x \in [0, 1]. |f(x)| \leq \aleph_{0}, \text{i.e.} f(x) \text{is countable.}$$
-2. $$\forall x, y \in [0, 1]. x \in f(y) \lor y \in f(x).$$
+1. $$\forall x \in [0, 1]. |f(x)| \leq \aleph_{0}, \text{ i.e. } f(x) \text{ is countable.}$$
+2. $$\forall x, y \in [0, 1]. x \in f(y) \text{ or } y \in f(x).$$
 
 How does your answer change if you assume that the continuum hypothesis is true vs if you assume that it is false?
