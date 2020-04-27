@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Implications of the Continuum"
-date:   2020-04-20 15:00:00
+date:   2020-04-26 15:00:00
 excerpt: "An advanced set theory puzzle"
 categories: Puzzles
 tags:  Puzzles Computing Algorithms Codes
