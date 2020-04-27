@@ -107,7 +107,7 @@ class MainMenu {
 
   addButton(url, pos, countForEachCard, shuffleProb, moveTime) {
     let button = new Button(url, pos, () => {
-      let ps = new ParticleSystem(['/memory_game/assets/star.png'], 10, mouse.pos);
+      let ps = new ParticleSystem(['/memory_game/assets/star.png'], 100, mouse.pos);
       addObject(ps, { layer: 3, duration: 2 });
       this.startGame(countForEachCard, shuffleProb, moveTime);
     });
@@ -243,7 +243,7 @@ class Level {
       addObject(text, { layer: 3, duration: 2 });
     }
 
-    let ps = new ParticleSystem(['/memory_game/assets/star.png'], 10, mouse.pos);
+    let ps = new ParticleSystem(['/memory_game/assets/star.png'], 100, mouse.pos);
     addObject(ps, { layer: 3, duration: 5 });
 
     sounds.applause.play();
@@ -254,9 +254,9 @@ class Level {
       if (this.cards.length == 0) {
         let text = new UIText('You win! It took you ' + this.turns + ' turns!', new Vec2(canvas.width / 2, 400), 32, 'green');
         addObject(text, { layer: 3, duration: 5 });
-        addObject(new ParticleSystem(['/memory_game/assets/star.png'], 10, new Vec2(canvas.width / 3, 400)), { layer: 3, duration: 5 });
-        addObject(new ParticleSystem(['/memory_game/assets/star.png'], 10, new Vec2(canvas.width / 2, 400)), { layer: 3, duration: 5 });
-        addObject(new ParticleSystem(['/memory_game/assets/star.png'], 10, new Vec2(canvas.width * 2 / 3, 400)), { layer: 3, duration: 5 });
+        addObject(new ParticleSystem(['/memory_game/assets/star.png'], 100, new Vec2(canvas.width / 3, 400)), { layer: 3, duration: 5 });
+        addObject(new ParticleSystem(['/memory_game/assets/star.png'], 100, new Vec2(canvas.width / 2, 400)), { layer: 3, duration: 5 });
+        addObject(new ParticleSystem(['/memory_game/assets/star.png'], 100, new Vec2(canvas.width * 2 / 3, 400)), { layer: 3, duration: 5 });
 
         setTimeout(() => {
           max_level++;
