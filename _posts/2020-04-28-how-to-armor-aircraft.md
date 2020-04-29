@@ -21,7 +21,15 @@ Each red dot denotes a location where an aircraft was hit by a bullet.
 ***Based on this diagram, where should the extra armor be added?***
 
 ## Spoiler Alert - Solution Ahead!
-Well, the researchers from the Center for Naval Analyses had recommended that armor be added to the areas that showed the most damage - i.e. that armor should be added to the red areas. Luckily, the statistician [Abraham Wald](https://en.wikipedia.org/wiki/Abraham_Wald) noted that the study ***only considered the aircraft that had survived their missions***, as all the bombers which had been shot down had been rendered unavailable for assessment! The holes in the returning aircraft, then, represented exactly the areas where a bomber could take damage and still return home safely. Wald proposed that the Navy reinforce areas where the returning aircraft were unscathed, since those were the areas that, if hit, would cause the plane to be lost.
+Well, the researchers from the Center for Naval Analyses had, wrongly, recommended that armor be added to the areas that showed the most damage - i.e. that armor should be added to the red areas, like so:
+
+{% include image.html url="/assets/images/posts/aircraft_wrong.png" %}
+
+Luckily, the statistician [Abraham Wald](https://en.wikipedia.org/wiki/Abraham_Wald) noted that the study ***only considered the aircraft that had survived their missions***, as all the fighters which had been shot down were unavailable for assessment! The holes in the returning aircraft, then, represented exactly the areas where a fighter could take a bullet and still return home safely! Wald proposed that the Navy reinforce areas where the returning aircraft were **unharmed**, like the cockpit, the engines, the center of the wings, or the narrow fragile area connecting the fighter's tail to the main body:
+
+{% include image.html url="/assets/images/posts/aircraft_right.png" %}
+
+*Those were exactly the areas that, if hit, would cause the plane to be lost, and be missing from the survey!*
 
 The error of concentrating on the things that made it past some selection process and overlooking those that did not, is called [Survivorship bias](https://en.wikipedia.org/wiki/Survivorship_bias#In_the_military). This puzzle is borrowing heavily from the fascinating wikipedia article on the topic (and from a couple of related wikipedia articles).
 
