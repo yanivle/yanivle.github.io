@@ -23,7 +23,7 @@ Each red dot denotes a location where an aircraft was hit by a bullet.
 ## Spoiler Alert - Solution Ahead!
 Well, the researchers from the Center for Naval Analyses had recommended that armor be added to the areas that showed the most damage - i.e. that armor should be added to the red areas. Luckily, the statistician [Abraham Wald](https://en.wikipedia.org/wiki/Abraham_Wald) noted that the study ***only considered the aircraft that had survived their missions***, as all the bombers which had been shot down had been rendered unavailable for assessment! The holes in the returning aircraft, then, represented exactly the areas where a bomber could take damage and still return home safely. Wald proposed that the Navy reinforce areas where the returning aircraft were unscathed, since those were the areas that, if hit, would cause the plane to be lost.
 
-The error of concentrating on the things that made it past some selection process and overlooking those that did not, is called [Survivorship bias](https://en.wikipedia.org/wiki/Survivorship_bias#In_the_military). This riddle is inspired by the fascinating wikipedia article on the topic.
+The error of concentrating on the things that made it past some selection process and overlooking those that did not, is called [Survivorship bias](https://en.wikipedia.org/wiki/Survivorship_bias#In_the_military). This puzzle is borrowing heavily from the fascinating wikipedia article on the topic (and from a couple of related wikipedia articles).
 
 ### Another Example - The Brodie Helmet
 
