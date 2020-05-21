@@ -2,6 +2,7 @@ import { System } from "../ecs/system.mjs";
 import * as base_components from "../components/base_components.mjs";
 import { context } from "../core/canvas.mjs";
 import { entity_db } from "../ecs/entity_database.mjs";
+import { Alpha } from "../components/base_components.mjs";
 
 export class SpriteRenderer extends System {
   constructor() {
@@ -24,7 +25,10 @@ export class SpriteRenderer extends System {
       let box = entity.getComponent(base_components.Box);
       let sprite = entity.getComponent(base_components.Sprite);
       let rotation = entity.getComponent(base_components.Rotation);
-      context.globalAlpha = sprite.opacity;
+      let opacity = 1;
+      let alpha = entity.getComponent(Alpha);
+      if (alpha) opacity = alpha.opacity;
+      context.globalAlpha = opacity;
       let dx = 0;
       let dy = 0;
       if (box.centered) {

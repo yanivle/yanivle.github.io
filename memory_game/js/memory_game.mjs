@@ -25,13 +25,14 @@ import { MenuScene } from "./scenes/menu_scene.mjs";
 import { GameScene } from "./scenes/game_scene.mjs";
 import { PositionWiggleSystem } from "./corona/standard_systems/position_wiggle_system.mjs";
 import { SceneSwitchSystem } from "./corona/standard_systems/scene_switch_system.mjs";
+import { RectRenderingSystem } from "./corona/standard_systems/RectRenderingSystem.mjs";
 
 let resource_manager = new ResourceManager(
   // '/memory_game/assets/',
   '/assets/',
   'loading',
   () => { document.getElementById('main').style.display = 'block'; },
-  true);
+  false);
 Debug.debugInConsole('resource_manager', resource_manager);
 
 let cursorImage = resource_manager.loadImage('cursor.png');
@@ -71,8 +72,9 @@ function start() {
   // Everything that debugs needs to run after this
   game_engine.addSystem(new RenderedPathSystem());
   game_engine.addSystem(new TextRenderer());
-  game_engine.addSystem(new ExpirationSystem());
+  game_engine.addSystem(new RectRenderingSystem());
 
+  game_engine.addSystem(new ExpirationSystem());
   game_engine.addSystem(new SceneSwitchSystem());
 
   game_engine.startScene('menu');

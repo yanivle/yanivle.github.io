@@ -17,6 +17,7 @@ export class TextRenderer extends System {
       context.font = renderedText.font;
       context.fillStyle = renderedText.fill;
       context.strokeStyle = renderedText.stroke;
+      context.lineWidth = 8; // TODO: make this a parameter.
       let lines = renderedText.text.split('\n');
       for (let i = 0; i < lines.length; ++i) {
         var textMetrics = context.measureText(lines[i]);

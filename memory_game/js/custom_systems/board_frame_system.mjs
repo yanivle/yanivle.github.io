@@ -27,7 +27,7 @@ export class BoardFrameSystem extends System {
 
   init() {
     BoardFrameSystem._updateDimensions();
-    this.frame = SpriteRenderer.addComponents(new Entity(), this.boardFrameImage, { x: SpecialPowersSystem.FRAME_SIZE, y: 0, width: BoardFrameSystem.WIDTH, height: canvas.height, layer: 9, centered: false });
+    this.frame = SpriteRenderer.addComponents(new Entity(), this.boardFrameImage, { x: SpecialPowersSystem.FRAME_SIZE, y: 0, width: BoardFrameSystem.WIDTH, height: canvas.height, layer: 8, centered: false });
   }
 
   update() {

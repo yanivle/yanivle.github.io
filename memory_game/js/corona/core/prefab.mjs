@@ -1,4 +1,4 @@
-import { Entity } from "./entity.mjs";
+import { Entity } from "../ecs/entity.mjs";
 
 export class Prefab {
   constructor(templateEntity) {
@@ -9,7 +9,7 @@ export class Prefab {
   static validateTemplateEntity(templateEntity) {
     console.assert(!templateEntity.index, 'Prefab template entities must not be indexed (pass false for the index arg when creating the entity)');
     Object.values(templateEntity.components).forEach(templateComponent => {
-      console.assert(typeof templateComponent.clone === 'function', 'All components used as prefab templates must have a clone method', templateComponent);
+      console.assert(typeof templateComponent.clone === 'function', 'All components used as prefab templates must have a clone method', templateComponent.clone);
     });
   }
 

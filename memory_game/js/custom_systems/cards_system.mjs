@@ -7,7 +7,7 @@ import { entity_db } from "../corona/ecs/entity_database.mjs";
 import * as base_components from "../corona/components/base_components.mjs";
 import { Rotation } from "../corona/components/base_components.mjs";
 import { BoxCollider } from "../corona/components/base_components.mjs";
-import { KeepOnScreen } from "../corona/components/base_components.mjs";
+import { KeepOnScreen } from "./keep_on_screen_system.mjs";
 import { RotationWiggle } from "../corona/components/base_components.mjs";
 import { Entity } from "../corona/ecs/entity.mjs";
 import { RenderedPath } from "../corona/components/base_components.mjs";
@@ -23,6 +23,7 @@ import { ResizingSystem } from "../corona/standard_systems/resizing_system.mjs";
 import { SpecialPowersSystem } from "./special_powers_system.mjs";
 import { FadeSystem } from "../corona/standard_systems/fade_system.mjs";
 import { BoardFrameSystem } from "./board_frame_system.mjs";
+import { Trail } from "../corona/components/base_components.mjs";
 
 const CARD_SIZE = 64;
 
@@ -48,6 +49,15 @@ export class CardsSystem extends System {
   }
 
   init() {
+    this.sounds = {
+      electricity: resource_manager.loadAudio('electricity'),
+      whoosh: resource_manager.loadAudio('whoosh'),
+      cough: resource_manager.loadAudio('cough'),
+      boom: resource_manager.loadAudio('boom'),
+      cheering: resource_manager.loadAudio('cheering'),
+    };
+    this.sounds.electricity.loop = true;
+
     for (const cardImage of this.cardImages) {
       for (let i = 0; i < this.numCardsPerType; ++i) {
         let card = SpriteRenderer.addComponents(new Entity(), this.backfaceImage, {
@@ -64,6 +74,7 @@ export class CardsSystem extends System {
           .addComponent(new BoxCollider())
           .addComponent(new KeepOnScreen())
           .addComponent(new RotationWiggle(1 / 20, 20, randRange(0, 6.28)));
+        ;
       }
     }
   }
@@ -115,6 +126,8 @@ export class CardsSystem extends System {
       });
     }
     if (flippedSomething) {
+      this.sounds.whoosh.play();
+      let numElectricityConnections = 0;
       // Recalculate electricity
       this.electricity_index.forEach(entity => { entity.scheduleDestruction(); });
       // Remove spinning from cards - ok to remove the component because it's not in the index
@@ -133,6 +146,7 @@ export class CardsSystem extends System {
         else if (faceupImage != cardComponent.faceupImage) faceupConflict = true;
       }
       if (faceupConflict) {
+        this.sounds.cough.play();
         numFaceupCards = 0;
         this.index.forEach(card => {
           if (CardsSystem.isFaceup(card)) {
@@ -155,6 +169,7 @@ export class CardsSystem extends System {
               new Entity()
                 .addComponent(new Electricity(card, card2, 10, 5 * numFaceupCards))
                 .addComponent(new RenderedPath(10, 'rgba(100, 100, 255, 0.5)'));
+              numElectricityConnections++;
             }
           }
         }
@@ -162,6 +177,7 @@ export class CardsSystem extends System {
       if (numFaceupCards == this.numCardsPerType) {
         // Remove electricity.
         this.electricity_index.forEach(entity => { entity.scheduleDestruction(); });
+        numElectricityConnections = 0;
         // Create particle system.
         for (let i = 0; i < this.index.length; ++i) {
           let card = this.index.at(i);
@@ -187,6 +203,9 @@ export class CardsSystem extends System {
                 g: 0.1
               });
 
+            this.sounds.boom.play();
+            this.sounds.cheering.play();
+
             let powerupType = this.specialPowersSystem.getPowerupTypeFromImage(faceupImage);
             let powerupPos = this.specialPowersSystem.getPowerupPosition(powerupType);
             card.addComponent(new Attractor(powerupPos.x, powerupPos.y, 0.01, 0.0001));
@@ -199,6 +218,14 @@ export class CardsSystem extends System {
         }
         // Add special power button.
         this.specialPowersSystem.createSpecialPowerButton(faceupImage);
+      }
+      if (numElectricityConnections > 0) {
+        if (this.sounds.electricity.paused) {
+          this.sounds.electricity.play();
+        }
+        this.sounds.electricity.volume = 0.1 * numElectricityConnections;
+      } else {
+        this.sounds.electricity.pause();
       }
     }
   }

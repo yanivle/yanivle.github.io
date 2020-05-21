@@ -30,7 +30,7 @@ export class ResourceManager {
       this.log('Loading audio from cache: ' + audioUrl);
     } else {
       this.log('Loading audio: ' + audioUrl);
-      let audio = new Audio(audioUrl);
+      audio = new Audio(audioUrl);
       this._audioResources.set(audioUrl, audio);
       audio.preload = 'auto';
       this._resourcesToLoad.add(audioUrl);

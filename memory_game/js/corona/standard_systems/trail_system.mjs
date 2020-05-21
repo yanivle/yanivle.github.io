@@ -1,26 +1,33 @@
-import { System } from "../ecs/system.mjs";
+import { EntityProcessorSystem } from "../ecs/entity_processor_system.mjs";
 import { Position, Trail, RenderedPath } from "../components/base_components.mjs";
-import { entity_db } from "../ecs/entity_database.mjs";
 import { game_engine } from "../core/game_engine.mjs";
 
-export class TrailSystem extends System {
+export class TrailSystem extends EntityProcessorSystem {
   constructor() {
-    super();
-    this.index = entity_db.index(Position, Trail, RenderedPath);
+    super(Position, Trail, RenderedPath);
   }
 
-  update() {
-    this.index.forEach(entity => {
-      let pos = entity.getComponent(Position);
-      let renderedPath = entity.getComponent(RenderedPath);
-      let trail = entity.getComponent(Trail);
-      if (game_engine.now - trail.prevUpdateTime > trail.updateFrequency) {
-        trail.prevUpdateTime = game_engine.now;
+  processEntity(_dTime, _entity, pos, trail, renderedPath) {
+    if (renderedPath.points.length < trail.numParts) {
+      renderedPath.points.push(Object.assign({}, pos));
+    } else {
+      let dist2 = (pos.x - renderedPath.points[0].x) ** 2 +
+        (pos.y - renderedPath.points[0].y) ** 2;
+      if (dist2 < trail.updateDist2) {
+        renderedPath.points[0].x = pos.x;
+        renderedPath.points[0].y = pos.y;
+      } else {
         renderedPath.points.unshift(Object.assign({}, pos));
-        if (renderedPath.points.length > trail.length) {
-          renderedPath.points.length = trail.length;
+        if (renderedPath.points.length > trail.numParts) {
+          renderedPath.points.length = trail.numParts;
         }
       }
-    });
+    }
+    for (let i = 1; i < renderedPath.points.length; ++i) {
+      renderedPath.points[i].x = renderedPath.points[i - 1].x * trail.springStrength
+        + renderedPath.points[i].x * (1 - trail.springStrength);
+      renderedPath.points[i].y = renderedPath.points[i - 1].y * trail.springStrength
+        + renderedPath.points[i].y * (1 - trail.springStrength);
+    }
   }
 }

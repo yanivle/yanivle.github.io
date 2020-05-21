@@ -14,6 +14,9 @@ import { AngularVelocity, Sprite } from "../corona/components/base_components.mj
 import { Entity } from "../corona/ecs/entity.mjs";
 import { game_engine } from "../corona/core/game_engine.mjs";
 import { AutoOrientationSystem } from "../corona/standard_systems/auto_orientation_system.mjs";
+import { Alpha } from "../corona/components/base_components.mjs";
+import { RenderedPath } from "../corona/components/base_components.mjs";
+import { Trail } from "../corona/components/base_components.mjs";
 
 export class VirusSystem extends System {
   constructor(virusImages, cloudImage) {
@@ -35,7 +38,7 @@ export class VirusSystem extends System {
     entity
       .addComponent(new Rotation(0))
       .addComponent(new AngularVelocity(2 * 3.14 * 0.01));
-    entity.getComponent(Sprite).opacity = 0;
+    entity.addComponent(new Alpha(0));
     this.cloud = entity;
   }
 
@@ -69,6 +72,8 @@ export class VirusSystem extends System {
       .addComponent(new PhysicsBody(vx, vy))
       .addComponent(new Rotation(0))
       .addComponent(new RotationWiggle(1 / 20, 20, randRange(0, 6.28)));
+    // .addComponent(new RenderedPath(size / 2, 'rgba(150, 255, 150, 0.2)'))
+    // .addComponent(new Trail(5, 0.03, velSize * velSize * velSize));
     AutoOrientationSystem.autoOrient(virus);
     this.viruses.push(virus);
   }
@@ -76,7 +81,7 @@ export class VirusSystem extends System {
   update(deltaTime) {
     let timeSinceInit = (game_engine.now - this.initTime) / 100;
     let virusProgress = Math.min(1, timeSinceInit);
-    this.cloud.getComponent(Sprite).opacity = virusProgress;
+    this.cloud.getComponent(Alpha).opacity = virusProgress;
     this.virusesPerSecond = virusProgress;
     if (Math.random() < this.virusesPerSecond * deltaTime) {
       this.createVirus();

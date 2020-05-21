@@ -8,7 +8,7 @@ import { RotationWiggleSystem } from "../corona/standard_systems/rotation_wiggle
 import { SceneSwitchSystem } from "../corona/standard_systems/scene_switch_system.mjs";
 import { TextRenderer } from "../corona/standard_systems/text_renderer.mjs";
 import { ParticleSystemsSystem } from "../corona/standard_systems/particle_systems_system.mjs";
-import { Prefab } from "../corona/ecs/prefab.mjs";
+import { Prefab } from "../corona/core/prefab.mjs";
 import { Position } from "../corona/components/base_components.mjs";
 
 export class MenuScene extends Scene {
@@ -28,9 +28,14 @@ export class MenuScene extends Scene {
     this.sickKidImage = resource_manager.loadImage('sick_kid.png');
     // this.sickKidImage2 = resource_manager.loadImage('sick_kid2.png');
     // this.healthyKidImage = resource_manager.loadImage('healthy_kid.png');
+
+    this.music = resource_manager.loadAudio('Checkie_Brown_-_11_-_Wirklich_Wichtig_CB_27.mp3');
+    this.music.loop = true;
+    this.music.volume = 0.3;
   }
 
   init() {
+    this.music.play();
     let bubbleUpParticleSystemPrefab = new Prefab(ParticleSystemsSystem.addComponents(new Entity('bubbleParticleSystemPrefab', false),
       0,
       0,

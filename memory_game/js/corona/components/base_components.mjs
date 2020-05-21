@@ -91,23 +91,25 @@ export class BoxCollider {
   }
 }
 
-export class KeepOnScreen {
-  clone() {
-    return new KeepOnScreen();
-  }
-}
-
-export class Sprite {
-  constructor(image, opacity = 1) {
-    this.image = image;
+export class Alpha {
+  constructor(opacity = 1) {
     this.opacity = opacity;
   }
 
   clone() {
-    return new Sprite(this.image, this.opacity);
+    return new Alpha(this.opacity);
   }
 }
-window.Sprite = Sprite;
+
+export class Sprite {
+  constructor(image) {
+    this.image = image;
+  }
+
+  clone() {
+    return new Sprite(this.image);
+  }
+}
 
 export class RenderedText {
   constructor(text, font, stroke, fill, centered) {
@@ -157,14 +159,15 @@ export class RenderedPath {
 }
 
 export class Trail {
-  constructor(length, updateFrequency = 0) {
-    this.length = length;
-    this.updateFrequency = updateFrequency;
-    this.prevUpdateTime = 0;
+  constructor(numParts = 10, springStrength = 0.2, updateDist = 0) {
+    this.numParts = numParts;
+    this.springStrength = springStrength;
+    this.updateDist = updateDist;
+    this.updateDist2 = updateDist * updateDist;
   }
 
   clone() {
-    return new Trail(this.length, this.updateFrequency);
+    return new Trail(this.numParts, this.springStrength, this.updateDist);
   }
 }
 
@@ -205,5 +208,15 @@ export class PositionWiggle {
 
   clone() {
     return new PositionWiggle(this.xAmplitude, this.yAmplitude, this.xFrequency, this.yFrequency, this.xPhase, this.yPhase);
+  }
+}
+
+export class RenderedRect {
+  constructor(color) {
+    this.color = color;
+  }
+
+  clone() {
+    return new RenderedRect(this.color);
   }
 }

@@ -19,7 +19,7 @@ export class MouseCursor extends System {
     this.cursor = SpriteRenderer.addComponents(new Entity(), this.cursorImage, { x: mouse.pos.x, y: mouse.pos.y, layer: -1, centered: false });
     this.cursor
       .addComponent(new RenderedPath(10, 'rgba(0, 255, 0, 0.2)'))
-      .addComponent(new Trail(10));
+      .addComponent(new Trail(10, 0, 0));
     this.cursor.name = 'mouse_cursor';
 
     let mouseParticleSystem = ParticleSystemsSystem.addComponents(new Entity(),

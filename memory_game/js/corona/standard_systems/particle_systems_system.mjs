@@ -10,9 +10,10 @@ import { Rotation } from "../components/base_components.mjs";
 import { RenderedPath } from "../components/base_components.mjs";
 import { Trail } from "../components/base_components.mjs";
 import { AngularVelocity } from "../components/base_components.mjs";
-import { Prefab } from "../ecs/prefab.mjs";
+import { Prefab } from "../core/prefab.mjs";
 import { game_engine } from "../core/game_engine.mjs";
 import { FadeSystem } from "./fade_system.mjs";
+import { Alpha } from "../components/base_components.mjs";
 
 class Emitter {
   constructor(particlePrefabs, particlesPerSecond, maxParticles, particleMaxVelocity, g, now, maxParticlesPerUpdate) {
@@ -44,13 +45,16 @@ export class ParticleSystemsSystem extends EntityProcessorSystem {
     super(Position, Emitter);
   }
 
-  static createParticlePrefabs(images, { particleLifetime = 0.5, trailColor = null, trailLength = null, rotationsPerSecond = null, renderingLayer = 1 }) {
+  static createParticlePrefabs(images, { particleLifetime = 0.5, trailColor = null, trailLength = null, rotationsPerSecond = null, renderingLayer = 1, initialOpacity = 1 }) {
     let prefabs = [];
     images.forEach(image => {
       let templateEntity = SpriteRenderer.addComponents(new Entity('particle_system_prefab', false), image, { layer: renderingLayer })
         .addComponent(new Particle());
       if (particleLifetime != null) {
-        FadeSystem.fadeOut(templateEntity, particleLifetime); // TODO: note that this was particleLifetime / 2...
+        FadeSystem.fadeOut(templateEntity, particleLifetime);
+      }
+      if (initialOpacity != 1) {
+        templateEntity.addComponent(new Alpha(initialOpacity));
       }
       if (rotationsPerSecond != null) {
         templateEntity.addComponent(new Rotation(randRange(0, 3.14)))
@@ -59,7 +63,7 @@ export class ParticleSystemsSystem extends EntityProcessorSystem {
       if (trailLength != null || trailColor != null) {
         console.assert(trailColor != null && trailColor != null);
         templateEntity.addComponent(new RenderedPath(5, trailColor))
-          .addComponent(new Trail(trailLength, 0));
+          .addComponent(new Trail(trailLength));
       }
       prefabs.push(new Prefab(templateEntity));
     });

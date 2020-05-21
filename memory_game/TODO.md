@@ -1,3 +1,5 @@
+- add rect renderer
+  - make rotations apply to everything (if possible?)
 - move to TS
 - rename systems to _system
 - rename files to class name with caps instead of _
