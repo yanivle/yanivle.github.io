@@ -1,9 +1,9 @@
-import { System } from "../ecs/system.mjs";
-import { canvas } from "../core/canvas.mjs";
-import { resizeHandler } from "../core/canvas.mjs";
-import { Box } from "../components/base_components.mjs";
-import { SpriteRenderer } from "./sprite_renderer.mjs";
-import { Entity } from "../ecs/entity.mjs";
+import { System } from "../corona/ecs/system.mjs";
+import { canvas } from "../corona/core/canvas.mjs";
+import { resizeHandler } from "../corona/core/canvas.mjs";
+import { Box } from "../corona/components/base_components.mjs";
+import { SpriteRenderer } from "../corona/standard_systems/sprite_renderer.mjs";
+import { Entity } from "../corona/ecs/entity.mjs";
 import { SpecialPowersSystem } from "./special_powers_system.mjs";
 
 export class BoardFrameSystem extends System {

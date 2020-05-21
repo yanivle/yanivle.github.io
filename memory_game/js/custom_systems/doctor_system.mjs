@@ -1,16 +1,16 @@
-import { System } from "../ecs/system.mjs";
-import { canvas } from "../core/canvas.mjs";
-import { PhysicsBody } from "../components/base_components.mjs";
-import { Rotation } from "../components/base_components.mjs";
-import { RotationWiggle } from "../components/base_components.mjs";
-import { SpriteRenderer } from "./sprite_renderer.mjs";
-import { Entity } from "../ecs/entity.mjs";
-import { Position } from "../components/base_components.mjs";
-import { RenderedText } from "../components/base_components.mjs";
-import { Attractor } from "../components/base_components.mjs";
-import { TextRenderer } from "./text_renderer.mjs";
-import { mouse } from "../core/game_engine.mjs";
-import { game_engine } from "../core/game_engine.mjs";
+import { System } from "../corona/ecs/system.mjs";
+import { canvas } from "../corona/core/canvas.mjs";
+import { PhysicsBody } from "../corona/components/base_components.mjs";
+import { Rotation } from "../corona/components/base_components.mjs";
+import { RotationWiggle } from "../corona/components/base_components.mjs";
+import { SpriteRenderer } from "../corona/standard_systems/sprite_renderer.mjs";
+import { Entity } from "../corona/ecs/entity.mjs";
+import { Position } from "../corona/components/base_components.mjs";
+import { RenderedText } from "../corona/components/base_components.mjs";
+import { Attractor } from "../corona/components/base_components.mjs";
+import { TextRenderer } from "../corona/standard_systems/text_renderer.mjs";
+import { mouse } from "../corona/core/game_engine.mjs";
+import { game_engine } from "../corona/core/game_engine.mjs";
 
 export class DoctorSystem extends System {
   constructor(doctorImage, speechBubbleImage, font, finishCb) {

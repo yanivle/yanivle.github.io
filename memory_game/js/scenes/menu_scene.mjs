@@ -1,13 +1,13 @@
 import { Scene } from "../corona/core/scene.mjs";
 import { Entity } from "../corona/ecs/entity.mjs";
-import { SpriteRenderer } from "../corona/systems/sprite_renderer.mjs";
+import { SpriteRenderer } from "../corona/standard_systems/sprite_renderer.mjs";
 import { canvas } from "../corona/core/canvas.mjs";
 import { PositionWiggle } from "../corona/components/base_components.mjs";
 import { randRange } from "../corona/core/math.mjs";
-import { RotationWiggleSystem } from "../corona/systems/rotation_wiggle_system.mjs";
-import { SceneSwitchSystem } from "../corona/systems/scene_switch_system.mjs";
-import { TextRenderer } from "../corona/systems/text_renderer.mjs";
-import { ParticleSystemsSystem } from "../corona/systems/particle_systems_system.mjs";
+import { RotationWiggleSystem } from "../corona/standard_systems/rotation_wiggle_system.mjs";
+import { SceneSwitchSystem } from "../corona/standard_systems/scene_switch_system.mjs";
+import { TextRenderer } from "../corona/standard_systems/text_renderer.mjs";
+import { ParticleSystemsSystem } from "../corona/standard_systems/particle_systems_system.mjs";
 import { Prefab } from "../corona/ecs/prefab.mjs";
 import { Position } from "../corona/components/base_components.mjs";
 

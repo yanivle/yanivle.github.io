@@ -1,9 +1,9 @@
-import { game_engine } from "../core/game_engine.mjs";
-import { SpriteRenderer } from "./sprite_renderer.mjs";
-import { Entity } from "../ecs/entity.mjs";
-import { ParticleSystemsSystem } from "./particle_systems_system.mjs";
-import { EntityProcessorSystem } from "../ecs/entity_processor_system.mjs";
-import { FadeSystem } from "./fade_system.mjs";
+import { game_engine } from "../corona/core/game_engine.mjs";
+import { SpriteRenderer } from "../corona/standard_systems/sprite_renderer.mjs";
+import { Entity } from "../corona/ecs/entity.mjs";
+import { ParticleSystemsSystem } from "../corona/standard_systems/particle_systems_system.mjs";
+import { EntityProcessorSystem } from "../corona/ecs/entity_processor_system.mjs";
+import { FadeSystem } from "../corona/standard_systems/fade_system.mjs";
 
 const SPECIAL_POWERS = {
   DISINFECTANT: "DISINFECTANT",

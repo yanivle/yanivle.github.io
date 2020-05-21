@@ -1,7 +1,7 @@
-import { Position, Box, KeepOnScreen } from "../components/base_components.mjs";
-import { PhysicsBody } from "../components/base_components.mjs";
+import { Position, Box, KeepOnScreen } from "../corona/components/base_components.mjs";
+import { PhysicsBody } from "../corona/components/base_components.mjs";
 import { BoardFrameSystem } from "./board_frame_system.mjs";
-import { EntityProcessorSystem } from "../ecs/entity_processor_system.mjs";
+import { EntityProcessorSystem } from "../corona/ecs/entity_processor_system.mjs";
 
 export class KeepOnScreenSystem extends EntityProcessorSystem {
   constructor() {

@@ -1,19 +1,19 @@
-import { System } from "../ecs/system.mjs";
-import { SpriteRenderer } from "./sprite_renderer.mjs";
-import { randRange } from "../core/math.mjs";
-import { Position, Box } from "../components/base_components.mjs";
-import { Rotation } from "../components/base_components.mjs";
-import { BoxCollider } from "../components/base_components.mjs";
-import { canvas } from "../core/canvas.mjs";
-import { randChoice } from "../core/math.mjs";
-import { lerp } from "../core/math.mjs";
-import { RotationWiggle } from "../components/base_components.mjs";
-import { PhysicsBody } from "../components/base_components.mjs";
-import { PhysicsSystem } from "./physics_system.mjs";
-import { AngularVelocity, Sprite } from "../components/base_components.mjs";
-import { Entity } from "../ecs/entity.mjs";
-import { game_engine } from "../core/game_engine.mjs";
-import { AutoOrientationSystem } from "./auto_orientation_system.mjs";
+import { System } from "../corona/ecs/system.mjs";
+import { SpriteRenderer } from "../corona/standard_systems/sprite_renderer.mjs";
+import { randRange } from "../corona/core/math.mjs";
+import { Position, Box } from "../corona/components/base_components.mjs";
+import { Rotation } from "../corona/components/base_components.mjs";
+import { BoxCollider } from "../corona/components/base_components.mjs";
+import { canvas } from "../corona/core/canvas.mjs";
+import { randChoice } from "../corona/core/math.mjs";
+import { lerp } from "../corona/core/math.mjs";
+import { RotationWiggle } from "../corona/components/base_components.mjs";
+import { PhysicsBody } from "../corona/components/base_components.mjs";
+import { PhysicsSystem } from "../corona/standard_systems/physics_system.mjs";
+import { AngularVelocity, Sprite } from "../corona/components/base_components.mjs";
+import { Entity } from "../corona/ecs/entity.mjs";
+import { game_engine } from "../corona/core/game_engine.mjs";
+import { AutoOrientationSystem } from "../corona/standard_systems/auto_orientation_system.mjs";
 
 export class VirusSystem extends System {
   constructor(virusImages, cloudImage) {

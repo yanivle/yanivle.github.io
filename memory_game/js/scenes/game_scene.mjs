@@ -1,9 +1,9 @@
 import { Scene } from "../corona/core/scene.mjs";
-import { BoardFrameSystem } from "../corona/systems/board_frame_system.mjs";
-import { VirusSystem } from "../corona/systems/virus_system.mjs";
-import { SpecialPowersSystem } from "../corona/systems/special_powers_system.mjs";
-import { CardsSystem } from "../corona/systems/cards_system.mjs";
-import { TimeCounterSystem } from "../corona/systems/time_counter_system.mjs";
+import { BoardFrameSystem } from "../custom_systems/board_frame_system.mjs";
+import { VirusSystem } from "../custom_systems/virus_system.mjs";
+import { SpecialPowersSystem } from "../custom_systems/special_powers_system.mjs";
+import { CardsSystem } from "../custom_systems/cards_system.mjs";
+import { TimeCounterSystem } from "../custom_systems/time_counter_system.mjs";
 
 export class GameScene extends Scene {
   constructor() {

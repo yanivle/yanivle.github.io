@@ -1,8 +1,8 @@
-import { System } from "../ecs/system.mjs";
-import { TextRenderer } from "./text_renderer.mjs";
-import { RenderedText } from "../components/base_components.mjs";
-import { canvas } from "../core/canvas.mjs";
-import { game_engine } from "../core/game_engine.mjs";
+import { System } from "../corona/ecs/system.mjs";
+import { TextRenderer } from "../corona/standard_systems/text_renderer.mjs";
+import { RenderedText } from "../corona/components/base_components.mjs";
+import { canvas } from "../corona/core/canvas.mjs";
+import { game_engine } from "../corona/core/game_engine.mjs";
 
 export class TimeCounterSystem extends System {
   constructor(font) {
