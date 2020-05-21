@@ -28,8 +28,8 @@ import { SceneSwitchSystem } from "./corona/standard_systems/scene_switch_system
 import { RectRenderingSystem } from "./corona/standard_systems/RectRenderingSystem.mjs";
 
 let resource_manager = new ResourceManager(
-  // '/memory_game/assets/',
-  '/assets/',
+  '/memory_game/assets/',
+  // '/assets/',
   'loading',
   () => { document.getElementById('main').style.display = 'block'; },
   false);

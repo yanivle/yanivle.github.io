@@ -56,7 +56,7 @@ export class GameScene extends Scene {
       .addComponent(new Position(0, 0))
       .addComponent(new RenderedRect('black'))
       .addComponent(new Box(canvas.width, canvas.height, false));
-    FadeSystem.fadeOut(fadeScreen, 1);
+    FadeSystem.fadeOut(fadeScreen, 3);
     this.addEntity(fadeScreen);
 
     let backgroundParticleSystem = ParticleSystemsSystem.addComponents(new Entity('backgroundParticleSystem'),
