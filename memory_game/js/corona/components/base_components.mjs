@@ -57,21 +57,20 @@ export class AngularVelocity {
 }
 
 export class Box {
-  constructor(width = 0, height = 0) {
+  constructor(width = 0, height = 0, centered = true) {
     this.width = width;
     this.height = height;
+    this.centered = centered;
   }
 
   clone() {
-    return new Box(this.width, this.height);
+    return new Box(this.width, this.height, this.centered);
   }
 
-  // TODO: move this somewhere else.
-  // TODO: need to call the centered/non-centered version depending on the centered property
-  left(pos) { return pos.x - this.width / 2; }
-  right(pos) { return pos.x + this.width / 2; }
-  top(pos) { return pos.y - this.height / 2; }
-  bottom(pos) { return pos.y + this.height / 2; }
+  left(pos) { return pos.x + (this.centered ? -this.width / 2 : 0); }
+  right(pos) { return this.left(pos) + this.width; }
+  top(pos) { return pos.y + (this.centered ? -this.height / 2 : 0); }
+  bottom(pos) { return this.top(pos) + this.height; }
 }
 
 export class Resizing {
@@ -99,14 +98,13 @@ export class KeepOnScreen {
 }
 
 export class Sprite {
-  constructor(image, opacity = 1, centered = true) {
+  constructor(image, opacity = 1) {
     this.image = image;
     this.opacity = opacity;
-    this.centered = centered;
   }
 
   clone() {
-    return new Sprite(this.image, this.opacity, this.centered);
+    return new Sprite(this.image, this.opacity);
   }
 }
 window.Sprite = Sprite;

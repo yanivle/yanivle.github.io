@@ -47,6 +47,7 @@ export function pointInBox(point, topLeft, widthHeight) {
     point.y <= topLeft.y + widthHeight.height;
 }
 
+// TODO: move this to box?
 export function pointInCenteredBox(point, topLeft, widthHeight) {
   return point.x >= topLeft.x - widthHeight.width / 2 &&
     point.x <= topLeft.x + widthHeight.width / 2 &&

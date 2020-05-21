@@ -1,6 +1,6 @@
 - move to TS
-- fix resource manager
-- move centered to box
+- rename systems to _system
+- rename files to class name with caps instead of _
 - clean game with scenes
 - make standard systems and game systems
 

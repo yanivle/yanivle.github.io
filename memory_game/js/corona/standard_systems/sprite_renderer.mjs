@@ -27,7 +27,7 @@ export class SpriteRenderer extends System {
       context.globalAlpha = sprite.opacity;
       let dx = 0;
       let dy = 0;
-      if (sprite.centered) {
+      if (box.centered) {
         dx = -box.width / 2;
         dy = -box.height / 2;
       }
@@ -49,8 +49,8 @@ export class SpriteRenderer extends System {
     height = height ?? image.height;
     return entity
       .addComponent(new base_components.Position(x, y))
-      .addComponent(new base_components.Sprite(image, opacity, centered))
-      .addComponent(new base_components.Box(width, height))
+      .addComponent(new base_components.Sprite(image, opacity))
+      .addComponent(new base_components.Box(width, height, centered))
       .addComponent(new base_components.Layer(layer));
   }
 }
