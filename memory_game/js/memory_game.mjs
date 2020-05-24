@@ -2,10 +2,10 @@ import { ResourceManager } from "./corona/core/resource_manager.mjs";
 import { game_engine } from "./corona/core/game_engine.mjs";
 import { ClearScreen } from "./corona/standard_systems/clear_screen.mjs";
 import { SpriteRenderer } from "./corona/standard_systems/sprite_renderer.mjs";
+import { AnchorSystem } from "./corona/standard_systems/AnchorSystem.mjs";
 import { MouseCursor } from "./corona/standard_systems/mouse_cursor.mjs";
 import { ExpirationSystem } from "./corona/standard_systems/expiration_system.mjs";
 import { TrailSystem } from "./corona/standard_systems/trail_system.mjs";
-import { CardsSystem, FlipSystem } from "./custom_systems/cards_system.mjs";
 import { PhysicsSystem } from "./corona/standard_systems/physics_system.mjs";
 import { BoxCollisionSystem } from "./corona/standard_systems/box_collision_system.mjs";
 import { FadeSystem } from "./corona/standard_systems/fade_system.mjs";
@@ -20,12 +20,12 @@ import { AttractorSystem } from "./corona/standard_systems/attractor_system.mjs"
 import { ParticleSystemsSystem } from "./corona/standard_systems/particle_systems_system.mjs";
 import { ResizingSystem } from "./corona/standard_systems/resizing_system.mjs";
 import { AutoOrientationSystem } from "./corona/standard_systems/auto_orientation_system.mjs";
-import { BackgroundSystem } from "./corona/standard_systems/background_system.mjs";
 import { MenuScene } from "./scenes/menu_scene.mjs";
 import { GameScene } from "./scenes/game_scene.mjs";
 import { PositionWiggleSystem } from "./corona/standard_systems/position_wiggle_system.mjs";
 import { SceneSwitchSystem } from "./corona/standard_systems/scene_switch_system.mjs";
 import { RectRenderingSystem } from "./corona/standard_systems/RectRenderingSystem.mjs";
+import { SchedulingSystem } from "./corona/standard_systems/SchedulingSystem.mjs";
 
 let resource_manager = new ResourceManager(
   '/memory_game/assets/',
@@ -36,11 +36,7 @@ let resource_manager = new ResourceManager(
 Debug.debugInConsole('resource_manager', resource_manager);
 
 let cursorImage = resource_manager.loadImage('cursor.png');
-let backgroundImage = resource_manager.loadImage('hospital.jpg');
 const mouseGlowImage = resource_manager.loadImage('glow1.png');
-
-const doctorImage = resource_manager.loadImage('doctor.png');
-const speechBubbleImage = resource_manager.loadImage('speech_bubble.png');
 
 resource_manager.loadFont('AvocadoCreamy', 'AvocadoCreamy.ttf');
 
@@ -51,23 +47,23 @@ function start() {
   game_engine.reset();
   game_engine.addSystem(new FadeSystem());
   game_engine.addSystem(new ParticleSystemsSystem());
+  game_engine.addSystem(new PhysicsSystem());
+  game_engine.addSystem(new BoxCollisionSystem());
+  game_engine.addSystem(new AnchorSystem());
   game_engine.addSystem(new RotationWiggleSystem());
   game_engine.addSystem(new PositionWiggleSystem());
   game_engine.addSystem(new RotationSystem());
   game_engine.addSystem(new AutoOrientationSystem());
-  game_engine.addSystem(new BoxCollisionSystem());
   game_engine.addSystem(new AttractorSystem());
-  game_engine.addSystem(new PhysicsSystem());
   game_engine.addSystem(new ResizingSystem());
   game_engine.addSystem(new KeepOnScreenSystem());
   game_engine.addSystem(new MouseCursor(cursorImage, [mouseGlowImage]));
   game_engine.addSystem(new TrailSystem());
-  game_engine.addSystem(new FlipSystem());
   game_engine.addSystem(new ElectricitySystem());
   // game_engine.addSystem(new DoctorSystem(doctorImage, speechBubbleImage, '22px AvocadoCreamy', startActualGame));
   // Rendering
   game_engine.addSystem(new ClearScreen('white'));
-  game_engine.addSystem(new BackgroundSystem(backgroundImage));
+  // game_engine.addSystem(new BackgroundSystem(backgroundImage));
   game_engine.addSystem(new SpriteRenderer());
   // Everything that debugs needs to run after this
   game_engine.addSystem(new RenderedPathSystem());
@@ -76,6 +72,7 @@ function start() {
 
   game_engine.addSystem(new ExpirationSystem());
   game_engine.addSystem(new SceneSwitchSystem());
+  game_engine.addSystem(new SchedulingSystem());
 
   game_engine.startScene('menu');
 

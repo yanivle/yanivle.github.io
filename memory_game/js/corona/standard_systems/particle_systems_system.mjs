@@ -45,7 +45,7 @@ export class ParticleSystemsSystem extends EntityProcessorSystem {
     super(Position, Emitter);
   }
 
-  static createParticlePrefabs(images, { particleLifetime = 0.5, trailColor = null, trailLength = null, rotationsPerSecond = null, renderingLayer = 1, initialOpacity = 1 }) {
+  static createParticlePrefabs(images, { particleLifetime = 0.5, trailColor = null, trailLength = null, rotationsPerSecond = null, renderingLayer = 1, initialOpacity = 1, initialRotation = null }) {
     let prefabs = [];
     images.forEach(image => {
       let templateEntity = SpriteRenderer.addComponents(new Entity('particle_system_prefab', false), image, { layer: renderingLayer })
@@ -59,6 +59,9 @@ export class ParticleSystemsSystem extends EntityProcessorSystem {
       if (rotationsPerSecond != null) {
         templateEntity.addComponent(new Rotation(randRange(0, 3.14)))
           .addComponent(new AngularVelocity(2 * 3.14 * rotationsPerSecond));
+      }
+      if (initialRotation != null) {
+        templateEntity.addComponent(new Rotation(initialRotation));
       }
       if (trailLength != null || trailColor != null) {
         console.assert(trailColor != null && trailColor != null);

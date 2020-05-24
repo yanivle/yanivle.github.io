@@ -31,7 +31,7 @@ export class MenuScene extends Scene {
 
     this.music = resource_manager.loadAudio('Checkie_Brown_-_11_-_Wirklich_Wichtig_CB_27.mp3');
     this.music.loop = true;
-    this.music.volume = 0.3;
+    this.music.volume = 0.2;
   }
 
   init() {

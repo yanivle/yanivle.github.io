@@ -4,6 +4,11 @@ import { Entity } from "../corona/ecs/entity.mjs";
 import { ParticleSystemsSystem } from "../corona/standard_systems/particle_systems_system.mjs";
 import { EntityProcessorSystem } from "../corona/ecs/entity_processor_system.mjs";
 import { FadeSystem } from "../corona/standard_systems/fade_system.mjs";
+import { Box, BoxCollider, PositionWiggle, Position, PhysicsBody } from "../corona/components/base_components.mjs";
+import { AudioArray } from "../corona/core/AudioArray.mjs";
+import * as smokeParticleSystem from "../prefabs/smokeParticleSystem.mjs";
+import { event_manager } from "../corona/core/EventManager.mjs";
+import { sequencer } from "../corona/core/Sequencer.mjs";
 
 const SPECIAL_POWERS = {
   DISINFECTANT: "DISINFECTANT",
@@ -22,6 +27,8 @@ class SpecialPowerComponentSchedule {
   }
 };
 
+const maxFrameBounces = 1;
+
 export class SpecialPowersSystem extends EntityProcessorSystem {
   static BUTTON_SIZE = 128;
   static FRAME_SIZE = SpecialPowersSystem.BUTTON_SIZE + 40;
@@ -39,9 +46,54 @@ export class SpecialPowersSystem extends EntityProcessorSystem {
   }
 
   init() {
+    this.frames = [];
     for (let i = 0; i < 5; ++i) {
-      SpriteRenderer.addComponents(new Entity(), this.frameImage, { x: SpecialPowersSystem.FRAME_SIZE / 2, y: SpecialPowersSystem.FRAME_SIZE / 2 + (SpecialPowersSystem.FRAME_SIZE + SpecialPowersSystem.FRAME_VERTICAL_PADDING) * i, layer: 0, width: SpecialPowersSystem.FRAME_SIZE, height: SpecialPowersSystem.FRAME_SIZE });
+      // SpriteRenderer.addComponents(new Entity(), this.frameImage, { x: SpecialPowersSystem.FRAME_SIZE / 2, y: SpecialPowersSystem.FRAME_SIZE / 2 + (SpecialPowersSystem.FRAME_SIZE + SpecialPowersSystem.FRAME_VERTICAL_PADDING) * i, layer: 0, width: SpecialPowersSystem.FRAME_SIZE, height: SpecialPowersSystem.FRAME_SIZE });
+      let frame = new Entity('specialPowerFrame' + i);
+      this.frames.push(frame);
+      SpriteRenderer.addComponents(frame, this.frameImage, { x: -SpecialPowersSystem.FRAME_SIZE / 2 - 100, y: SpecialPowersSystem.FRAME_SIZE / 2 + (SpecialPowersSystem.FRAME_SIZE + SpecialPowersSystem.FRAME_VERTICAL_PADDING) * i, layer: 0, width: SpecialPowersSystem.FRAME_SIZE, height: SpecialPowersSystem.FRAME_SIZE });
     }
+    this.anvilSoundArray = new AudioArray('anvil', maxFrameBounces);
+    this.smokeParticleSystemPrefab = smokeParticleSystem.getPrefab({ numParticles: 32, vertical: true });
+    this.bounceEventQueue = event_manager.getEventQueue('collision');
+  }
+
+  attractFrames(bigFrame) {
+    let frame = this.frames[0];
+    frame
+      .addComponent(new BoxCollider())
+      .addComponent(new PhysicsBody(0, 0, 1, 0, 0.05));
+    let bounces = 0;
+    let pos = frame.getComponent(Position);
+    let originalY = pos.y;
+
+    let bounceHandler = event => {
+      if (event.entity1 != frame && event.entity2 != frame) return;
+      bounces++;
+      let smokePS = this.smokeParticleSystemPrefab.instantiate().addComponent(new Position(SpecialPowersSystem.FRAME_SIZE, originalY));
+      smokePS.addComponent(new PositionWiggle(0, SpecialPowersSystem.FRAME_SIZE, 0, 100));
+
+      this.anvilSoundArray.play();
+      pos.y = originalY;
+      pos.x = SpecialPowersSystem.FRAME_SIZE / 2;
+
+      if (bounces == maxFrameBounces) {
+        // console.log(pos.x);
+        // console.log(pos);
+        frame.scheduleRemoveComponent(BoxCollider);
+        frame.scheduleRemoveComponent(PhysicsBody);
+        this.frames.shift();
+        if (this.frames.length > 0) {
+          this.attractFrames(bigFrame);
+        } else {
+          this.bounceEventQueue.scheduleUnsubscribe(bounceHandler);
+          bigFrame.scheduleRemoveComponent(BoxCollider);
+          bigFrame.scheduleRemoveComponent(PhysicsBody);
+          sequencer.notifyEnded('attract_special_frames');
+        }
+      }
+    };
+    this.bounceEventQueue.subscribe(bounceHandler);
   }
 
   getPowerupTypeFromImage(image) {

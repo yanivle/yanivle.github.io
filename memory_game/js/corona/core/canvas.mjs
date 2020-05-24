@@ -26,10 +26,10 @@ export class ResizeHandler {
     const resizeObserver = new ResizeObserver(() => {
       const rect = canvas.getBoundingClientRect();
       if (verbose) console.log('Resizing canvas: ', rect.width, rect.height);
-      canvas.width = rect.width;
-      canvas.height = rect.height;
-      canvas.setAttribute('width', rect.width);
-      canvas.setAttribute('height', rect.height);
+      // canvas.width = rect.width;
+      // canvas.height = rect.height;
+      // canvas.setAttribute('width', rect.width);
+      // canvas.setAttribute('height', rect.height);
       this.resized = true;
     });
     resizeObserver.observe(canvas);

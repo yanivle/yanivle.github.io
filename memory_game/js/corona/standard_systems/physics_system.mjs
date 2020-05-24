@@ -18,14 +18,14 @@ export class PhysicsSystem extends System {
       phys.vy += phys.ay;
       phys.vx *= (1 - phys.friction);
       phys.vy *= (1 - phys.friction);
-      phys.ax *= (1 - phys.friction);
-      phys.ay *= (1 - phys.friction);
+      phys.ax *= (1 - phys.damp);
+      phys.ay *= (1 - phys.damp);
     });
   }
 
-  static addComponents(entity, x, y, vx, vy, ax, ay) {
+  static addComponents(entity, x, y, vx, vy, ax, ay, friction = 0) {
     entity
       .addComponent(new Position(x, y))
-      .addComponent(new PhysicsBody(vx, vy, ax, ay));
+      .addComponent(new PhysicsBody(vx, vy, ax, ay, friction));
   }
 }

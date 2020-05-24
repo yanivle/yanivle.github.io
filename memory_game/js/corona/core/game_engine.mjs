@@ -7,6 +7,7 @@ import { Debug } from './debug.mjs';
 import { entity_db } from '../ecs/entity_database.mjs';
 import { resizeHandler } from './canvas.mjs';
 import { SceneManager } from './scene_manager.mjs';
+import { event_manager } from './EventManager.mjs';
 
 export let mouse = null;
 export let keyboard = null;
@@ -95,6 +96,13 @@ class GameEngine {
     entity_db.cleanup();
   }
 
+  getSystemByType(systemType) {
+    for (let i = 0; i < this.systems.length; ++i) {
+      if (this.systems[i].constructor == systemType) return this.systems[i];
+    }
+    return null;
+  }
+
   run(width, height, { fullScreen = false, showEngineStats = false }) {
     this.running = true;
     this.init(width, height);
@@ -107,6 +115,8 @@ class GameEngine {
       this.#now = now;
 
       this.systems.forEach(system => system.update(deltaTime));
+
+      event_manager.update();
 
       this.postUpdate();
 

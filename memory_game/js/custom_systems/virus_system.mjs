@@ -25,15 +25,21 @@ export class VirusSystem extends System {
     this.virusesPerSecond = 0;
     this.viruses = [];
     this.cloudImage = cloudImage;
+    this.initTime = 0;
   }
 
   init() {
+    // this.createClouds(this.cloudImage);
+    // this.initTime = game_engine.now;
+  }
+
+  start() {
     this.createClouds(this.cloudImage);
     this.initTime = game_engine.now;
   }
 
-  createClouds(image) {
-    let entity = SpriteRenderer.addComponents(new Entity(), image, { layer: 3 });
+  createClouds() {
+    let entity = SpriteRenderer.addComponents(new Entity(), this.cloudImage, { layer: 3 });
     PhysicsSystem.addComponents(entity, canvas.width / 2, canvas.height / 2, 0, 0, 0, 0);
     entity
       .addComponent(new Rotation(0))
@@ -79,6 +85,7 @@ export class VirusSystem extends System {
   }
 
   update(deltaTime) {
+    if (this.initTime == 0) return;
     let timeSinceInit = (game_engine.now - this.initTime) / 100;
     let virusProgress = Math.min(1, timeSinceInit);
     this.cloud.getComponent(Alpha).opacity = virusProgress;

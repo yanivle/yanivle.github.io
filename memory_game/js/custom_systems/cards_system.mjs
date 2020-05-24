@@ -36,7 +36,7 @@ class CardComponent {
 }
 
 export class CardsSystem extends System {
-  constructor(cardImages, backfaceImage, numCardsPerType, starImages, specialPowersSystem) {
+  constructor(cardImages, backfaceImage, numCardsPerType, starImages, specialPowersSystem, doctorSystem) {
     super();
     this.index = entity_db.index(CardComponent);
     this.electricity_index = entity_db.index(Electricity, RenderedPath);
@@ -45,10 +45,17 @@ export class CardsSystem extends System {
     this.numCardsPerType = numCardsPerType;
     this.starImages = starImages;
     this.specialPowersSystem = specialPowersSystem;
+    this.doctorSystem = doctorSystem;
     // this.debug = new Debug(true);
   }
 
   init() {
+    this.tipsGiven = {
+      firstFlip: false,
+      firstMatch: false,
+      firstFail: false,
+      firstSpecialPower: false,
+    };
     this.sounds = {
       electricity: resource_manager.loadAudio('electricity'),
       whoosh: resource_manager.loadAudio('whoosh'),
@@ -57,7 +64,9 @@ export class CardsSystem extends System {
       cheering: resource_manager.loadAudio('cheering'),
     };
     this.sounds.electricity.loop = true;
+  }
 
+  initCards() {
     for (const cardImage of this.cardImages) {
       for (let i = 0; i < this.numCardsPerType; ++i) {
         let card = SpriteRenderer.addComponents(new Entity(), this.backfaceImage, {
@@ -70,8 +79,8 @@ export class CardsSystem extends System {
         card
           .addComponent(new CardComponent(false, cardImage, this.backfaceImage))
           .addComponent(new Rotation(0))
-          .addComponent(new PhysicsBody(0, 0, 0, 0, 0.1))
-          .addComponent(new BoxCollider())
+          .addComponent(new PhysicsBody(0, 0, 0, 0, 0.1, 0.1))
+          .addComponent(new BoxCollider(false, false))
           .addComponent(new KeepOnScreen())
           .addComponent(new RotationWiggle(1 / 20, 20, randRange(0, 6.28)));
         ;
@@ -126,6 +135,10 @@ export class CardsSystem extends System {
       });
     }
     if (flippedSomething) {
+      if (!this.tipsGiven.firstFlip) {
+        this.tipsGiven.firstFlip = true;
+        this.doctorSystem.speak('Great! You flipped a card!\nNow find another just like it!', 3);
+      }
       this.sounds.whoosh.play();
       let numElectricityConnections = 0;
       // Recalculate electricity
@@ -146,6 +159,10 @@ export class CardsSystem extends System {
         else if (faceupImage != cardComponent.faceupImage) faceupConflict = true;
       }
       if (faceupConflict) {
+        if (!this.tipsGiven.firstFail) {
+          this.tipsGiven.firstFail = true;
+          this.doctorSystem.speak('Oh no! You flipped a non-matching card!\nStart over!', 3);
+        }
         this.sounds.cough.play();
         numFaceupCards = 0;
         this.index.forEach(card => {
@@ -170,6 +187,10 @@ export class CardsSystem extends System {
                 .addComponent(new Electricity(card, card2, 10, 5 * numFaceupCards))
                 .addComponent(new RenderedPath(10, 'rgba(100, 100, 255, 0.5)'));
               numElectricityConnections++;
+              if (!this.tipsGiven.firstMatch) {
+                this.tipsGiven.firstMatch = true;
+                this.doctorSystem.speak('Yaya! You found a pair!\nThere are 5 cards of each type\nFind them all!', 3);
+              }
             }
           }
         }
@@ -205,6 +226,11 @@ export class CardsSystem extends System {
 
             this.sounds.boom.play();
             this.sounds.cheering.play();
+
+            if (!this.tipsGiven.firstSpecialPower) {
+              this.tipsGiven.firstSpecialPower = true;
+              this.doctorSystem.speak('You unlocked the first special power!\nFour more to go!', 3);
+            }
 
             let powerupType = this.specialPowersSystem.getPowerupTypeFromImage(faceupImage);
             let powerupPos = this.specialPowersSystem.getPowerupPosition(powerupType);

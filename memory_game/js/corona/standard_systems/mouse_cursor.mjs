@@ -5,7 +5,7 @@ import { mouse } from "../core/game_engine.mjs";
 import { RenderedPath } from "../components/base_components.mjs";
 import { Entity } from "../ecs/entity.mjs";
 import { ParticleSystemsSystem } from "./particle_systems_system.mjs";
-import { anchor } from "../core/anchor.mjs";
+import { AnchorSystem } from "./AnchorSystem.mjs";
 
 export class MouseCursor extends System {
   constructor(cursorImage, trailImages) {
@@ -34,7 +34,7 @@ export class MouseCursor extends System {
         particleMaxVelocity: 1,
         g: 0
       });
-    anchor(mouseParticleSystem, this.cursor);
+    AnchorSystem.anchorFixed(mouseParticleSystem, this.cursor);
   }
 
   update() {

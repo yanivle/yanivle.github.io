@@ -13,10 +13,19 @@ export class ResourceManager {
       this._advanceLoaded('window');
     }
     this.verbose = verbose;
+    this.shownErrorAlert = false;
   }
 
   log(...args) {
     if (this.verbose) console.log.apply(console, args);
+  }
+
+  error(...args) {
+    console.error.apply(console, args);
+    if (!this.shownErrorAlert) {
+      alert('Unrecoverable error (check console for more): ' + args);
+      this.shownErrorAlert = true;
+    }
   }
 
   loadAudio(audioUrl, nickname = null) {
@@ -76,7 +85,7 @@ export class ResourceManager {
       } else {
         image.addEventListener('load', () => { this._advanceLoaded(imageUrl); }, { once: true });
         image.addEventListener('error', () => {
-          alert('Error loading image ' + imageUrl);
+          this.error('Error loading image ' + imageUrl);
         }, { once: true });
       }
     }

@@ -9,13 +9,22 @@ export class Position {
   }
 }
 
+export class Anchor {
+  constructor(positionComponent, dx, dy) {
+    this.positionComponent = positionComponent;
+    this.dx = dx;
+    this.dy = dy;
+  }
+}
+
 export class PhysicsBody {
-  constructor(vx = 0, vy = 0, ax = 0, ay = 0, friction = 0) {
+  constructor(vx = 0, vy = 0, ax = 0, ay = 0, friction = 0, damp = 0) {
     this.vx = vx;
     this.vy = vy;
     this.ax = ax;
     this.ay = ay;
     this.friction = friction;
+    this.damp = damp;
   }
 
   clone() {
@@ -24,15 +33,17 @@ export class PhysicsBody {
 }
 
 export class Attractor {
-  constructor(targetX, targetY, velocityAmp, accelerationAmp) {
+  constructor(targetX, targetY, velocityAmp, accelerationAmp, velocityDamp = 0, accelerationDamp = 0) {
     this.targetX = targetX;
     this.targetY = targetY;
     this.velocityAmp = velocityAmp;
     this.accelerationAmp = accelerationAmp;
+    this.velocityDamp = velocityDamp;
+    this.accelerationDamp = accelerationDamp;
   }
 
   clone() {
-    return new Attractor(this.targetX, this.targetY, this.velocityAmp, this.accelerationAmp);
+    return new Attractor(this.targetX, this.targetY, this.velocityAmp, this.accelerationAmp, this.velocityDamp, this.accelerationDamp);
   }
 }
 
@@ -82,12 +93,13 @@ export class Resizing {
 }
 
 export class BoxCollider {
-  constructor(fixed = false) {
+  constructor(fixed = false, affectPhysics = true) {
     this.fixed = fixed;
+    this.affectPhysics = affectPhysics;
   }
 
   clone() {
-    return new BoxCollider(this.fixed);
+    return new BoxCollider(this.fixed, this.affectPhysics);
   }
 }
 
