@@ -16,6 +16,7 @@ import { DoctorSystem } from "../custom_systems/doctor_system.mjs";
 import { SpriteRenderer } from "../corona/standard_systems/sprite_renderer.mjs";
 import { event_manager } from "../corona/core/EventManager.mjs";
 import * as smokeParticleSystem from '../prefabs/smokeParticleSystem.mjs';
+import * as bloodParticleSystem from '../prefabs/bloodParticleSystem.mjs';
 import { sequencer } from "../corona/core/Sequencer.mjs";
 import { game_engine } from "../corona/core/game_engine.mjs";
 
@@ -23,6 +24,7 @@ export class GameScene extends Scene {
   constructor() {
     super();
     smokeParticleSystem.preloadResources();
+    bloodParticleSystem.preloadResources();
 
     this.boardFrameImage = resource_manager.loadImage('large_frame.png');
 
@@ -96,7 +98,7 @@ export class GameScene extends Scene {
     });
 
     sequencer.setCallback('doctor_intro', () => {
-      doctorSystem.speak('Welcome hero!\nPlease help us fight the corona!\nFind 5 cards of the same type to\nunlock special powers\nand defeat the virus!', 3);
+      doctorSystem.speak('Welcome hero!\nPlease help us fight the corona!\nFind 5 cards of the same type to\nunlock special powers\nand defeat the virus!', 20);
     });
 
     sequencer.setCallback('show_cards', () => {
@@ -127,7 +129,7 @@ export class GameScene extends Scene {
       canvas.width / 2,
       -200,
       ParticleSystemsSystem.createParticlePrefabs(
-        this.leafImages, { particleLifetime: 10, rotationsPerSecond: 1, renderingLayer: 9 }),
+        { images: this.leafImages, particleLifetime: 10, rotationsPerSecond: 1, renderingLayer: 9 }),
       {
         particlesPerSecond: 10,
         emitterExpirationTime: Infinity,

@@ -14,6 +14,7 @@ import { Prefab } from "../core/prefab.mjs";
 import { game_engine } from "../core/game_engine.mjs";
 import { FadeSystem } from "./fade_system.mjs";
 import { Alpha } from "../components/base_components.mjs";
+import { RectRenderingSystem } from "./RectRenderingSystem.mjs";
 
 class Emitter {
   constructor(particlePrefabs, particlesPerSecond, maxParticles, particleMaxVelocity, g, now, maxParticlesPerUpdate) {
@@ -45,11 +46,22 @@ export class ParticleSystemsSystem extends EntityProcessorSystem {
     super(Position, Emitter);
   }
 
-  static createParticlePrefabs(images, { particleLifetime = 0.5, trailColor = null, trailLength = null, rotationsPerSecond = null, renderingLayer = 1, initialOpacity = 1, initialRotation = null }) {
+  static createParticlePrefabs({ images = null, colors = null, particleLifetime = 0.5, trailColor = null, trailLength = null, trailWidth = 5, trailSpringStrength = 0.2, trailUpdateDist = 0, rotationsPerSecond = null, renderingLayer = 1, initialOpacity = 1, initialRotation = null, minSize = null, maxSize = null }) {
     let prefabs = [];
-    images.forEach(image => {
-      let templateEntity = SpriteRenderer.addComponents(new Entity('particle_system_prefab', false), image, { layer: renderingLayer })
-        .addComponent(new Particle());
+    console.assert(images || colors);
+    console.assert(!(images && colors));
+    let items = images ? images : colors;
+    items.forEach(item => {
+      let templateEntity = null;
+      if (images) {
+        // TODO: handle size restrictions for images too.
+        templateEntity = SpriteRenderer.addComponents(new Entity('particle_system_prefab', false), item, { layer: renderingLayer })
+      } else {
+        if (!minSize) minSize = 1;
+        if (!maxSize) maxSize = 5;
+        templateEntity = RectRenderingSystem.addComponents(new Entity('particle_system_prefab', false), 0, 0, randRange(minSize, maxSize), randRange(minSize, maxSize), item);
+      }
+      templateEntity.addComponent(new Particle());
       if (particleLifetime != null) {
         FadeSystem.fadeOut(templateEntity, particleLifetime);
       }
@@ -65,8 +77,8 @@ export class ParticleSystemsSystem extends EntityProcessorSystem {
       }
       if (trailLength != null || trailColor != null) {
         console.assert(trailColor != null && trailColor != null);
-        templateEntity.addComponent(new RenderedPath(5, trailColor))
-          .addComponent(new Trail(trailLength));
+        templateEntity.addComponent(new RenderedPath(trailWidth, trailColor))
+          .addComponent(new Trail(trailLength, trailSpringStrength, trailUpdateDist));
       }
       prefabs.push(new Prefab(templateEntity));
     });

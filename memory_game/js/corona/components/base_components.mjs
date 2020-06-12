@@ -1,3 +1,5 @@
+import { TagComponent } from '../ecs/component.mjs';
+
 export class Position {
   constructor(x = 0, y = 0) {
     this.x = x;
@@ -82,6 +84,10 @@ export class Box {
   right(pos) { return this.left(pos) + this.width; }
   top(pos) { return pos.y + (this.centered ? -this.height / 2 : 0); }
   bottom(pos) { return this.top(pos) + this.height; }
+
+  contains(pos, x, y) {
+    return x > this.left(pos) && x < this.right(pos) && y > this.top(pos) && y < this.bottom(pos);
+  }
 }
 
 export class Resizing {
@@ -93,14 +99,16 @@ export class Resizing {
 }
 
 export class BoxCollider {
-  constructor(fixed = false, affectPhysics = true) {
-    this.fixed = fixed;
+  constructor(affectPhysics = true) {
     this.affectPhysics = affectPhysics;
   }
 
   clone() {
-    return new BoxCollider(this.fixed, this.affectPhysics);
+    return new BoxCollider(this.affectPhysics);
   }
+}
+
+export class BoxColliderMovable extends TagComponent {
 }
 
 export class Alpha {

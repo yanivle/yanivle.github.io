@@ -76,25 +76,6 @@ function start() {
 
   game_engine.startScene('menu');
 
-  // ParticleSystemsSystem.createParticleSystem(
-  //   400,
-  //   400,
-  //   ParticleSystemsSystem.createParticlePrefabs(
-  //     starImages,
-  //     {
-  //       particleLifetime: 1,
-  //       trailColor: 'rgba(0, 255, 0, 0.2)',
-  //       trailLength: 20,
-  //       rotationsPerSecond: 2
-  //     }),
-  //   {
-  //     particlesPerSecond: 100,
-  //     emitterExpirationTime: 30,
-  //     maxParticles: 50000,
-  //     particleMaxVelocity: 10,
-  //     g: 0.1
-  //   });
-
   game_engine.run(1440, 900, { fullScreen: true, showEngineStats: true });
 }
 document.getElementById('start').addEventListener("click", start);

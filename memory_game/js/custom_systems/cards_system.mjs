@@ -24,6 +24,9 @@ import { SpecialPowersSystem } from "./special_powers_system.mjs";
 import { FadeSystem } from "../corona/standard_systems/fade_system.mjs";
 import { BoardFrameSystem } from "./board_frame_system.mjs";
 import { Trail } from "../corona/components/base_components.mjs";
+import { SchedulingSystem } from "../corona/standard_systems/SchedulingSystem.mjs";
+import { event_manager } from "../corona/core/EventManager.mjs";
+import { BoxColliderMovable } from "../corona/components/base_components.mjs";
 
 const CARD_SIZE = 64;
 
@@ -64,6 +67,7 @@ export class CardsSystem extends System {
       cheering: resource_manager.loadAudio('cheering'),
     };
     this.sounds.electricity.loop = true;
+    this.schedulingSystem = game_engine.getSystemByType(SchedulingSystem);
   }
 
   initCards() {
@@ -80,10 +84,12 @@ export class CardsSystem extends System {
           .addComponent(new CardComponent(false, cardImage, this.backfaceImage))
           .addComponent(new Rotation(0))
           .addComponent(new PhysicsBody(0, 0, 0, 0, 0.1, 0.1))
-          .addComponent(new BoxCollider(false, false))
+          .addComponent(new BoxCollider())
+          .addComponent(new BoxColliderMovable())
           .addComponent(new KeepOnScreen())
           .addComponent(new RotationWiggle(1 / 20, 20, randRange(0, 6.28)));
         ;
+        FadeSystem.fadeIn(card, 0.75);
       }
     }
   }
@@ -137,7 +143,7 @@ export class CardsSystem extends System {
     if (flippedSomething) {
       if (!this.tipsGiven.firstFlip) {
         this.tipsGiven.firstFlip = true;
-        this.doctorSystem.speak('Great! You flipped a card!\nNow find another just like it!', 3);
+        this.doctorSystem.speak('Great! You flipped a card!\nNow find another just like it!');
       }
       this.sounds.whoosh.play();
       let numElectricityConnections = 0;
@@ -161,7 +167,7 @@ export class CardsSystem extends System {
       if (faceupConflict) {
         if (!this.tipsGiven.firstFail) {
           this.tipsGiven.firstFail = true;
-          this.doctorSystem.speak('Oh no! You flipped a non-matching card!\nStart over!', 3);
+          this.doctorSystem.speak('Oh no! You flipped a non-matching card!\nStart over!');
         }
         this.sounds.cough.play();
         numFaceupCards = 0;
@@ -189,7 +195,7 @@ export class CardsSystem extends System {
               numElectricityConnections++;
               if (!this.tipsGiven.firstMatch) {
                 this.tipsGiven.firstMatch = true;
-                this.doctorSystem.speak('Yaya! You found a pair!\nThere are 5 cards of each type\nFind them all!', 3);
+                // this.doctorSystem.speak('Yaya! You found a pair!\nThere are 5 cards of each type\nFind them all!');
               }
             }
           }
@@ -209,8 +215,8 @@ export class CardsSystem extends System {
               pos.x,
               pos.y,
               ParticleSystemsSystem.createParticlePrefabs(
-                this.starImages,
                 {
+                  images: this.starImages,
                   particleLifetime: 1,
                   trailColor: 'rgba(0, 255, 0, 0.2)',
                   trailLength: 20,
@@ -229,7 +235,7 @@ export class CardsSystem extends System {
 
             if (!this.tipsGiven.firstSpecialPower) {
               this.tipsGiven.firstSpecialPower = true;
-              this.doctorSystem.speak('You unlocked the first special power!\nFour more to go!', 3);
+              this.doctorSystem.speak('You unlocked the first special power\nagainst the corona!\nFour more to go!');
             }
 
             let powerupType = this.specialPowersSystem.getPowerupTypeFromImage(faceupImage);
@@ -240,6 +246,11 @@ export class CardsSystem extends System {
             FadeSystem.fadeOut(card, 1.5);
             card.removeComponent(Rotation);
             card.removeComponent(AngularVelocity);
+            if (this.index.length == this.numCardsPerType) {
+              this.schedulingSystem.scheduleIn(() => {
+                event_manager.getEventQueue('eradicated').publish(null);
+              }, 1);
+            }
           }
         }
         // Add special power button.

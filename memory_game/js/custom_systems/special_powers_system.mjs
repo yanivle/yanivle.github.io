@@ -9,6 +9,9 @@ import { AudioArray } from "../corona/core/AudioArray.mjs";
 import * as smokeParticleSystem from "../prefabs/smokeParticleSystem.mjs";
 import { event_manager } from "../corona/core/EventManager.mjs";
 import { sequencer } from "../corona/core/Sequencer.mjs";
+import { BoxColliderMovable } from "../corona/components/base_components.mjs";
+import { VirusSystem } from "./virus_system.mjs";
+import { mouse } from "../corona/core/game_engine.mjs";
 
 const SPECIAL_POWERS = {
   DISINFECTANT: "DISINFECTANT",
@@ -17,6 +20,12 @@ const SPECIAL_POWERS = {
   SYRINGE: 'SYRINGE',
   TEST_KIT: 'TEST_KIT',
 };
+
+class SpecialPowerButton {
+  constructor(type) {
+    this.type = type;
+  }
+}
 
 class SpecialPowerComponentSchedule {
   constructor(type, image, createAtTimestamp) {
@@ -43,6 +52,7 @@ export class SpecialPowersSystem extends EntityProcessorSystem {
     this.testKitImage = testKitImage;
     this.frameImage = frameImage;
     this.glowImages = glowImages;
+    this.buttons = [];
   }
 
   init() {
@@ -53,7 +63,7 @@ export class SpecialPowersSystem extends EntityProcessorSystem {
       this.frames.push(frame);
       SpriteRenderer.addComponents(frame, this.frameImage, { x: -SpecialPowersSystem.FRAME_SIZE / 2 - 100, y: SpecialPowersSystem.FRAME_SIZE / 2 + (SpecialPowersSystem.FRAME_SIZE + SpecialPowersSystem.FRAME_VERTICAL_PADDING) * i, layer: 0, width: SpecialPowersSystem.FRAME_SIZE, height: SpecialPowersSystem.FRAME_SIZE });
     }
-    this.anvilSoundArray = new AudioArray('anvil', maxFrameBounces);
+    this.anvilSoundArray = new AudioArray('anvil', maxFrameBounces * 5);
     this.smokeParticleSystemPrefab = smokeParticleSystem.getPrefab({ numParticles: 32, vertical: true });
     this.bounceEventQueue = event_manager.getEventQueue('collision');
   }
@@ -62,7 +72,8 @@ export class SpecialPowersSystem extends EntityProcessorSystem {
     let frame = this.frames[0];
     frame
       .addComponent(new BoxCollider())
-      .addComponent(new PhysicsBody(0, 0, 1, 0, 0.05));
+      .addComponent(new BoxColliderMovable())
+      .addComponent(new PhysicsBody(0, 0, 1.5, 0, 0.05));
     let bounces = 0;
     let pos = frame.getComponent(Position);
     let originalY = pos.y;
@@ -81,6 +92,7 @@ export class SpecialPowersSystem extends EntityProcessorSystem {
         // console.log(pos.x);
         // console.log(pos);
         frame.scheduleRemoveComponent(BoxCollider);
+        frame.scheduleRemoveComponent(BoxColliderMovable);
         frame.scheduleRemoveComponent(PhysicsBody);
         this.frames.shift();
         if (this.frames.length > 0) {
@@ -127,7 +139,7 @@ export class SpecialPowersSystem extends EntityProcessorSystem {
       pos.x,
       pos.y,
       ParticleSystemsSystem.createParticlePrefabs(
-        this.glowImages, { particleLifetime: 1, renderingLayer: 0 }),
+        { images: this.glowImages, particleLifetime: 1, renderingLayer: 0 }),
       {
         particlesPerSecond: Infinity,
         emitterExpirationTime: Infinity,
@@ -141,6 +153,34 @@ export class SpecialPowersSystem extends EntityProcessorSystem {
     let pos = this.getPowerupPosition(type);
     let button = SpriteRenderer.addComponents(new Entity(), image, { x: pos.x, y: pos.y, layer: 0, width: SpecialPowersSystem.BUTTON_SIZE, height: SpecialPowersSystem.BUTTON_SIZE });
     FadeSystem.fadeIn(button, 1);
+    button.addComponent(new SpecialPowerButton(type));
+    this.buttons.push(button);
+  }
+
+  update(deltaTime) {
+    super.update(deltaTime);
+    if (mouse.pressed) {
+      this.buttons.forEach(button => {
+        let pos = button.getComponent(Position);
+        let box = button.getComponent(Box);
+        let buttonComponent = button.getComponent(SpecialPowerButton);
+        if (box.contains(pos, mouse.pos.x, mouse.pos.y)) {
+          switch (buttonComponent.type) {
+            case SPECIAL_POWERS.DISINFECTANT:
+              game_engine.getSystemByType(VirusSystem).explodeViruses();
+              break;
+            case SPECIAL_POWERS.MASK:
+              break;
+            case SPECIAL_POWERS.QUARANTINE:
+              break;
+            case SPECIAL_POWERS.SYRINGE:
+              break;
+            case SPECIAL_POWERS.TEST_KIT:
+              break;
+          }
+        }
+      });
+    }
   }
 
   processEntity(_, entity, specialPowerComponentSchedule) {
@@ -151,15 +191,6 @@ export class SpecialPowersSystem extends EntityProcessorSystem {
         entity.scheduleDestruction();
       }
     }
-    // if (mouse.pressed) {
-    //   this.index.forEach(button => {
-    //     let pos = button.getComponent(Position);
-    //     let box = button.getComponent(Box);
-    //     if (pointInCenteredBox(mouse.pos, pos, box)) {
-    //       //
-    //     }
-    //   });
-    // }
   }
 }
 

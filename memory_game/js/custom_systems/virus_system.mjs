@@ -15,8 +15,11 @@ import { Entity } from "../corona/ecs/entity.mjs";
 import { game_engine } from "../corona/core/game_engine.mjs";
 import { AutoOrientationSystem } from "../corona/standard_systems/auto_orientation_system.mjs";
 import { Alpha } from "../corona/components/base_components.mjs";
-import { RenderedPath } from "../corona/components/base_components.mjs";
-import { Trail } from "../corona/components/base_components.mjs";
+import * as bloodParticleSystem from '../prefabs/bloodParticleSystem.mjs';
+import { AnchorSystem } from "../corona/standard_systems/AnchorSystem.mjs";
+import { ResizingSystem } from "../corona/standard_systems/resizing_system.mjs";
+import { FadeSystem } from "../corona/standard_systems/fade_system.mjs";
+import { event_manager } from "../corona/core/EventManager.mjs";
 
 export class VirusSystem extends System {
   constructor(virusImages, cloudImage) {
@@ -31,11 +34,16 @@ export class VirusSystem extends System {
   init() {
     // this.createClouds(this.cloudImage);
     // this.initTime = game_engine.now;
+    this.bloodParticleSystemPrefab = bloodParticleSystem.getPrefab();
+    this.virusesDestroyed = false;
   }
 
   start() {
     this.createClouds(this.cloudImage);
     this.initTime = game_engine.now;
+    event_manager.getEventQueue('eradicated').subscribe(() => {
+      this.explodeAllViruses();
+    });
   }
 
   createClouds() {
@@ -55,6 +63,8 @@ export class VirusSystem extends System {
     let y = 0;
     let vx = 0;
     let vy = 0;
+    let ax = 0;
+    let ay = 0;
     if (Math.random() < 0.5) {
       x = randChoice([-100, canvas.width + 100]);
       y = randRange(0, canvas.height);
@@ -66,6 +76,8 @@ export class VirusSystem extends System {
       vx = randRange(-velSize, velSize);
       vy = y > 0 ? -velSize : velSize;
     }
+    ax = randRange(-velSize / 100, velSize / 100);
+    ay = randRange(-velSize / 100, velSize / 100);
     let virus = SpriteRenderer.addComponents(new Entity(), randChoice(this.virusImages), {
       x: x,
       y: y,
@@ -74,8 +86,8 @@ export class VirusSystem extends System {
       height: size,
     });
     virus
-      .addComponent(new BoxCollider(true))
-      .addComponent(new PhysicsBody(vx, vy))
+      .addComponent(new BoxCollider())
+      .addComponent(new PhysicsBody(vx, vy, ax, ay))
       .addComponent(new Rotation(0))
       .addComponent(new RotationWiggle(1 / 20, 20, randRange(0, 6.28)));
     // .addComponent(new RenderedPath(size / 2, 'rgba(150, 255, 150, 0.2)'))
@@ -84,13 +96,26 @@ export class VirusSystem extends System {
     this.viruses.push(virus);
   }
 
+  explodeAllViruses() {
+    this.virusesDestroyed = true;
+    this.viruses.forEach(virus => {
+      let bloodPS = this.bloodParticleSystemPrefab.instantiate();
+      AnchorSystem.anchorFixed(bloodPS, virus);
+      let box = virus.getComponent(Box);
+      ResizingSystem.resize(virus, box.width, box.height, box.width * 2, box.height * 2, 0.5);
+      FadeSystem.fadeOut(virus, 0.5);
+      let phys = virus.getComponent(PhysicsBody);
+      phys.friction = 0.8;
+    });
+  }
+
   update(deltaTime) {
     if (this.initTime == 0) return;
-    let timeSinceInit = (game_engine.now - this.initTime) / 100;
-    let virusProgress = Math.min(1, timeSinceInit);
+    let timeSinceInit = (game_engine.now - this.initTime);
+    let virusProgress = Math.min(1, timeSinceInit) / 2;
     this.cloud.getComponent(Alpha).opacity = virusProgress;
     this.virusesPerSecond = virusProgress;
-    if (Math.random() < this.virusesPerSecond * deltaTime) {
+    if (!this.virusesDestroyed && Math.random() < this.virusesPerSecond * deltaTime) {
       this.createVirus();
     }
     this.viruses.forEach(virus => {
@@ -103,5 +128,9 @@ export class VirusSystem extends System {
       else if (pos.y + box.height / 2 < 0 && phys.vy < 0) virus.destroy();
       else if (pos.y - box.height / 2 > canvas.height && phys.vy > 0) virus.destroy();
     });
+
+    // if (keyboard.keysPressed[32]) {
+    //   this.explodeAllViruses();
+    // }
   }
 }

@@ -16,6 +16,7 @@ import { AnchorSystem } from "../corona/standard_systems/AnchorSystem.mjs";
 import { SchedulingSystem } from "../corona/standard_systems/SchedulingSystem.mjs";
 import { event_manager } from "../corona/core/EventManager.mjs";
 import { sequencer } from "../corona/core/Sequencer.mjs";
+import { mouse } from "../corona/core/game_engine.mjs";
 
 export class StopSpeaking {
   constructor(timeOnScreen) {
@@ -50,7 +51,7 @@ export class DoctorSystem extends EntityProcessorSystem {
     this.schedulingSystem = game_engine.getSystemByType(SchedulingSystem);
   }
 
-  speak(text, timeout) {
+  speak(text, timeout = 15) {
     // let fadeScreen = new Entity()
     //   .addComponent(new Position(0, 0))
     //   .addComponent(new RenderedRect('black'))
@@ -75,7 +76,7 @@ export class DoctorSystem extends EntityProcessorSystem {
   }
 
   processEntity(_dt, _entity, stopSpeaking) {
-    if (game_engine.now >= stopSpeaking.removeFromScreenAt) {
+    if (mouse.pressed || game_engine.now >= stopSpeaking.removeFromScreenAt) {
       this.goOffscreen();
       _entity.scheduleDestruction();
       this.schedulingSystem.scheduleIn(() => {

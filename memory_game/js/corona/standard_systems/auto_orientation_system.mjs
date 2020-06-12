@@ -15,6 +15,6 @@ export class AutoOrientationSystem extends EntityProcessorSystem {
   }
 
   processEntity(_1, _2, _3, phys, rotation) {
-    rotation.angleInRadians = Math.atanh(phys.vy, phys.vx);
+    rotation.angleInRadians = Math.atan2(phys.vy, phys.vx);
   }
 }

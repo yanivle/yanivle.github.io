@@ -10,6 +10,7 @@ import * as smokeParticleSystem from "../prefabs/smokeParticleSystem.mjs";
 import { event_manager } from "../corona/core/EventManager.mjs";
 import { AudioArray } from "../corona/core/AudioArray.mjs";
 import { sequencer } from "../corona/core/Sequencer.mjs";
+import { BoxColliderMovable } from "../corona/components/base_components.mjs";
 
 export class BoardFrameSystem extends System {
   static THICKNESS = 80;
@@ -31,11 +32,11 @@ export class BoardFrameSystem extends System {
   }
 
   initFrameBounce() {
-    this.frame.addComponent(new BoxCollider());
-    PhysicsSystem.addComponents(this.frame, SpecialPowersSystem.FRAME_SIZE, -canvas.height - 10, 0, 0, 0, 1, 0.05);
+    this.frame.addComponent(new BoxCollider()).addComponent(new BoxColliderMovable());
+    PhysicsSystem.addComponents(this.frame, SpecialPowersSystem.FRAME_SIZE, -canvas.height - 10, 0, 0, 0, 3, 0.05);
     this.floor = SpriteRenderer.addComponents(new Entity(), this.boardFrameImage, { x: 0, y: 0, width: canvas.width, height: canvas.height, layer: 8, centered: false });
     PhysicsSystem.addComponents(this.floor, 0, canvas.height, 0, 0, 0, 0);
-    this.floor.addComponent(new BoxCollider(true));
+    this.floor.addComponent(new BoxCollider());
     let bounces = 0;
 
     const maxFrameBounces = 4;
@@ -62,8 +63,7 @@ export class BoardFrameSystem extends System {
 
       if (bounces == maxFrameBounces) {
         this.floor.scheduleDestruction();
-        this.frame.getComponent(BoxCollider).fixed = true;
-        // this.frame.scheduleRemoveComponent(BoxCollider);
+        this.frame.scheduleRemoveComponent(BoxColliderMovable);
         this.frame.scheduleRemoveComponent(PhysicsBody);
         bounceEventQueue.scheduleUnsubscribe(bounceHandler);
         sequencer.notifyEnded('drop_frame');

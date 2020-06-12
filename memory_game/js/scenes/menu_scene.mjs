@@ -40,7 +40,7 @@ export class MenuScene extends Scene {
       0,
       0,
       ParticleSystemsSystem.createParticlePrefabs(
-        [this.bubbleImage], { particleLifetime: 1, }),
+        { images: [this.bubbleImage], particleLifetime: 1, }),
       {
         particlesPerSecond: 8,
         emitterExpirationTime: Infinity,

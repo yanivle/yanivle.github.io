@@ -26,7 +26,7 @@ export class MouseCursor extends System {
       0,
       0,
       ParticleSystemsSystem.createParticlePrefabs(
-        this.trailImages, { particleLifetime: 1, }),
+        { images: this.trailImages, particleLifetime: 1, }),
       {
         particlesPerSecond: 4,
         emitterExpirationTime: Infinity,

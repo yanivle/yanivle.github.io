@@ -16,4 +16,11 @@ export class RectRenderingSystem extends EntityProcessorSystem {
     context.globalAlpha = entity.getComponent(Alpha)?.opacity ?? 1;
     context.fillRect(box.left(pos), box.top(pos), box.width, box.height);
   }
+
+  static addComponents(entity, x, y, width, height, color) {
+    return entity
+      .addComponent(new Position(x, y))
+      .addComponent(new Box(width, height))
+      .addComponent(new RenderedRect(color));
+  }
 }

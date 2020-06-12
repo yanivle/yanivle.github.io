@@ -21,7 +21,7 @@ export function getPrefab({ numParticles = 100, vertical = false } = {}) {
       0,
       0,
       ParticleSystemsSystem.createParticlePrefabs(
-        smokeImages, { particleLifetime: 1, initialRotation: initialRotation, }),
+        { images: smokeImages, particleLifetime: 1, initialRotation: initialRotation, }),
       {
         particlesPerSecond: Infinity,
         emitterExpirationTime: Infinity,
