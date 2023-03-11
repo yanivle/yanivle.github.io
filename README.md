@@ -12,7 +12,7 @@ Recompile sass (if needed):
 
 Put hero images for new posts go in `assets/images/hero` and then run:
 
-    python resize_images.py
+    python build/resize_images.py
 
 To serve locally (remove `--drafts` for prod view):
 
