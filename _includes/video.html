@@ -1,0 +1,8 @@
+{::nomarkdown}
+
+<a href="{{ include.url | relative_url }}" style="width: {{ include.width | 100% }}; display: block; margin: auto; margin-top: 50px; margin-bottom: 50px;">
+  <video autoplay loop controls muted style="width: 100%">
+    <source src="{{ include.url | relative_url }}" type="video/mp4">
+  </video>
+</a>
+{:/nomarkdown}
