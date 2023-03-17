@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Computer Enhance"
-date:   2022-03-19 00:00:00
+date:   2023-03-19 00:00:00
 excerpt: "Magnifying tiny motions"
 categories: Computing
 tags:  Computing Programming Graphics
