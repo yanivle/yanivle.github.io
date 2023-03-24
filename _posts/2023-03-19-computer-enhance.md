@@ -21,14 +21,15 @@ A few years ago, after my child was born, I found myself constantly watching him
 
 I had a weird thought - could I somehow _amplify the motion_ in the camera to make it easier to discern that he is actually moving? It turned out that an extremely simple way (and basically the first thing that I tried) just works. No dataset, no training, just basic signal processing!
 
-The core observation was that the breathing motion that I wanted to amplify is _periodic_. What happens if we found the period and increased its amplitude? Specifically, what if we treat each pixel location (per color channel) as a 1-D signal in the time domain, find the strongest amplitude for all pixels, and amplified that? The following simplified code snippet implements this simple idea:
+The core observation was that the breathing motion that I wanted to amplify is _periodic_. What happens if we found the period and increased its amplitude? Specifically, what if we treat each pixel location (per color channel) as a 1-D signal in the time domain, find the strongest amplitude for all pixels, and amplified that? The following simplified code snippet illustrates this idea:
 
 ```python
-def amplify_max_freq(video, magnitude=100):
+def amplify_max_freq(video, amp = 100):
   x = np.fft.fft(video, axis=0)  # f, h, w, c
   avg = np.abs(x).sum(axis=(1, 2, 3))
   mag = np.ones(x.shape[0])
-  mag[np.argmax(avg)] = magnitude
+  # We filter out the 0 frequency, and could also limit the frequency range further.
+  mag[np.argmax(avg[1:]) + 1] = amp
   x *= mag[:, None, None, None]
   return np.fft.ifft(x, axis=0)
 ```
