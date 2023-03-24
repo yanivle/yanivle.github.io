@@ -134,7 +134,8 @@ function easeInOutSine(x) {
     return -(Math.cos(Math.PI * x) - 1) / 2;
 }
 
-const time_until_arranged = 1000 * 60 * 10;
+// const time_until_arranged = 1000 * 60 * 10;
+const time_until_arranged = 1000;
 
 let numParticlesAtFinalDest = 0;
 const waitTimeAtFinalDest = 3000;
@@ -240,26 +241,53 @@ const shapes = {
     SQUARE: 'square',
 };
 
+function getFinalDests() {
+    const template = (
+        '0     0     1       2    2    333  4         4\n' +
+        ' 0   0     1 1      22   2     3    4       4 \n' +
+        '  0 0     1   1     2 2  2     3     4     4  \n' +
+        '   0     1111111    2  2 2     3      4   4   \n' +
+        '   0     1     1    2   22     3       4 4    \n' +
+        '   0     1     1    2    2    333       4     \n');
+
+    const lines = template.split('\n');
+    const finalDests = [];
+
+    max_x = 0;
+    max_y = 0;
+
+    for (let y = 0; y < lines.length; y++) {
+        const line = lines[y];
+        for (let x = 0; x < line.length; x++) {
+            const char = line.charAt(x);
+            if (char !== ' ') {
+                max_x = Math.max(max_x, x);
+                max_y = Math.max(max_y, y);
+                finalDests.push([x, y, parseInt(char)]);
+            }
+        }
+    }
+
+    return [finalDests, max_x, max_y];
+}
+
+
 function setup() {
     let cx = window.innerWidth / 2;
-    let cy = 150;
-    let halfNumColumns = numColumns / 2;
-    let halfNumRows = numRows / 2;
+    let cy = 350;
     let xSpacing = 160 * (6 / numColumns) * window.innerWidth / 1280;
-    console.log(xSpacing);
+    ySpacing = 25 * window.innerWidth / 1280 * random(1, 2.5);
     const colors = ['#ee7752', '#e73c7e', '#23a6d5', '#23d5ab', '#f9cb28'];
-    for (let x = -halfNumColumns; x < halfNumColumns; x++) {
-        let destX = x * xSpacing + (xSpacing / 2) + cx;
-        console.log(destX);
-        for (let y = -halfNumRows; y < halfNumRows; y++) {
-            // let opacity = '80';
-            let opacity = 'a0';
-            let color = colors[(x + halfNumColumns) % colors.length] + opacity;
-            let shape = randomChoice([shapes.CIRCLE, shapes.TRIANGLE, shapes.SQUARE]);
-            let destY = y * 25 + cy;
-            let size = random(20, 40);
-            particles.push(new ShapeParticle(shape, destX, destY, color, size));
-        }
+
+    const [finalDests, max_x, max_y] = getFinalDests();
+    for (const [x, y, c] of finalDests) {
+        let destX = (5 * x / max_x - 2.5) * xSpacing + cx;
+        let destY = (5 * y / max_y - 2.5) * ySpacing + cy;
+        let opacity = '90';
+        let color = colors[c] + opacity;
+        let shape = randomChoice([shapes.CIRCLE, shapes.TRIANGLE, shapes.SQUARE]);
+        let size = random(window.innerWidth / 1280 * 20, window.innerWidth / 1280 * 40);
+        particles.push(new ShapeParticle(shape, destX, destY, color, size));
     }
 
     requestAnimationFrame(render);
