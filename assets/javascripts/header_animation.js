@@ -165,7 +165,7 @@ class ShapeParticle {
 
     setDest() {
         this.destX = random(100, canvas.width - 100);
-        this.destY = random(0, 200);
+        this.destY = random(0, 400);
         this.elapsed = 0;
         this.timeToDest = random(1000, 5000);
         this.timeOffset = random(0, 7000);
