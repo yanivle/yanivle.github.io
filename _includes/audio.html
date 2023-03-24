@@ -1,0 +1,8 @@
+{::nomarkdown}
+
+<audio controls style="width: {{ include.width | 100% }}; display: block; margin: auto; margin-top: 50px; margin-bottom: 50px;">
+    <source src="{{ include.url | relative_url }}" type="{{ include.type | audio/mpeg }}">
+    Your browser does not support the audio element.
+</audio>
+
+{:/nomarkdown}
