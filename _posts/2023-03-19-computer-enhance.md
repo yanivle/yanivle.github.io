@@ -28,8 +28,8 @@ def amplify_max_freq(video, amp = 100):
   x = np.fft.fft(video, axis=0)  # f, h, w, c
   avg = np.abs(x).sum(axis=(1, 2, 3))
   mag = np.ones(x.shape[0])
-  # We filter out the 0 frequency, and could also limit the frequency range further.
-  mag[np.argmax(avg[1:]) + 1] = amp
+  freq = np.argmax(avg[1:]) + 1  # Disallow the 0 frequency.
+  mag[freq] = amp
   x *= mag[:, None, None, None]
   return np.fft.ifft(x, axis=0)
 ```
@@ -40,7 +40,9 @@ And that's basically it! Here's the result compared to the original video:
 
 Success!
 
-In this case, the video had 264 frames at 30 fps ($\frac{264}{30 \times 60} = 0.147$ minutes), and the strongest frequency was 8, which corresponds to a strongest frequency of $\frac{8}{0.147} = 54.5$ bpm, which I guess makes sense.
+In this case, the video had 264 frames at 30 fps ($\frac{264}{30 \times 60} = 0.147$ minutes), and the strongest frequency was 8, which corresponds to $\frac{8}{0.147} = 54.5$ bpm, which I guess makes sense.
+
+Notice that in the snippet above we just disallow the 0 frequency, but we could limit the frequency range further (e.g. to the 30-60 Hz range, which is [a baby's normal breathing rate](https://www.webmd.com/children/child-breathing-too-fast)).
 
 It's pretty remarkable that the _spatial_ motion seems amplified, although (with the exception of finding the strongest frequency) all the processing happens only in the time domain, independently for each pixel!
 
@@ -137,3 +139,27 @@ Magnifying, with our favorite code piece above, just the lowest element of the p
 Could this actually be detecting my pulse??? I admit that while that is possible, I'm not sure - 69 bpm seems somewhat high, and I should have calibrated this measurement and actually measured my pulse to make sure. While I didn't have a simple means to measure my own heart rate, I did plan to repeat this experiment after I do a bunch of high-intensity exercise and see whether I can at least measure a meaningfully higher rate, but I'll leave that for a future update :)
 
 Thanks for reading - hope you enjoyed reading this post as much as I enjoyed writing it!
+
+<!-- ## Audio
+
+Finally, let's see what happens if we apply the same magnification method to a song.
+
+Here's a short snippet from MC Hammer's classic that we'll test this on:
+
+{% include audio.html url="/assets/audio/posts/computer_enhance/cant_touch_trimmed.wav" %}
+
+And here's the raw waveform:
+
+{% include image.html url="/assets/images/posts/computer_enhance/waveform.png" %}
+
+Let's look at its first 10,000 frequencies (except for frequency 0):
+
+```python
+plt.plot(np.abs(np.fft.fft(cant_touch))[1:10000]);
+```
+
+{% include image.html url="/assets/images/posts/computer_enhance/cant_touch_freqs.png" %}
+
+There are 529,200 samples at 44,100 Hz, which translates to $\frac{529,200}{44,100 \times 60} = 0.2$ minutes. The strongest frequency is 519, which corresponds to $\frac{519}{0.2} = 2595$ bpm, which seems really high, but let's see.
+
+ -->
