@@ -21,6 +21,10 @@ A few years ago, after my child was born, I found myself constantly watching him
 
 I had a weird thought - could I somehow _amplify the motion_ in the camera to make it easier to discern that he is actually moving? It turned out that an extremely simple way (and basically the first thing that I tried) just works. No dataset, no training, just basic signal processing!
 
+> Update: As it turns out, in this project I rediscovered (a small part of) the amazing work [Eulerian Video Magnification for Revealing Subtle Changes in the World](https://people.csail.mit.edu/mrub/papers/vidmag.pdf), almost a decade after this seminal paper was published! In fact, this 2012 work by Hao-Yu Wu, Michael Rubinstein, Eugene Shih, John Guttag, Fredo Durand, and William Freeman recently won SIGGRAPH's 2023 Test-of-Time Award, so if you are interested in the ideas from this post, I strongly recommend reading their much deeper paper.
+
+<!-- I recently met the awesome [Miki Rubinstein](http://people.csail.mit.edu/mrub/) and learned that their work too, was motivated by watching over their sleeping babies! -->
+
 The core observation was that the breathing motion that I wanted to amplify is _periodic_. What happens if we found the period and increased its amplitude? Specifically, what if we treat each pixel location (per color channel) as a 1-D signal in the time domain, find the strongest amplitude for all pixels, and amplified that? The following simplified code snippet illustrates this idea:
 
 ```python
