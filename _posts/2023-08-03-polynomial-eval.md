@@ -12,7 +12,7 @@ bgContrast: dark
 bgGradientOpacity: darker
 syntaxHighlighter: no
 ---
-I have a polynomial $P(x)$ with _positive integer_ coefficients. You can give me a dollar and an integer x, and I will tell you $P(X)$. What's the minimum amount of money you need to determine my polynomial?
+I have a polynomial $P(x)$ with _positive integer_ coefficients. You can give me a dollar and an integer x, and I will tell you $P(x)$. What's the minimum amount of money you need to determine my polynomial?
 
 ## Extra Credit
 
@@ -20,4 +20,4 @@ What if $x$ doesn't have to be an integer?
 
 What if my polynomial $P(x)$ doesn't have integer coefficients?
 
-What if my polynomial $P(X)$ doesn't have have _positive_ coefficients?
+What if my polynomial $P(x)$ doesn't have have _positive_ coefficients?
