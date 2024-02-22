@@ -8,34 +8,6 @@ title: Yaniv Leviathan's Blog
     <div class="container">
 
       <style>
-        .myAvatar {
-          -webkit-transform: translate3d(0,0,0);
-          height: 240px;
-          border-radius: 100%;
-          transition: margin-top 0.5s;
-          filter: drop-shadow(0 0 0.75rem black);
-          margin-top: -200px;
-          z-index: 1000;
-          position: relative;
-        }
-
-        @media (hover: hover) {
-          #aboutLink:hover .myAvatar {
-            margin-top: 20px;
-          }
-
-          #title, subtitle {
-            opacity: 100%;
-            transition: opacity 0.5s;
-          }
-
-          #aboutLink:hover #title, #aboutLink:hover #subtitle {
-            opacity: 20%;
-          }
-        }
-      </style>
-
-      <style>
         .blockGroup-list .block div.recommendedPost {
           box-shadow:
           0 1px 4px rgba(0, 0, 0, 0.2),
@@ -54,7 +26,6 @@ title: Yaniv Leviathan's Blog
       </style>
 
       <a id="aboutLink" href="/about/" style="background-image: none;">
-        <img src="/assets/images/me_small.jpg" alt="Yaniv Leviathan &#128051;" class="myAvatar">
         <h1 id="title" class="textLogo textLogo--frontpage">
           {{ site.name }}
         </h1>
