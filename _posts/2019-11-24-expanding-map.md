@@ -1,6 +1,7 @@
 ---
 layout: post
 title:  "Expanding Map"
+date:   2019-11-24 01:00:00
 excerpt: "A cool algorithmic combinatorics puzzle"
 categories: Puzzles
 tags:  Puzzle Coding
