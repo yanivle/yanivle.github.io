@@ -32,6 +32,24 @@ title: Yaniv Leviathan's Blog
         }
       </style>
 
+      <style>
+        .blockGroup-list .block div.recommendedPost {
+          box-shadow:
+          0 1px 4px rgba(0, 0, 0, 0.2),
+          0 0 12px #fff,
+          -3px 0 20px rgba(255, 0, 255, 0.5),
+          3px 0 20px rgba(0, 255, 255, 0.9) !important;
+        }
+
+        .blockGroup-list .block div.recommendedPost:hover {
+          box-shadow:
+          0 1px 10px rgba(0, 0, 0, 0.7),
+          0 0 12px #fff,
+          -3px 0 20px rgba(255, 0, 255, 0.5),
+          3px 0 20px rgba(0, 255, 255, 0.9) !important;
+        }
+      </style>
+
       <a id="aboutLink" href="/about/" style="background-image: none;">
         <img src="/assets/images/me_small.jpg" alt="Yaniv Leviathan &#128051;" class="myAvatar">
         <h1 id="title" class="textLogo textLogo--frontpage">
@@ -54,7 +72,11 @@ title: Yaniv Leviathan's Blog
       <ul class="blockGroup-list">
         {% for post in site.posts %}
         <li class="block">
+          {% if post.recommended %}
+          <div class="postArticle-wrapper recommendedPost">
+          {% else %}
           <div class="postArticle-wrapper">
+            {% endif %}
             <article class="postArticle postArticle--short">
               {% if post.image.feature %}
               <a href="{{ post.url }}">
