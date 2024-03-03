@@ -16,7 +16,7 @@ recommended: no
 
 Andrej Karpathy's [code](https://github.com/karpathy) and [videos](https://www.youtube.com/@AndrejKarpathy) are so awesome!
 
-I love how concise his code is. His [minGPT repo](https://github.com/karpathy/minGPT) was an important inspiration for me to write my ["The Art of Transformer Programming"]({% post_url 2023-08-04-taotp %}) book (in the first chapter, I included my Transformer implementation in 30 lines of clean python code :)).
+I love how concise his code is. His [minGPT repo](https://github.com/karpathy/minGPT) was an important inspiration for my ["The Art of Transformer Programming"]({% post_url 2023-08-04-taotp %}) book.
 
 Anyway, I just finished watching [his BPE video](https://www.youtube.com/watch?v=zduSFxRajkE) and got inspired again. Karpathy's code is really nice (as always), and [his implementation](https://github.com/karpathy/minbpe) is obviously not meant to be fast, _but_, we should be able to make the code much faster without sacrificing clarity too much. Hopefully, faster code can make experimentation (e.g. with different scores, instead of always taking the most popular pair) easier.
 
@@ -107,7 +107,7 @@ Ok, let's consider the main data structures I used.
 
 ## The Leap
 
-I needed a data structure that can represent an ordered array, supporting the same ops as a basic doubly-linked list in O(1):
+I needed a data structure that can represent an ordered array, supporting almost the same ops as a basic doubly-linked list in O(1):
  - `append(x)`: appends x to the end.
  - `delete(n)`: removes node n.
  - `start(x)`: returns the first node.
@@ -115,7 +115,7 @@ I needed a data structure that can represent an ordered array, supporting the sa
  - `next(n)`: returns the node following node n.
  - `prev(n)`: returns the node preceding node n.
 
-As well as all of the following operations, also in O(1):
+I say _almost_ because the leap importantly trades a list's _insert_ with an _append_ operation (i.e. we can only insert at the end). In return, we get all of the following operations, in O(1) as well:
  - `first(x)`: returns the first node *with value x*.
  - `last(x)`: returns the last node *with value x*.
  - `leap(n)`: returns first node after node n *with the same value as n*.
