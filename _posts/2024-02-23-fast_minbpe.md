@@ -40,20 +40,19 @@ For his tests, Andrej used a snapshot of the Wikipedia article on Taylor Swift w
 <tr>
 <td markdown="span">Training</td>
 <td markdown="span">110.10 secs</td>
-<td markdown="span">1.32 secs</td>
+<td markdown="span">1.00 secs</td>
 </tr>
 <tr>
 <td markdown="span">Tokenization</td>
 <td markdown="span">190.91 secs</td>
-<td markdown="span">0.78 secs</td>
+<td markdown="span">0.52 secs</td>
 </tr>
 </tbody>
 </table>
 
-**So, in this setup, we get ~80X faster training.**
+**So, in this setup, we get 100X faster training.**
 
-Training fast_minbpe on the same text but with a GPT-4-sized vocab of 100K tokens takes only slightly longer at 1.99 secs, but results in a single token. Training fast_minbpe on a GPT-4-sized 100K vocab on the English translation of Marcel Proust's "Swann's Way", which is the first volume of the [world's longest novel](https://www.guinnessworldrecords.com/world-records/longest-novel), (you can find the file, which contains just over 1 million bytes [here](https://gutenberg.net.au/ebooks03/0300511.txt)) takes just 9.72 seconds.
-
+Training fast_minbpe on the same text but with a GPT-4-sized vocab of 100K tokens takes only slightly longer at 1.61 secs, but results in a single token. Training fast_minbpe on a GPT-4-sized 100K vocab on the English translation of Marcel Proust's "Swann's Way", which is the first volume of the [world's longest novel](https://www.guinnessworldrecords.com/world-records/longest-novel), (you can find the file, which contains just over 1 million bytes [here](https://gutenberg.net.au/ebooks03/0300511.txt)) takes just 8.15 seconds.
 
 *This was a really fun puzzle and, as usual, I recommend trying to solve this yourself!*
 
@@ -80,14 +79,14 @@ So fast_minbpe does something like this:
 ```python
 stats = calc_stats()            # O(L)
 for i in range(N):
-  find_max()                    # O(1)
-  do_merges_and_update_stats()  # O(M_i + log(L))
+  find_max()                    # O(log(L))
+  do_merges_and_update_stats()  # O(M_i)
 ```
 Where $M_i$ denotes the actual number of merges we perform at the $i$th iteration. Note that $M_1 + M_2 + \dots + M_n \le L - 1$, so the overall complexity of everything (again neglecting logarithmic factors) is $O(L)$!
 
 ## Doing the wrong thing
 
-The "right thing" to do here would have been to **profile** Andrej's code and measure which parts take time before attempting to optimze anything. In Python btw, this can be done with a few of lines and the builtin `cProfile` module:
+The "right thing" to do here would have been to **profile** Andrej's code and measure which parts take time before attempting to optimize anything. In Python btw, this can be done with a few of lines and the builtin `cProfile` module:
 
 ```python
 import cProfile
@@ -99,13 +98,174 @@ p.strip_dirs().sort_stats(SortKey.CUMULATIVE).print_stats(10)
 p.strip_dirs().sort_stats(SortKey.TIME).print_stats(10)
 ```
 
-Since I did this just for fun, as a quick late night exercise though, I did *not* do that at all. Instead, I made a quick draft of the above complexity calculations and designed a couple of data structures implementing them. I wish I had run profiling before starting (for one, I would have had more cool numbers to report). In my original implementation I actually kept the cute `find_max()` one-liner with the $O(L)$ complexity, and got a 10X speedup vs minbpe, but it was not until I made the `find_max()` operation constant-time that I got the full improvement factors above. Tl;dr - when optimizing code you should really use a profiler, but, when dealing with large objects, **complexity is never wrong**.
+Since I did this just for fun, as a quick late night exercise though, I did *not* do that at all. Instead, I made a quick draft of the above complexity calculations and designed a couple of data structures implementing them. I wish I had run profiling before starting (for one, I would have had more cool numbers to report). In my original implementation I actually kept the cute `find_max()` one-liner with the $O(L)$ complexity, and got only a 10X speedup vs minbpe, but it was not until I made the `find_max()` operation take logarithmic time that I got the full improvement factors above. Tl;dr - when optimizing code you should really use a profiler, but, when dealing with large objects, **complexity is never wrong**.
 
-Another very wrong thing that I did is that I basically didn't write any tests... My code produces identical outputs to Karpathy's code (when I forced both to break ties in the same way). Again - this was just a late night fun exercise :)
+Another very wrong thing that I did is that I basically didn't write any tests... My code produces identical outputs to Karpathy's code (when I force both to break ties in the same way). Again - this was just a late night fun exercise :)
 
-Ok, let's consider the main data structures I used.
+## Laziness Pays Off
+
+Before we dive into the implementation, I want to make a general note on *lazy data structures*. By saying that a data structure is lazy I mostly mean that it only does work when it is actually needed, not ahead of time. Laziness is very often a good strategy for data structures, and will indeed turn out beneficial for both the data structures we'll use in fast_minbpe. As my good friend Danny Lumen likes to say:
+
+<blockquote class="largeQuote">“When dealing with data structures, being lazy is often the best strategy”</blockquote>
+
+Ok, let's consider the main data structures that I used.
+
+
+## IndexedList
+
+When merging, we need to delete items from the middle of our list. A simple linked list makes this efficient. We also need to know *what to iterate on* - i.e. we need to efficiently find all nodes containing (the first element of) a given pair. To handle that, we'll hold a simple python `dict` (the _index_) mapping each pair to a plain python list containing the nodes from our linked list that contain the first element of the pair. Unfortunately, updating this list is hard and inefficient. Luckily, it costs us _the same_ to update the list and to just check that it's still up to date when accessing it, so we'll opt for the latter solution. Yep - being lazy pays off! To remind ourselves that the index could be stale, we name it `stale_index`.
+
+**You can find the implementation of the `IndexedList` [here](https://github.com/yanivle/fast_minbpe/blob/main/datastructures/indexedlist.py)**.
+
+## Multiset
+
+I also needed a multiset class to hold the stats. The builtin `collections.Counter` class is exactly the API that I needed, but its `most_common` function running in linear time is too slow for our purposes. Instead, I wanted to hold all the elements in a version of a max-heap that supports increasing/decreasing counts of internal elements.
+
+**You can find my implementation of `Multiset` [here](https://github.com/yanivle/fast_minbpe/blob/main/multiset.py)**.
+
+Note that a tiny change here made a huge difference in performance - specifically, breaking count ties _explicitly_ i.e. doing something like this:
+
+```python
+class Multiset:
+  class Node:
+    def __lt__(self, other):
+      return (self.count, self.val, self.pos) < (other.count, other.val, other.pos)
+```
+
+is drastically slower than breaking ties lazily like so:
+
+```python
+class Multiset:
+  class Node:
+    def __lt__(self, other):
+      return self.count < other.count
+```
+
+as the former requires the heap to update much more (and less importantly, creating and comparing tuples is slow). This is a different type of laziness as the one I mentioned above, but it pays off as well :)
+
+Another important change (the right kind of _lazy_!) was accumulating modifications and only updating the heap once a query is performed (laziness FTW!).
+
+## Putting it all together
+
+Armed with an `IndexedList` and our `Multiset`, it's trivial to implement the `merge` function, at the center of the BPE algorithm:
+
+
+```python
+def merge(pair, new_id, indexed_list: IndexedList, stats:Multiset=None):
+  for node in indexed_list.stale_index[pair]:
+    if node.val != pair[0] or node.next is None or node.next.val != pair[1]:
+      continue  # The index was stale - continue.
+    # Say we're merging "bc" to "X" in "abcd", and the node we're visiting now is "b".
+    if stats is not None:  # Update the stats.
+      stats.remove(pair)  # Remove "bc".
+      if node.next.next is not None:
+        stats.remove((node.next.val, node.next.next.val))  # Remove "cd".
+        stats.add((new_id, node.next.next.val))  # Add "Xd".
+      if node.prev is not None:
+        stats.remove((node.prev.val, pair[0]))  # Remove "ab".
+        stats.add((node.prev.val, new_id))  # Add "aX".
+    node.next.delete()  # Delete "c", we now have "abd".
+    node.val = new_id  # Update "b" to "X", we now have "aXd".
+    indexed_list.update_index(node)  # Add "aX" and "Xd" to the index.
+```
+
+Note that importantly, we are careful to skip a pair from the index if it no longer holds the desired value.
+
+**You can find my implementation [here](https://github.com/yanivle/fast_minbpe/blob/main/bpe.py), but, as always, I recommend attempting this yourself first!**
+
+# Alternatives
+
+If you're only interested in fast_minbpe.py feel free to skip everything below this point!
+
+## Heapy, HeapHeapHoory, and HeapyKiYay
+
+I actually implemented the Multiset 3 times: the first version (`Heapy`) was fast, but a bit convoluted, the second version (`HeapHeapHooray`) was tiny but slower, and final implementation (`HeapyKiYay`) is the one I ended up using.
+
+### Version 1 - Heapy
+
+Since I needed each element of the heap to be *aware of its own position* (so I could maintain the heap condition when it increases/decreases), my first attempt consisted of writing a less standard *pointer-based* implementation (heaps are almost always implemented in an array). **You can find this impl [here](/code/fast_minbpe/heapy.py)**.
+
+
+### Version 2 - HeapHeapHooray
+
+Here I decided to optimize for code length. To make this super short, I wanted to reuse the standard implementation from the `heapq` module.
+The main idea was to create a custom list object that tells its elements where they are (so I called it a `GPSList`...).
+
+Here's the full implementation:
+
+```python
+import heapq
+
+class GPSList(list):
+  # A list-like class that tells its elements where they are:
+  # >>> l = GPSList(lambda i, x: print(f'{x} is in position {i}'))
+  # >>> l.append(3)
+  #   3 is in position 0
+  # >>> l[0] = 5
+  #   5 in in position 0
+  # We only support the subset of list operations that are needed for our heap.
+  def __init__(self, update_fn):
+    super().__init__()
+    self.update_fn = update_fn
+
+  def __setitem__(self, i, x):
+    super().__setitem__(i, x)
+    self.update_fn(i, x)
+
+  def append(self, x):
+    super().append(x)
+    self.update_fn(len(self) - 1, x)
+
+  # Forbid other methods that can add elements - hope I didn't forget anything :)
+  extend = insert = remove = __iadd__ = None
+
+class HeapHeapHooray:
+  def __init__(self):
+    def setpos(i, x):
+      x[-1] = i  # Our elements are lists of length 3 (count, pair, pos).
+    self.l = GPSList(setpos)
+
+  @property
+  def max(self):
+    return self.l[0][1]
+
+  def increase(self, x):
+    x[0] += 1
+    heapq._siftdown_max(self.l, 0, x[-1])
+
+  def decrease(self, x):
+    x[0] -= 1
+    heapq._siftup_max(self.l, x[-1])
+
+  def insert(self, val):
+    x = [0, val, -1]
+    self.l.append(x)
+    self.increase(x)
+    return x
+
+  def delete(self, x):
+    last = self.l.pop()
+    if x is last: return
+    if self.l:
+      self.l[x[-1]] = last
+      if x < last:
+        heapq._siftdown_max(self.l, 0, last[-1])
+      else:
+        heapq._siftup_max(self.l, last[-1])
+
+```
+
+This implementation is really short, but has two big downsides:
+ - It uses some internal functions of the `heapq` module, so might break at some point.
+ - It was around 5X slower than the lengthier version (but still MUCH faster than the built-in `collections.Counter`!).
+
+### Version 3 - HeapyKiYay
+
+I suspected a big reason for version 2 being slow was the custom list. My final version was based on the previous one, but consisted of getting rid of `GPSList` and the use of the internal `heapq` functions, and instead, I wrote a custom version of an array-based position-aware heap. This version is clean and efficient, so I kept it. **It's the one on [github](https://github.com/yanivle/fast_minbpe/blob/main/datastructures/multiset.py)**.
 
 ## The Leap
+
+I also experimented with a variant where instead of using the more custom `IndexedList`, I created a more general data structure (the `Leap`) and used it to hold the consecutive pairs directly (instead of individual tokens). I ended up preferring the code with the `IndexedList` so I reverted the `Leap`, but it is more general and might be helpful elsewhere, so I'm explaining it here.
 
 I needed a data structure that can represent an ordered array, supporting almost the same ops as a basic doubly-linked list in O(1):
  - `append(x)`: appends x to the end.
@@ -128,9 +288,9 @@ also allows efficient in-order iteration on all elements *with a given value*.
 I guess that this data structure must exist, but I haven't heard of it. So I named it - *"Leap"* (although maybe *"Leaped List"* sounds better?).
 Either way, if this is a thing and you know its name, please lmk!
 
-The implementation of a leap is straightforward (you can find it [here](https://github.com/yanivle/fast_minbpe/blob/main/leap.py)).
+**The implementation of a leap is straightforward - you can find it [here](/code/fast_minbpe/leap.py)**.
 
-My first implementation of a leap was around 2X *shorter* (by unifying the shared logic for positions and values), but that turned out to also be around 2X *slower*, so I opted for the more verbose version above. Note that the shorter impl also generalizes easily to the case where we want to leap by any one of several object properties. If you're interested, here's the more compact version:
+My first implementation of a leap was around 2X *shorter* (by unifying the shared logic for positions and values), but that turned out to also be around 2X *slower*, so I opted for the more verbose version above. Note that the shorter impl also generalizes easily to the case where we want to leap by any one of several object properties. If you're interested, here's the more compact and general (but slower) version:
 
 ```python
 class LinkedList:  # A simple linked list.
@@ -224,241 +384,7 @@ def debug_repr(leap):
   return '[' + ', '.join(p) + ']'
 ```
 
-## Multiset
-
-I also needed a a multiset class to hold the stats. The builtin `collections.Counter` class is exactly the API that I needed, but its `most_common` function running in linear time is too slow for our purposes. Instead, I wanted to hold all the elements in a version of a max-heap that supports increasing/decreasing counts of internal elements. I actually implemented this 3 times: a fast version, a tiny version, and finally the best of all worlds.
-
-### Version 1 - Heapy
-
-Since I needed each element of the heap to be *aware of its own position* (so I could maintain the heap condition when it increases/decreases), my first attempt consisted of writing a less standard *pointer-based* implementation (heaps are almost always implemented in an array). This was the fastest implementation of the three, but also the most convoluted. Here it is:
-
-```python
-# A max-heap that supports increasing/decreasing internal elements.
-# Might have been nicer to do this with a standard array impl (and have each node hold its own index), or maybe even reuse some of the heapq impl.
-# Might also be nice to add a "remove" functionality at some point :)
-
-class Heapy:
-  class Node:
-    def __init__(self, value=None, p=None, l=None, r=None):
-    self.value = value  # A (__lt__ comparable) user supplied value.
-    self.p = p  # Parent
-    self.l = l  # Left child
-    self.r = r  # Right child
-
-    @property
-    def leftmost_descendent(self):
-    while self.l is not None:
-      self = self.l
-    return self
-
-  def __init__(self):
-    self.root = None
-    self.last = None
-
-  def swap_with_parent(self, node: Node):
-    # Might be nicer to just implement a swap of 2 arbitrary elements (will also be easier to implement remove).
-    # This function is really simple - just move a bunch of pointers around:
-    # - Update last and root if needed.
-    # - Fix 3 bidirectional pointers from node and node.p. Since we're swapping a child with its parent,
-    #   2 pairs are counted twice, so we only need to fix 10 pointers.
-    p = node.p
-    if self.last is node:
-    self.last = p
-    if self.root is p:
-    self.root = node
-    if p.p is not None: # Fix the parent's parent.
-      if p.p.l is p:
-        p.p.l = node
-      else:
-        assert p.p.r is p
-        p.p.r = node
-    if node.l is not None:
-      node.l.p = p
-    if node.r is not None:
-      node.r.p = p
-    if node is p.l:
-      if p.r is not None:
-        p.r.p = node
-      node.p, node.l, node.r, p.p, p.l, p.r = p.p, p, p.r, node, node.l, node.r
-    else:
-      assert node is p.r
-      p.l.p = node
-      node.p, node.l, node.r, p.p, p.l, p.r = p.p, p.l, p, node, node.l, node.r
-
-  def handle_increase(self, node: Node):  # Propagate node upwards
-    while node.p is not None and node.value > node.p.value:
-      self.swap_with_parent(node)
-
-  def handle_decrease(self, node: Node):  # Propagate node downwards
-    while node.l is not None:  # We have children
-      bigger_child = node.r
-      if node.r is None or node.r.value < node.l.value:
-        bigger_child = node.l
-      if node.value > bigger_child.value:
-        return
-      self.swap_with_parent(bigger_child)
-
-  def insert(self, node: Node):
-    assert node.p is None and node.r is None and node.l is None
-    if self.root is None:  # Heap is empty
-      self.root = self.last = node
-      return
-    # Now we find out where to insert:
-    p = self.last
-    while p.p and p is p.p.r:
-      p = p.p
-    if p.p is not None:
-      right_sibling = p.p.r
-      if right_sibling is not None:
-        p = right_sibling.leftmost_descendent
-      else:
-        p = p.p
-    else:
-      p = p.leftmost_descendent
-
-    # We need to insert as a child of p:
-    self.last = node
-    if p.l is None:
-      p.l = node
-    else:
-      p.r = node
-    node.p = p
-    self.handle_increase(node)
-```
-
-### Version 2 - HeapHeapHooray
-
-Here I decided to optimize for code length. To make this super short, I wanted to reuse the standard implementation from the `heapq` module.
-The main idea was to create a custom list object that tells its elements where they are (so I called it a `GPSList`...).
-
-Here's the full implementation:
-
-```python
-import heapq
-
-class GPSList(list):
-  # A list-like class that tells its elements where they are:
-  # >>> l = GPSList(lambda i, x: print(f'{x} is in position {i}'))
-  # >>> l.append(3)
-  #   3 is in position 0
-  # >>> l[0] = 5
-  #   5 in in position 0
-  # We only support the subset of list operations that are needed for our heap.
-  def __init__(self, update_fn):
-    super().__init__()
-    self.update_fn = update_fn
-
-  def __setitem__(self, i, x):
-    super().__setitem__(i, x)
-    self.update_fn(i, x)
-
-  def append(self, x):
-    super().append(x)
-    self.update_fn(len(self) - 1, x)
-
-  # Forbid other methods that can add elements - hope I didn't forget anything :)
-  extend = insert = remove = __iadd__ = None
-
-class HeapHeapHooray:
-  # A max heap that supports increasing/decreasing internal elements.
-  # To make this super short, we're reusing some internal functions from
-  # heapq - this might break at some point.
-  # Internally, the elements are lists of length 3: [count, value, pos]:
-  # - count must be first, so when we return the max element, we'll get the one with max count.
-  # - Since value is second, we'll break ties by value.
-  # - The values need to be mutable (count and position are updated) so we use a list.
-  def __init__(self):
-    def setpos(i, x):
-      x[-1] = i  # Our elements are lists of length 3 (count, pair, pos).
-    self.l = GPSList(setpos)
-
-  @property
-  def max(self):
-    return self.l[0][1]
-
-  def increase(self, x):
-    x[0] += 1
-    heapq._siftdown_max(self.l, 0, x[-1])
-
-  def decrease(self, x):
-    x[0] -= 1
-    heapq._siftup_max(self.l, x[-1])
-
-  def insert(self, val):
-    x = [0, val, -1]
-    self.l.append(x)
-    self.increase(x)
-    return x
-
-  def delete(self, x):
-    last = self.l.pop()
-    if x is last: return
-    if self.l:
-      self.l[x[-1]] = last
-      if x < last:
-        heapq._siftdown_max(self.l, 0, last[-1])
-      else:
-        heapq._siftup_max(self.l, last[-1])
-
-```
-
-This implementation is really short, but has two big downsides:
- - It uses some internal functions of the `heapq` module, so might break at some point.
- - It was around 5X slower than my previous version.
-
-### Version 3 - HeapyKiYay
-
-I suspected a big reason for version 2 being slow was the custom list. My final version was based on the previous one, but consisted of getting rid of `GPSList` and the use of the internal `heapq` functions, and instead, I wrote a custom version of an array-based position-aware heap. This version is cleaner imo than the first attempt and only marginally slower, so I'm keeping this one.
-
-You can find my implementation of HeapyKiYay [here](https://github.com/yanivle/fast_minbpe/blob/main/multiset.py).
-
-Note that a tiny change here made a huge difference in performance - specifically, breaking count ties _explicitly_ i.e. doing something like this:
-
-```python
-class Multiset:
-  class Node:
-    def __lt__(self, other):
-      return (self.count, self.val, self.pos) < (other.count, other.val, other.pos)
-```
-
-is drastically slower than breaking ties lazily like so:
-
-```python
-class Multiset:
-  class Node:
-    def __lt__(self, other):
-      return self.count < other.count
-```
-
-as the former requires the heap to update much more (and less importantly, creating and comparing tuples is slow).
-
-## Putting it all together
-
-Armed with a `Leap` and our `Multiset`, it's trivial to implement the `merge` function. We'll use one final trick (that surprisingly does not make the code run any faster but does make it slightly cleaner I think) and instead of loading the sequence into the leap, we instead create and maintain a leap of _consecutive pairs_:
-
-```python
-def merge(pair, new_id, leap):
-  for node in list(leap.occurrences(pair)):
-    if node.val != pair:  # Might happen if pair[0] == pair[1].
-      continue
-    if node.prev is not None:
-      leap.set_value(node.prev, (node.prev.val[0], new_id))
-    if node.next is not None:
-      leap.set_value(node.next, (new_id, node.next.val[1]))
-    leap.delete(node)
-```
-
-Note that the merge function doesn't deal with updating the stats at all. Instead I'm using a tiny wrapper for the leap class that does that, during training, and a regular leap during tokenization, allowing efficient reuse of the code.
-
-A couple of notes:
-- We don't iterate on `leap.occurences(pair)` directly, but instead make it into a fixed list first, as we are modifying elements during iteration.
-- We are careful to skip a pair if we already modified it (only possible if `pair[0] == pair[1]`).
-
-You can find the my implementation [here](https://github.com/yanivle/fast_minbpe/blob/main/fast_minbpe.ipynb), but, as always, I recommending attempting this yourself first!
-
-# An Illustrated Example
-
-Finally, consider the canonical example from the [BPE wiki page](https://en.wikipedia.org/wiki/Byte_pair_encoding) of performing 3 merges on the text "aaabdaaabac".
+Finally, since the impl with a Leap holding consecutive pairs is more involved, so let's look at the canonical example from the [BPE wiki page](https://en.wikipedia.org/wiki/Byte_pair_encoding) of performing 3 merges on the text "aaabdaaabac".
 Since the byte pair "aa" (97, 97) is occurring most often, we'll be merging it first. As our vocabulary starts with 256 tokens, one for each byte, we'll be performing the merge (97, 97) -> 256.
 
 Here we see that status of the leap right before this merge is performed:
