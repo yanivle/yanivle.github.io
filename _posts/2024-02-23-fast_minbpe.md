@@ -106,7 +106,7 @@ Another very wrong thing that I did is that I basically didn't write any tests..
 
 Before we dive into the implementation, I want to make a general note on *lazy data structures*. By saying that a data structure is lazy I mostly mean that it only does work when it is actually needed, not ahead of time. Laziness is very often a good strategy for data structures, and will indeed turn out beneficial for both the data structures we'll use in fast_minbpe. As my good friend Danny Lumen likes to say:
 
-<blockquote class="largeQuote">“When dealing with data structures, being lazy is often the best strategy”</blockquote>
+<blockquote class="largeQuote">“When dealing with data structures, being lazy is often the best strategy”<br/>- Danny Lumen</blockquote>
 
 Ok, let's consider the main data structures that I used.
 
