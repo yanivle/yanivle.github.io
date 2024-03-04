@@ -456,5 +456,22 @@ A couple of notes:
 
 You can find the my implementation [here](https://github.com/yanivle/fast_minbpe/blob/main/fast_minbpe.ipynb), but, as always, I recommending attempting this yourself first!
 
-**Thanks again Andrej for the fun exercise!**
+# An Illustrated Example
+
+Finally, consider the canonical example from the [BPE wiki page](https://en.wikipedia.org/wiki/Byte_pair_encoding) of performing 3 merges on the text "aaabdaaabac".
+Since the byte pair "aa" (97, 97) is occurring most often, we'll be merging it first. As our vocabulary starts with 256 tokens, one for each byte, we'll be performing the merge (97, 97) -> 256.
+
+Here we see that status of the leap right before this merge is performed:
+
+{% include image.html url="/assets/images/posts/fast_minbpe/merge_1.gv.png" %}
+
+For simplicity I'm only drawing forward edges.
+
+The graph can be interpreted as follows: each node is a circle. Nodes that are _first_ nodes in the leap are double circles. The current node the merge is iterating over is green, while the previous and next nodes are light blue. Finally the node that is just about to be changed (or that was just changed) is filled.
+
+The below illustration (you might want to click on it to zoom!) depicts the status of the leap each time that it changes while performing 3 merges with the above text. The label under each line explains what is going on at that stage:
+
+{% include image.html url="/assets/images/posts/fast_minbpe/illustrated_merges.png" %}
+
+**Hope you enjoyed this post and thanks again Andrej for the fun exercise!**
 
