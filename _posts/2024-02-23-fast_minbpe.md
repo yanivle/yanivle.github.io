@@ -14,13 +14,11 @@ syntaxHighlighter: yes
 recommended: no
 ---
 
-Andrej Karpathy's [code](https://github.com/karpathy) and [videos](https://www.youtube.com/@AndrejKarpathy) are so awesome!
-
-I love how concise his code is. His [minGPT repo](https://github.com/karpathy/minGPT) was an important inspiration for my ["The Art of Transformer Programming"]({% post_url 2023-08-04-taotp %}) book.
+Andrej Karpathy's [code](https://github.com/karpathy) and [videos](https://www.youtube.com/@AndrejKarpathy) are so awesome! I love how concise his code is. His [minGPT repo](https://github.com/karpathy/minGPT) was an important inspiration for my ["The Art of Transformer Programming"]({% post_url 2023-08-04-taotp %}) book.
 
 Anyway, I just finished watching [his BPE video](https://www.youtube.com/watch?v=zduSFxRajkE) and got inspired again. Karpathy's code is really nice (as always), and [his implementation](https://github.com/karpathy/minbpe) is obviously not meant to be fast, _but_, we should be able to make the code much faster without sacrificing clarity too much. Hopefully, faster code can make experimentation (e.g. with different scores, instead of always taking the most popular pair) easier.
 
-You can find my late night take on a simple, clean, and *fast* BPE implementation [here](https://github.com/yanivle/fast_minbpe).
+You can find my late night take on a minimal, clean, and **fast** BPE implementation <a href="https://github.com/yanivle/fast_minbpe" style="background-color: Azure">here</a>.
 
 For his tests, Andrej used a snapshot of the Wikipedia article on Taylor Swift with ~185K chars. On my laptop, training/tokenizing this file with a vocab size of 10K takes:
 
@@ -52,9 +50,9 @@ For his tests, Andrej used a snapshot of the Wikipedia article on Taylor Swift w
 </tbody>
 </table>
 
-**So, in this setup, we get 69X faster training.**
+**So, in this setup, we get ~80X faster training.**
 
-Training fast_minbpe on the same text but with a GPT-4-sized vocab of 100K tokens takes only slightly longer at 1.99 secs, but results in a single token. Training fast_minbpe on a GPT-4-sized 100K vocab on the English translation of Marcel Proust's "Swann's Way", which is the first volume of the [world's longest novel](https://www.guinnessworldrecords.com/world-records/longest-novel), (you can find the file, which contains just over 1,000,000 bytes [here](https://gutenberg.net.au/ebooks03/0300511.txt)) takes just 9.72 seconds.
+Training fast_minbpe on the same text but with a GPT-4-sized vocab of 100K tokens takes only slightly longer at 1.99 secs, but results in a single token. Training fast_minbpe on a GPT-4-sized 100K vocab on the English translation of Marcel Proust's "Swann's Way", which is the first volume of the [world's longest novel](https://www.guinnessworldrecords.com/world-records/longest-novel), (you can find the file, which contains just over 1 million bytes [here](https://gutenberg.net.au/ebooks03/0300511.txt)) takes just 9.72 seconds.
 
 
 *This was a really fun puzzle and, as usual, I recommend trying to solve this yourself!*
