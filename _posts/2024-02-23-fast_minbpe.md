@@ -400,4 +400,3 @@ The below illustration (you might want to click on it to zoom!) depicts the stat
 {% include image.html url="/assets/images/posts/fast_minbpe/illustrated_merges.png" %}
 
 **Hope you enjoyed this post and thanks again Andrej for the fun exercise!**
-
