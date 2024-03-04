@@ -42,19 +42,20 @@ For his tests, Andrej used a snapshot of the Wikipedia article on Taylor Swift w
 <tr>
 <td markdown="span">Training</td>
 <td markdown="span">110.10 secs</td>
-<td markdown="span">1.59 secs</td>
+<td markdown="span">1.32 secs</td>
 </tr>
 <tr>
 <td markdown="span">Tokenization</td>
 <td markdown="span">190.91 secs</td>
-<td markdown="span">0.98 secs</td>
+<td markdown="span">0.78 secs</td>
 </tr>
 </tbody>
 </table>
 
 **So, in this setup, we get 69X faster training.**
 
-Training fast_minbpe on the same text but with a GPT-4-sized vocab of 100K tokens takes only slightly longer at 3.00 secs (but results in a single token - I need to test it on longer texts).
+Training fast_minbpe on the same text but with a GPT-4-sized vocab of 100K tokens takes only slightly longer at 1.99 secs, but results in a single token. Training fast_minbpe on a GPT-4-sized 100K vocab on the English translation of Marcel Proust's "Swann's Way", which is the first volume of the [world's longest novel](https://www.guinnessworldrecords.com/world-records/longest-novel), (you can find the file, which contains just over 1,000,000 bytes [here](https://gutenberg.net.au/ebooks03/0300511.txt)) takes just 9.72 seconds.
+
 
 *This was a really fun puzzle and, as usual, I recommend trying to solve this yourself!*
 
@@ -96,7 +97,8 @@ import pstats
 from pstats import SortKey
 cProfile.run('func_to_profile()', 'pstats')
 p = pstats.Stats('pstats')
-p.strip_dirs().sort_stats(SortKey.CUMULATIVE).print_stats(20)
+p.strip_dirs().sort_stats(SortKey.CUMULATIVE).print_stats(10)
+p.strip_dirs().sort_stats(SortKey.TIME).print_stats(10)
 ```
 
 Since I did this just for fun, as a quick late night exercise though, I did *not* do that at all. Instead, I made a quick draft of the above complexity calculations and designed a couple of data structures implementing them. I wish I had run profiling before starting (for one, I would have had more cool numbers to report). In my original implementation I actually kept the cute `find_max()` one-liner with the $O(L)$ complexity, and got a 10X speedup vs minbpe, but it was not until I made the `find_max()` operation constant-time that I got the full improvement factors above. Tl;dr - when optimizing code you should really use a profiler, but, when dealing with large objects, **complexity is never wrong**.
@@ -411,6 +413,26 @@ This implementation is really short, but has two big downsides:
 I suspected a big reason for version 2 being slow was the custom list. My final version was based on the previous one, but consisted of getting rid of `GPSList` and the use of the internal `heapq` functions, and instead, I wrote a custom version of an array-based position-aware heap. This version is cleaner imo than the first attempt and only marginally slower, so I'm keeping this one.
 
 You can find my implementation of HeapyKiYay [here](https://github.com/yanivle/fast_minbpe/blob/main/multiset.py).
+
+Note that a tiny change here made a huge difference in performance - specifically, breaking count ties _explicitly_ i.e. doing something like this:
+
+```python
+class Multiset:
+  class Node:
+    def __lt__(self, other):
+      return (self.count, self.val, self.pos) < (other.count, other.val, other.pos)
+```
+
+is drastically slower than breaking ties lazily like so:
+
+```python
+class Multiset:
+  class Node:
+    def __lt__(self, other):
+      return self.count < other.count
+```
+
+as the former requires the heap to update much more (and less importantly, creating and comparing tuples is slow).
 
 ## Putting it all together
 
