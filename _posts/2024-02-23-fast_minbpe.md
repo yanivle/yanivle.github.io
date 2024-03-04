@@ -121,7 +121,7 @@ When merging, we need to delete items from the middle of our list. A simple link
 
 I also needed a multiset class to hold the stats. The builtin `collections.Counter` class is exactly the API that I needed, but its `most_common` function running in linear time is too slow for our purposes. Instead, I wanted to hold all the elements in a version of a max-heap that supports increasing/decreasing counts of internal elements.
 
-**You can find my implementation of `Multiset` [here](https://github.com/yanivle/fast_minbpe/blob/main/multiset.py)**.
+**You can find my implementation of `Multiset` [here](https://github.com/yanivle/fast_minbpe/blob/main/datastructures/multiset.py)**.
 
 Note that a tiny change here made a huge difference in performance - specifically, breaking count ties _explicitly_ i.e. doing something like this:
 
