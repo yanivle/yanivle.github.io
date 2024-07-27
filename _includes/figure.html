@@ -1,0 +1,9 @@
+{::nomarkdown}
+<figure>
+    <a href="{{ include.url | relative_url }}">
+      <div class="img img--fullContainer img--{{include.height | default: 14}}xLeading"
+        style="background-image: url({{ include.url | relative_url }}); background-size: contain;"></div>
+    </a>
+    <figcaption style="text-align:center; font-size: 0.75em; padding-top: 0.75em">{{include.caption | default: }}</figcaption>
+</figure>
+{:/nomarkdown}

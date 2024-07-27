@@ -5,10 +5,10 @@ This is my personal blog. It is based on the [Mickey theme](https://github.com/v
 
 ## Building and Serving
 
-Recompile sass (if needed):
+Recompile sass (using the deprecated `Ruby Sass 3.7.4`):
 
-    sass _scss/main.scss:assets/css/main.css --no-source-map --style expanded
-    sass _scss/main.scss:assets/css/main.min.css --no-source-map --style compressed
+    sass _scss/main.scss:assets/css/main.css --sourcemap=none --style expanded
+    sass _scss/main.scss:assets/css/main.min.css --sourcemap=none --style compressed
 
 Put hero images for new posts go in `assets/images/hero` and then run:
 
