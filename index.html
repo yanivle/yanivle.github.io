@@ -9,11 +9,30 @@ title: Yaniv Leviathan's Blog
 
       <style>
         .blockGroup-list .block div.recommendedPost {
-          box-shadow:
-          0 1px 4px rgba(0, 0, 0, 0.2),
-          0 0 12px #fff,
-          -3px 0 20px rgba(255, 0, 255, 0.5),
-          3px 0 20px rgba(0, 255, 255, 0.9) !important;
+          box-shadow: none;
+          animation: animateRecommendedItemShadow 5s infinite;
+        }
+
+        @keyframes animateRecommendedItemShadow {
+          0% {
+            box-shadow: none;
+          }
+
+          80% {
+            box-shadow: none;
+          }
+
+          90% {
+            box-shadow:
+            0 1px 4px rgba(0, 0, 0, 0.2),
+            0 0 12px #fff,
+            -3px 0 20px rgba(255, 0, 255, 0.5),
+            3px 0 20px rgba(0, 255, 255, 0.9);
+          }
+
+          100% {
+            box-shadow: none;
+          }
         }
 
         .blockGroup-list .block div.recommendedPost:hover {
