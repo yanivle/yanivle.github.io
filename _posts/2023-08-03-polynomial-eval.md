@@ -20,4 +20,4 @@ What if $x$ doesn't have to be an integer?
 
 What if my polynomial $P(x)$ doesn't have integer coefficients?
 
-What if my polynomial $P(x)$ doesn't have have _positive_ coefficients?
+What if my polynomial $P(x)$ doesn't have _positive_ coefficients?

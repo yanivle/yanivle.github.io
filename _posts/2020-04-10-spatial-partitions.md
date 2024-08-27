@@ -12,7 +12,7 @@ bgContrast: light
 bgGradientOpacity: lighter
 syntaxHighlighter: yes
 ---
-Finding the [nearest neighbor](https://en.wikipedia.org/wiki/Nearest_neighbor_search) of a point in a [metric space](https://en.wikipedia.org/wiki/Metric_space) has [numerous applications](https://en.wikipedia.org/wiki/Nearest_neighbor_search#Applications), from *machine learning* (as a matter of fact, finding the nearest neighbor of an item in feature space is a complete machine learning alogrithm! We'll see a toy example below), to *graphics* and *physics simulation* (e.g. I use it extensively in my General Relativity Renderer - I hope to write a post about it soon), or, as we shall see later, for finding the closest word in the dictionary to a given word with spelling mistakes. In this post we will explore a generic data structure for efficiently finding the nearest neighbor of a point in arbitrary metric spaces, and a modern c++ implementation.
+Finding the [nearest neighbor](https://en.wikipedia.org/wiki/Nearest_neighbor_search) of a point in a [metric space](https://en.wikipedia.org/wiki/Metric_space) has [numerous applications](https://en.wikipedia.org/wiki/Nearest_neighbor_search#Applications), from *machine learning* (as a matter of fact, finding the nearest neighbor of an item in feature space is a complete machine learning algorithm! We'll see a toy example below), to *graphics* and *physics simulation* (e.g. I use it extensively in my General Relativity Renderer - I hope to write a post about it soon), or, as we shall see later, for finding the closest word in the dictionary to a given word with spelling mistakes. In this post we will explore a generic data structure for efficiently finding the nearest neighbor of a point in arbitrary metric spaces, and a modern c++ implementation.
 
 ## A Good Algorithm?
 There are several important dimensions that determine *how good an algorithm is*. Maybe the three most important ones are ***time complexity***, ***memory complexity***, and ***code complexity***. Since in almost all problems you can trade one for one of the others, it's usually impossible to find a solution that is actually the best, in the sense that it optimizes all three. Once in a while though, you find a nice trade-off, with low time, memory, *and* code complexities. The solution I'll describe in this post is one such algorithm, for the problem of efficiently finding the closest point to a target point in a metric space.
@@ -38,6 +38,8 @@ Depending on the parameters of the question, the well-known solutions to this pr
 And here is the same space after we added several such hyperplanes:
 
 {% include image.html url="/assets/images/posts/spatial_partitions/points_with_hyperplanes.png" %}
+
+For simplicity, we will only deal with _axis-aligned_ hyperplanes, i.e. hyperplanes that are orthogonal to one of the axes, as in the example above.
 
 Note that the above diagram represents a possible *k*-d tree in $$R^2$$, where if a hyperplane is the child of another, we only draw the part of it until it intersects its parent. This specific diagram defines a single *k*-d tree, as detailed in this diagram:
 
@@ -105,10 +107,10 @@ A much more important optimization comes from the way we choose the hyperplanes.
 
 #### Good Hyperplanes
 Let's consider two desirable traits for the chosen hyperplanes:
-1. Most importantly, we'd like about half of the points to lie in each side of them. This criteria is obviously needed in order to get a logarithmic depth to the tree.
+1. We'd like the hyperplane to split the points as evenly as possible, to minimize the worst case depth.
 2. We'd like the points on each side of the hyperplane to be as far away as possible from the hyperplane. This criteria is important, as even if the tree has logarithmic depth, if the *find* algorithm above needs to explore both sides of the hyperplane often, it might run for more than a logarithmic number of steps.
 
-For example, the root hyperplane in the example above is chosen poorly as most points lie to its left, violating desirability trait #1:
+For example, the root hyperplane in the example above is chosen poorly as very few points lie to its right, violating desirability trait #1:
 
 {% include image.html url="/assets/images/posts/spatial_partitions/bad_hyperplane.png" %}
 
@@ -123,7 +125,7 @@ What about criteria #2? Consider the blue and the green hyperplanes in this diag
 While the green line separates the points more evenly (so is better according to criteria #1), according to criteria #2, the blue line is better. Indeed, if we are trying to find the nearest neighbor for a point with a similar distribution to that of the original set of points, e.g. the red target point, we are likely to need to check both sides of the green hyperplane, whereas we are likely to only need to check one side of the blue hyperplane.
 
 #### Degrees of Freedom
-When choosing the hyperplanes there are two things we are actually choosing:
+When choosing axis-aligned hyperplanes there are two things we are actually choosing:
 1. Which axis the hyperplane will be perpendicular to ($$X$$, $$Y$$, or $$Z$$)?
 2. What is the point of intersection of the hyperplane and that perpendicular axis?
 
@@ -277,9 +279,9 @@ tree_closest = tree.findClosest("Yaniv").item;
 std::cerr << "The closest word in the dictionary to 'Yaniv' is: " << tree_closest << std::endl;
 ```
 
-## Toy Example - Machine Learning a Corona Detector
+## Toy Example - Machine Learning a COVID Detector
 
-Before we start with serious benchmarks, let's use our spatial data structure to build a simple machine learned model to detect whether someone has corona. The features we'll use are the person's body temperature, the number of times the person coughs in a day, and a completely irrelevant feature of the person's favorite number. We'll generate some random data for these features like so:
+Before we start with serious benchmarks, let's use our spatial data structure to build a simple machine learned model to detect whether someone has COVID. The features we'll use are the person's body temperature, the number of times the person coughs in a day, and a completely irrelevant feature of the person's favorite number. We'll generate some random data for these features like so:
 - If a person is healthy, we'll assume that their body temperature is normally distributed with a mean of 98.6°F and a standard deviation of 0.45°F. For a sick person we'll assume the same standard deviation but a mean of 1°F higher.
 - We'll assume that the number of times a healthy human coughs in a day is geometrically distributed with a parameter of 0.5. The parameter we'll use for a sick person will be 0.25.
 - Finally we'll let everyone's favorite number be an integer uniformly distributed between 1 and 100, regardless of whether a person is sick or not (we should really have given 17 a higher chance...).
@@ -444,7 +446,7 @@ int EditDistanceNaive(const std::string& s1, const std::string& s2,
 This was so slow, that I couldn't run anything but the most trivial of experiments. So I wrote this better implementation, that employees three tricks:
 
 1. The naive recursive implementation above recalculates the distance between the same 2 substrings over and over again - this can be easily remedied by using dynamic programming and caching the results of these sub-string comparisons.
-2. Instead of using an $$n \ times m$$ matrix (where $$n$$ and $$m$$ are the lengths of the strings we are comparing), it is enough to use an $$2 \times m$$ matrix, as we can scan it top to bottom (see the implementation below), so we use linear memory instead of quadratic memory.
+2. Instead of using an $$n \times m$$ matrix (where $$n$$ and $$m$$ are the lengths of the strings we are comparing), it is enough to use a $$2 \times m$$ matrix, as we can scan it top to bottom (see the implementation below), so we use linear memory instead of quadratic memory.
 3. Finally, since during tree building I am sometimes calculating the distance between the same pair of strings, I wrapped the entire implementation with a version that can cache the full result, so the same strings are never compared more than once in the entire lifetime of the program (for brevity, I omitted this from the implementation below, it's a simple wrapper on top of EditDistanceNoCache below).
 
 ```c++
