@@ -6,7 +6,7 @@ excerpt: "Speculative Decoding Talk"
 categories: AI
 tags:  AI Programming Google Computing
 image:
-  feature: block_verification.png
+  feature: block_verify.png
   topPosition: 0
 bgContrast: dark
 bgGradientOpacity: darker

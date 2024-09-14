@@ -55,7 +55,7 @@ Let N denote the set $$\{0, 1, 2, ...\}$$ of natural numbers. Lets begin by show
 The sets N and $$N \times N$$ are of the same cardinality.
 
 ##### Proof 1 - Using the C-B-S Theorem
-Consider the functions, $$f:N \rightarrow N \times N$$ and $$g:N \times N \rightarrow N$$ given by: $$f(n) = (n,0)$$ and $$g(n,m) = (2^{n})\times(3^{m})$$. It is obvious that f and g are injective. By the C-B-S theorem N and $$N \ times N$$ are of the same cardinality.
+Consider the functions, $$f:N \rightarrow N \times N$$ and $$g:N \times N \rightarrow N$$ given by: $$f(n) = (n,0)$$ and $$g(n,m) = (2^{n})\times(3^{m})$$. It is obvious that f and g are injective. By the C-B-S theorem N and $$N \times N$$ are of the same cardinality.
 
 ##### Proof 2 – Actual Construction
 Lets build such a function f.
@@ -129,7 +129,7 @@ $$f(A_i) = max(A_i), g(A_i) = min(A_i)$$
 
 can  be shown to exist without assuming the axiom of choice. This principal can be extended to the case where the sets $$A_i$$ are contained in a set A having an order relation with the property that each non-empty subset of A has a least element (we say that the order relation is a well ordering of A). Then we can define:
 
-$$f(A_i) = least element of A_i$$
+$$f(A_i) = \text{least element of } A_i$$
 
 If on the other hand all that is known on the sets $$A_i$$ is that they contain exactly two members, the existence of a function f as in the axiom of choice *is not a consequence of any of the other axioms*.
 

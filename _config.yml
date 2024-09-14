@@ -5,11 +5,13 @@ author:
   url:            	 yanivle.github.io
   facebook:          yanivle
   linkedin:          yaniv-leviathan
+  twitter:           yanivle
 
 site:
   author:
     facebook:        yanivle
     linkedin:        yaniv-leviathan
+    twitter:           yanivle
 
 plugins:
   - jekyll-sitemap
