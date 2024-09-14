@@ -4,7 +4,7 @@
   {% include head.html %}
 
   <body>
-    {% if page.url != '/index.html' %}
+    {% if page.url != '/index.html' and page.url != '/about/' and page.url != '/' and page.url != '/puzzles.html' and page.url != '/posts.html' %}
       <input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
       {% include sidebar-nav.html %}
       {% include menu.html %}
@@ -12,11 +12,9 @@
 
     {{ content }}
 
-    {% if page.url != '/' %}
+    {% if page.url != '/index.html' and page.url != '/about/' and page.url != '/' and page.url != '/puzzles.html' and page.url != '/posts.html' %}
       {% include sidebar-toggle.html %}
-    {% endif %}
-
-    {% if page.url == '/' %}
+    {% else %}
       {% include footer.html %}
     {% endif %}
 
