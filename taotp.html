@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-156163418-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-156163418-1');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yaniv Leviathan: The Art of Transformer Programming</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📖</text></svg>">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .book-cover-container {
+            perspective: 1000px;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        .book-cover {
+            max-width: 100%;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+            transform-style: preserve-3d;
+        }
+
+        .book-cover-container:hover .book-cover {
+            transform: rotateY(15deg);
+            filter: brightness(96.59%);
+        }
+
+        .btn-custom {
+            background-color: #007bff;
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-custom:hover {
+            background-color: #0056b3;
+            color: white;
+        }
+
+        .edition-info {
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        .bibtex-citation {
+            background-color: #f1f3f5;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        /* Custom Styles for Excerpt */
+        .long-excerpt {
+            padding: 20px;
+            border-left: 5px solid #6c757d;
+            background-color: #f8f9fa;
+            font-family: 'Georgia', serif;
+            font-size: 1.1rem;
+            color: #444;
+            border-radius: 5px;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .big-letter {
+            font-size: 3.5rem;
+            float: left;
+            margin-right: 8px;
+            line-height: 1;
+        }
+
+        .red-letter {
+            color: rgb(181, 38, 27);
+        }
+
+        .long-excerpt .first-sentence {
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-md-8">
+                <h1 class="display-4 mb-2">The Art of Transformer Programming</h1>
+                <h2 class="h5 mb-4 text-muted">The Esoteric Programming Language at the Heart of Modern AI</h2>
+                <h3 class="h4 mb-4">
+                    <a href="/about/" class="text-decoration-none">Yaniv Leviathan</a>
+                </h3>
+            </div>
+            <div class="col-md-4 text-center">
+                <div class="book-cover-container">
+                    <img src="/taotp_cover.png" alt="Book cover" class="book-cover img-fluid mb-3">
+                </div>
+            </div>
+        </div>
+
+        <div class="edition-info">
+            <strong>Current Edition:</strong> 2022.10.24 (PREPRINT)<br>
+            <strong>Last Updated:</strong> 2024.07.28
+        </div>
+
+        <!-- Buttons -->
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <div class="d-grid gap-2 d-md-block">
+                    <!-- <a href="#" class="btn btn-custom mb-2 me-md-2" target="_blank">Buy</a> -->
+                    <a href="/taotp.pdf" class="btn btn-custom mb-2 me-md-2">Full PDF</a>
+                    <a href="/" class="btn btn-custom mb-2 me-md-2">Blog</a>
+                    <a href="/ai/2023/08/04/taotp.html" class="btn btn-custom mb-2 me-md-2">Post</a>
+                    <a href="/taotp.ipynb" class="btn btn-custom mb-2 me-md-2">Code</a>
+                    <a href="mailto:yaniv.taotp@gmail.com" class="btn btn-custom mb-2">Contact</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Long Excerpt Section -->
+        <div class="long-excerpt">
+            <p class="first-p">
+                <span class="first-sentence"><span class="big-letter">&ldquo;<span class="red-letter">H</span></span>OW
+                    can modern large language models perform simple computations, like
+                    sorting a list, searching for a sequence, or adding two numbers in decimal
+                    representation?</span>&rdquo;
+            </p>
+            <p>
+                Several years and thousands of papers since the Transformer was invented, it is still
+                hard to find a satisfying answer to this seemingly simple question.
+            </p>
+            <p>
+                The Transformer is a highly efficient differentiable computer. When equipped with
+                the right set of weights, obtained through a lengthy optimization process on
+                supercomputers processing massive amounts of data, Transformer models are able
+                to recall vast amounts of memorized knowledge and perform complex
+                computations. Unlike human-designed programs on traditional computers, the
+                inner workings of such models after training are not well understood.
+            </p>
+            <p>
+                In this work we put aside the ability of a Transformer to be efficiently optimized and
+                instead focus just on the Transformer as a programmable computer. We will choose
+                a set of basic programs, including sorting, searching, and addition, and implement all
+                of them by hand on a Transformer computer. I.e., we will manually set the weights of
+                a non-simplified production-grade decoder-only Transformer, similar to that
+                powering modern LLMs, to provably perform exactly the desired computations,
+                without a training procedure or datasets. The book includes dozens of fun puzzles
+                about this esoteric programming language at the heart of modern AI.
+            </p>
+        </div>
+
+        <div class="mt-5">
+            <h4>Citation</h4>
+            <div class="bibtex-citation">
+@misc{Leviathan2022taotp,
+  title={The Art of Transformer Programming},
+  url={https://yanivle.github.io/taotp.html},
+  journal={Yaniv Leviathan’s Blog},
+  author={Leviathan, Yaniv},
+  year={2022}
+}
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
