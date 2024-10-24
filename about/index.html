@@ -39,9 +39,18 @@ title: About Yaniv Leviathan
           .myAvatar:hover {
             filter: drop-shadow(0 0 0.1rem black);
           }
-        </style>
 
-        <style>
+          .youtube-video {
+            aspect-ratio: 16 / 9;
+            width: 100%;
+          }
+
+          @media screen and (max-width: 1000px) {
+            .period-logo {
+              display: none !important;
+            }
+          }
+
           div.section-gradient {
             display: none !important;
           }
@@ -49,85 +58,261 @@ title: About Yaniv Leviathan
           .highlight {
             /* background-color: yellow; */
           }
+
+          .grid-wrapper {
+            display: grid;
+            gap: 10px;
+            width: 100%;
+          }
+
+          .row_selat_taotp_gamengen {
+            grid-template-columns: 0.520744fr 0.77246fr 1.25fr;
+          }
+
+          .row_unitune_dreamix_face0 {
+            grid-template-columns: 1.508fr 1.4923fr 1.777814243518215fr;
+          }
+
+          .row_search {
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+          }
+
+          strong {
+            /* font-weight: normal; */
+          }
         </style>
 
         <img src="/assets/images/me_small.jpg" alt="Yaniv Leviathan &#128051;" class="myAvatar">
 
-        <!-- <p style="text-align: center;">
-          <a href="" style="white-space:nowrap;">Speculative Decoding</a> &middot;
-          <a href="" style="white-space:nowrap;">Google Duplex</a> &middot;
-          <a href="">Knowledge Graph & Answers on Google Search</a> &middot;
-          <a href="" style="white-space:nowrap;">Google Trends</a> &middot;
-          <a href="" style="white-space:nowrap;">TAOTP</a> &middot;          
-          <a href="" style="white-space:nowrap;">GameNGen</a>
-        </p> -->
+        <p style="text-align: center;">
+          <a href="https://research.google/blog/google-duplex-an-ai-system-for-accomplishing-real-world-tasks-over-the-phone/"
+            style="white-space:nowrap;">Google Duplex</a> &middot;
+          <a href="https://arxiv.org/abs/2211.17192" style="white-space:nowrap;">Speculative Decoding</a> &middot;
+          <a href="https://arxiv.org/abs/2410.02703" style="white-space:nowrap;">Selective Attention</a> &middot;
+          <a href="https://gamengen.github.io/" style="white-space:nowrap;">GameNGen</a> &middot;
+          <a href="https://yanivle.github.io/taotp.html">The Art of Transformer Programming</a>
+        </p>
 
         <blockquote class="largeQuote">“What I cannot create, I do not understand.”<br />- Richard Feynman</blockquote>
 
-        <p><strong>I am a Distinguished Engineer at Google where I lead an
-          AI-research lab, focusing on <span class="highlight">foundation research</span></strong>.
-          I am lucky to work on some of the most interesting problems in AI with some of my best
-          friends.
-          I am spending a lot of my time researching <strong class="highlight">new model architectures</strong> for LLMs, as well as new
-          training procedures and data sources.
-          <strong class="highlight">My work made most of Google's important LLMs substantially faster and cheaper</strong>.
-          I also work on a bunch of fun projects in fields such as image, video, and game generation.
-          Some of my recent publications include
-          <strong><a href="https://arxiv.org/abs/2211.17192" class="highlight">Speculative Decoding</a> (2022)</strong>,
-          <strong><a href="/taotp.html" class="highlight">The Art of Transformer Programming</a> (2022)</strong>,
-          <a href="https://arxiv.org/abs/2210.09477">UniTune</a> (2022), <a
-            href="https://dreamix-video-editing.github.io/">Dreamix</a> (2023),
-          <a href="https://dl.acm.org/doi/10.1145/3610548.3618249">Face0</a> (2023),
-          <a href="https://arxiv.org/abs/2310.16656">RECAP</a> (2023), and
-          <strong><a href="https://gamengen.github.io/" class="highlight">GameNGen</a> (2024)</strong>.
+        <p>
+        <h5 class="period-title"
+          style="color: #aaa;text-align: center; display: block; margin: 60px 0 10px 0; line-height: 0; border-bottom: 1px solid #aaa;">
+          <span style="background-color: #fff; padding: 0 15px;">Google Research</span>
+        </h5>
+        <h6 class="period-title" style="color: #ccc;text-align: center; font-size: 0.75rem; margin: 10px 0 30px 0">2022
+          - Present</h6>
+
+        <!-- <img src="/assets/images/about/google-research-logo-white.webp" alt="Google Research Logo"
+          style="width: 120px; margin-left: -140px; float: left;" class="period-logo" /> -->
+        <span>I am a Distinguished Engineer at Google where I lead an
+          AI-research lab, focusing on <span>foundation research</span></span>.
+        I am spending a lot of my time researching <span>new model architectures</span> for LLMs, as well as new
+        training procedures and data sources.
+        <span>My work made most of Google's important LLMs substantially faster and cheaper</span>.
+        I also do fun research in fields such as image, video, and game generation.
+        </p>
+        <p>
+          <a href="https://gamengen.github.io/"
+            style="background-image: none; float: right; width: 40%; margin-left: 10px;">
+            <video poster="" id="video1" muted="" autoplay="" controls="" loop="" playsinline="" width="100%"
+              src="https://gamengen.github.io/static/videos/e1m1_t.mp4" style="width: 100%; height: 100%;">
+            </video>
+          </a>
+          I invented
+          <strong><a href="https://arxiv.org/abs/2211.17192" class="highlight">Speculative Decoding</a> (2022)</strong>
+          and
+          <strong><a href="https://arxiv.org/abs/2410.02703" class="highlight">Selective Attention</a> (2024)</strong>,
+          ran DOOM on a neural model in real-time with <strong><a href="https://gamengen.github.io/"
+              class="highlight">GameNGen</a> (2024)</strong>,
+          developed techniques for neural image and video editing with <span><a
+              href="https://arxiv.org/abs/2210.09477" class="highlight">UniTune</a>
+            (2022)</span>, <span><a href="https://dreamix-video-editing.github.io/" class="highlight">Dreamix</a>
+            (2023)</span>, and <span><a href="https://dl.acm.org/doi/10.1145/3610548.3618249"
+              class="highlight">Face0</a>
+            (2023)</span>,
+          and wrote <strong><a href="/taotp.html" class="highlight">The Art of Transformer Programming</a>
+            (2022)</strong> book.
         </p>
 
-        <p>Previously at Google I built an AI system that <strong><a href="https://www.youtube.com/watch?v=D5VN56jQMWM">can
-              speak naturally over the
-              phone</a></strong>,
-          called <strong><a class="highlight"
-              href="https://blog.research.google/2018/05/duplex-ai-system-for-natural-conversation.html">Google
-              Duplex</a></strong>.
-          Duplex is calling businesses at high scale (for a while!), and is a <strong>major contributor to Google’s updated
-          business data</strong>, like opening hours.
-          In fact, <a href="https://x.com/Google/status/1662228490387705861">business data from Duplex’s phone calls was
-            shown to users <strong class="highlight">over 1 trillion times</strong></a>.
+        <!-- <div>
+          <p>
+            <a href="https://arxiv.org/abs/2211.17192" style="background-image: none;">
+              <img src="/assets/images/about/speculative_decoding_animation.gif" alt="..."
+                style="border: solid 1px lightgray; width: 100%;" />
+            </a>
+  
+          <div class="grid-wrapper row_unitune_dreamix_face0">
+            <a href="https://arxiv.org/abs/2210.09477" style="background-image: none;">
+              <img src="/assets/images/posts/image_gen/unitune_hero.jpeg" alt="UniTune fig 1"
+                style="border: solid 1px lightgray; width: 100%;" />
+            </a>
+            <a href="https://dl.acm.org/doi/10.1145/3610548.3618249" style="background-image: none;">
+              <img src="/assets/images/posts/image_gen/face0_hero.jpeg" alt="Face0 fig 1"
+                style="border: solid 1px lightgray; width: 100%;" />
+            </a>
+            <a href="https://dreamix-video-editing.github.io/" style="background-image: none;">
+              <video poster="" id="vid2vid_video8" playsinline="" autoplay="" muted="" loop="" width="100%"
+                src="https://dreamix-video-editing.github.io/static/videos/vid2vid_cats.mp4"
+                style="border: solid 1px lightgray; width: 100%;">
+              </video>
+            </a>
+          </div>
+  
+          <div class="grid-wrapper row_selat_taotp_gamengen">
+            <a href="https://arxiv.org/abs/2410.02703" style="background-image: none;">
+              <img src="/assets/images/about/selective-attention-fig1.png" alt="..."
+                style="border: solid 1px lightgray; width: 100%;" />
+            </a>
+            <a href="/taotp.html" style="background-image: none;">
+              <img src="/taotp_cover.png" alt="TAOTP cover" style="border: solid 1px lightgray; width: 100%;" />
+            </a>
+            <a href="https://gamengen.github.io/" style="background-image: none;">
+              <video poster="" id="video1" muted="" autoplay="" controls="" loop="" playsinline="" width="100%"
+                src="https://gamengen.github.io/static/videos/e1m1_t.mp4"
+                style="border: solid 1px lightgray; width: 100%;">
+              </video>
+            </a>
+          </div>
+          </p>  
+        </div> -->
+
+        <p>
+        <h5 class="period-title"
+          style="color: #aaa;text-align: center; display: block; margin: 60px 0 10px 0; line-height: 0; border-bottom: 1px solid #aaa;">
+          <span style="background-color: #fff; padding: 0 15px;">Google Duplex</span>
+        </h5>
+        <h6 class="period-title" style="color: #ccc;text-align: center; font-size: 0.75rem; margin: 10px 0 30px 0">2016
+          - 2022</h6>
+
+        <!-- <img src="/assets/images/about/duplex-logo-white.webp" alt="Google Duplex Logo"
+          style="width: 120px; margin-left: -140px; float: left;" class="period-logo" /> -->
+        <span style="width:50%; display: inline-block; aspect-ratio: 16 / 9; float: left; margin-right: 10px;">
+          <video poster="" id="video_duplex" controls="" loop="" playsinline="" width="100%"
+            src="/assets/images/about/google_duplex_preso.mp4" style="border: solid 1px lightgray; width: 100%;">
+          </video>
+          <!-- <iframe class="youtube-video" src="https://www.youtube.com/embed/D5VN56jQMWM?si=UG9kLJXF2qi7kH6a"
+            title="YouTube video player" frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen width="100%" style="width: 100%;"></iframe> -->
+        </span>
+        I founded and was the Engineering Director for <span><a class="highlight"
+            href="https://blog.research.google/2018/05/duplex-ai-system-for-natural-conversation.html">Google
+            Duplex</a></span>, an AI system that <span><a href="https://www.youtube.com/watch?v=D5VN56jQMWM">can
+            speak naturally over the
+            phone</a></span>.
+        Duplex is calling businesses at high scale (for many years!), and is a <span>major contributor to Google’s
+          updated
+          business data</span>, like opening hours.
+        In fact, <strong class="highlight"><a href="https://x.com/Google/status/1662228490387705861">business data from
+            Duplex’s phone calls was
+            shown to users over 1 trillion times</strong></a>.
+
+        </p>
+        <p>
+        <div style="text-align: center; margin-top: 20px;">
+          <small>Duplex booking a meal for me in 2018:</small> <audio
+            src="https://storage.googleapis.com/gweb-research2023-media/media/Duplex__booking_meal.mp3"
+            controls="controls" style="vertical-align: middle; height: 1em;"></audio><br />
+          <!-- <audio src="https://storage.googleapis.com/gweb-research2023-media/media/Duplex_scheduling_hair_salon_appointment.mp3" controls="controls"></audio><br/>
+              <audio src="https://storage.googleapis.com/gweb-research2023-media/media/Duplex_restaurant.mp3" controls="controls"></audio> -->
+        </div>
         </p>
 
         <p>
-          Before that at Google, I built an AI system that reads and understands the open web and automatically
-          populates Google's <strong><a
-              href="https://blog.google/products/search/introducing-knowledge-graph-things-not/">Knowledge
-              Graph</a></strong>.
-          Thanks to this system, <strong class="highlight">Google Search shows answers, cards, and lists on a large
-            fraction of user queries</strong>, like <a href="https://www.google.com/search?q=homer+simpson">[homer
-            simpson]</a>,
-          <a href="https://www.google.com/search?q=world+war+2">[world war 2]</a>, and
-          <a href="https://www.google.com/search?q=nba+teams">[nba teams]</a>.
-          And before all of that, I led the team that built the backend of
-          <strong class="highlight"><a href="https://trends.google.com/trends/">Google Trends</a></strong>.
+        <h5 class="period-title"
+          style="color: #aaa;text-align: center; display: block; margin: 60px 0 10px 0; line-height: 0; border-bottom: 1px solid #aaa;">
+          <span style="background-color: #fff; padding: 0 15px;">Google Search</span>
+        </h5>
+        <h6 class="period-title" style="color: #ccc;text-align: center; font-size: 0.75rem; margin: 10px 0 30px 0">2010
+          - 2018</h6>
+
+        <!-- <img src="/assets/images/about/google-logo.png" alt="Google Logo"
+          style="width: 120px; margin-left: -140px; float: left;" class="period-logo" /> -->
+        <img id="search_qna_example" src="/assets/images/about/homer.png"
+          style="border: solid 1px lightgray; float: right; height: 10em; margin-left: 10px; margin-bottom: 10px;" />
+        <script>
+          let search_qna_example_images = [ // Give a higher chance to homer, but once in a while show another example :)
+            '/assets/images/about/homer.png',
+            '/assets/images/about/homer.png',
+            '/assets/images/about/homer.png',
+            '/assets/images/about/homer.png',
+            '/assets/images/about/homer.png',
+            '/assets/images/about/homer.png',
+            '/assets/images/about/homer.png',
+            '/assets/images/about/homer.png',
+            '/assets/images/about/homer.png',
+            '/assets/images/about/homer.png',
+            '/assets/images/about/homer.png',
+            '/assets/images/about/homer.png',
+            '/assets/images/about/homer.png',
+            '/assets/images/about/ww2.png',
+            '/assets/images/about/nba-teams.png',
+            '/assets/images/about/obama-grandparents.png',
+          ];
+          let selected_search_qna_example_image = search_qna_example_images[Math.floor(Math.random() * search_qna_example_images.length)];
+          let search_qna_example_element = document.getElementById('search_qna_example');
+          if (selected_search_qna_example_image != search_qna_example_element.src) {
+            search_qna_example_element.src = selected_search_qna_example_image;
+          }
+        </script>
+        I built an AI system that reads and understands the open web and automatically
+        populates Google's <span><a
+            href="https://blog.google/products/search/introducing-knowledge-graph-things-not/">Knowledge
+            Graph</a></span>.
+        Thanks to this system, <strong class="highlight">Google Search shows answers, cards, and lists on a large
+          fraction of user queries</strong>, like <a href="https://www.google.com/search?q=homer+simpson">[homer
+          simpson]</a>,
+        <a href="https://www.google.com/search?q=world+war+2">[world war 2]</a>, and
+        <a href="https://www.google.com/search?q=nba+teams">[nba teams]</a>.
+        I also led the team that built the backend of
+        <span class="highlight"><a href="https://trends.google.com/trends/">Google Trends</a></span>.
         </p>
 
-        <p>I have been doing AI research for a long while.
-          In 1998, as a high school student, I joined a startup building video
-          understanding software where I programmed some neural networks
-          (in plain C &#x1f62e;).
-          A couple of decades ago I've also spent several intensive years working on <strong class="highlight">cryptography and cybersecurity</strong>.
-          I've met some of the smartest people that I know back then, many of whom are still amongst my best friends.
-          I've also spent a few years working on <strong class="highlight">gaming and computer graphics</strong>, which remain among my favorite fields
-          to this day.</p>
+        <!-- <p>
+        <div class="grid-wrapper row_search">
+          <img src="/assets/images/about/homer.png" style="border: solid 1px lightgray; width: 100%;" />
+          <img src="/assets/images/about/nba-teams.png" style="border: solid 1px lightgray; width: 100%;" />
+          <img src="/assets/images/about/obama-grandparents.png" style="border: solid 1px lightgray; width: 100%;" />
+          <img src="/assets/images/about/ww2.png" style="border: solid 1px lightgray; width: 100%;" />
+        </div>
+        </p> -->
 
         <p>
-          <a href="/">This site</a> features my collection of math and hacking puzzles,
-          as well as some write-ups of some of my favorite weekend projects.
-          If you're not sure where to start, try a fun puzzle like <a
-            href="{% post_url 2010-03-01-rabbit-season %}">&#128007; Rabbit Season</a>,
-          <a href="{% post_url 2010-01-03-really-equal-naturally %}">Really Equal? Naturally!</a>, <a
-            href="{% post_url 2019-11-24-expanding-map %}">&#128506; Expanding Map</a>, or
-          <a href="{% post_url 2022-03-12-2x-plus1-equivalence %}">(×2, +1) Equivalence</a>.
+        <h5 class="period-title"
+          style="color: #aaa;text-align: center; display: block; margin: 60px 0 10px 0; line-height: 0; border-bottom: 1px solid #aaa;">
+          <span style="background-color: #fff; padding: 0 15px;">Previously</span>
+        </h5>
+        <h6 class="period-title" style="color: #ccc;text-align: center; font-size: 0.75rem; margin: 10px 0 30px 0">A
+          long time ago in a galaxy far, far away...</h6>
+
+        <!-- <img src="/assets/images/about/baby.png" alt="Baby Years"
+          style="width: 140px; margin-left: -145px; float: left;" class="period-logo" /> -->
+        <a href="/" style="float: left; width: 30%; margin-right: 10px; background-image: none; display: inline-block;">
+          <img src="/assets/images/about/blog-screenshot.png" style="border: solid 1px lightgray; width: 100%;" />
+        </a>
+        <span>I have been doing AI research for a long while</span>.
+        In 1998, as a high school student, I joined a startup building video
+        understanding software where I programmed some neural networks
+        (in plain C!).
+        I've also <span>founded and was the CEO of a company called Tailor</span> where we built a <a
+          href="https://patents.google.com/patent/US20110087966A1/en">system that automatically modifies websites based
+          on users' usage patterns</a>.
+        A couple of decades ago I've spent several intensive years working on <span class="highlight">cryptography and
+          cybersecurity</span>.
+        I've met some of the smartest people that I know back then, many of whom are still amongst my best friends.
+        I've also spent a few years working on <span class="highlight">gaming and computer graphics</span>, which
+        remain among my favorite fields to this day.
+        I studied pure math (for the soul) in Tel-Aviv University.
+        Oh, and I have <strong><a href="/">a blog</a></strong> which features my collection of math and hacking puzzles,
+        as well as write-ups of some of my favorite weekend projects.
+        Try a fun puzzle like <a href="{% post_url 2010-03-01-rabbit-season %}">Rabbit Season</a>,
+        <a href="{% post_url 2010-01-03-really-equal-naturally %}">Really Equal? Naturally!</a>, <a
+          href="{% post_url 2019-11-24-expanding-map %}">Expanding Map</a>, or
+        <a href="{% post_url 2022-03-12-2x-plus1-equivalence %}">(×2, +1) Equivalence</a>.
         </p>
 
-        <h3>Acknowledgements</h3>
+        <!-- <h5>Acknowledgements</h5>
         <p>
           Some posts use images from the awesome royalty-free images sites:
           <a href="https://www.pexels.com">Pexels</a>,
@@ -137,7 +322,7 @@ title: About Yaniv Leviathan
           The design of the site is based on the
           <a href="https://github.com/vincentchan/mickey">Mickey theme</a> by
           <a href="https://github.com/vincentchan">Vincent Chan</a>.
-        </p>
+        </p> -->
 
       </div>
     </div>
