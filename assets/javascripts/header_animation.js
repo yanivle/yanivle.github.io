@@ -277,7 +277,8 @@ function setup() {
     let cy = 350;
     let xSpacing = 160 * (6 / numColumns) * window.innerWidth / 1280;
     ySpacing = 25 * window.innerWidth / 1280 * random(1, 2.5);
-    const colors = ['#ee7752', '#e73c7e', '#23a6d5', '#23d5ab', '#f9cb28'];
+    // const colors = ['#ee7752', '#e73c7e', '#23a6d5', '#23d5ab', '#f9cb28'];
+    const colors = ['#eeeeee', '#ffffff', '#dddddd', '#cccccc', '#bbbbbb'];
 
     const [finalDests, max_x, max_y] = getFinalDests();
     for (const [x, y, c] of finalDests) {
