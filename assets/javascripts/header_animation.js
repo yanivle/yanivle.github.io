@@ -12,6 +12,26 @@ function setCanvasSize() {
     canvas.height = window.innerHeight;
     canvas.style.width = window.innerWidth + 'px';
     canvas.style.height = window.innerHeight + 'px';
+
+    let cx = window.innerWidth / 2;
+    let cy = 350;
+    let xSpacing = 160 * (6 / numColumns) * window.innerWidth / 1280;
+    ySpacing = 25 * window.innerWidth / 1280 * random(1, 2.5);
+
+    const [finalDests, max_x, max_y] = getFinalDests();
+    particles.forEach((particle, i) => {
+        const [x, y, c] = finalDests[i];
+        let destX = (5 * x / max_x - 2.5) * xSpacing + cx;
+        let destY = (5 * y / max_y - 2.5) * ySpacing + cy;
+        let size = random(window.innerWidth / 1280 * 20, window.innerWidth / 1280 * 40);
+        particle.finalX = destX;
+        particle.finalY = destY;
+        particle.size = size;
+        particle.goingToFinalDest = false;
+        particle.atFinalDest = false;
+        particle.waitingAtFinalDest = false;
+        particle.totalElapsed = particle.elapsed = 0;
+    });
 }
 
 function random(min, max) {
