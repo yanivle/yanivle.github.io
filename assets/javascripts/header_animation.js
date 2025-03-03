@@ -1,4 +1,5 @@
 const canvas = document.querySelector('#animation');
+const canvas_parent = document.querySelector('#about-header');
 const ctx = canvas.getContext('2d');
 const numColumns = 5;
 const numRows = 7;
@@ -8,10 +9,15 @@ const HEIGHT = 400;
 const TWO_PI = Math.PI * 2;
 
 function setCanvasSize() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    canvas.style.width = window.innerWidth + 'px';
-    canvas.style.height = window.innerHeight + 'px';
+    // canvas.width = window.innerWidth;
+    // canvas.height = window.innerHeight;
+    // canvas.style.width = window.innerWidth + 'px';
+    // canvas.style.height = window.innerHeight + 'px';
+
+    canvas.width = canvas_parent.clientWidth;
+    canvas.height = canvas_parent.clientHeight;
+    canvas.style.width = canvas_parent.clientWidth + 'px';
+    canvas.style.height = canvas_parent.clientHeight + 'px';
 
     let cx = window.innerWidth / 2;
     let cy = 350;
