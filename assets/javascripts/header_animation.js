@@ -8,36 +8,40 @@ const colors = ['#FF1461', '#5A87FF'];
 const HEIGHT = 400;
 const TWO_PI = Math.PI * 2;
 
+let previous_width = null;
+
 function setCanvasSize() {
-    // canvas.width = window.innerWidth;
-    // canvas.height = window.innerHeight;
-    // canvas.style.width = window.innerWidth + 'px';
-    // canvas.style.height = window.innerHeight + 'px';
-
-    canvas.width = canvas_parent.clientWidth;
-    canvas.height = canvas_parent.clientHeight;
-    canvas.style.width = canvas_parent.clientWidth + 'px';
-    canvas.style.height = canvas_parent.clientHeight + 'px';
-
-    let cx = window.innerWidth / 2;
-    let cy = 350;
-    let xSpacing = 160 * (6 / numColumns) * window.innerWidth / 1280;
-    ySpacing = 25 * window.innerWidth / 1280 * random(1, 2.5);
-
-    const [finalDests, max_x, max_y] = getFinalDests();
-    particles.forEach((particle, i) => {
-        const [x, y, c] = finalDests[i];
-        let destX = (5 * x / max_x - 2.5) * xSpacing + cx;
-        let destY = (5 * y / max_y - 2.5) * ySpacing + cy;
-        let size = random(window.innerWidth / 1280 * 20, window.innerWidth / 1280 * 40);
-        particle.finalX = destX;
-        particle.finalY = destY;
-        particle.size = size;
-        particle.goingToFinalDest = false;
-        particle.atFinalDest = false;
-        particle.waitingAtFinalDest = false;
-        particle.totalElapsed = particle.elapsed = 0;
-    });
+    let w = canvas_parent.clientWidth;
+    let h = canvas_parent.clientHeight;
+    canvas.width = w;
+    canvas.height = h;
+    canvas.style.width = w + 'px';
+    canvas.style.height = h + 'px';
+    if (previous_width == null) {
+        previous_width = w;
+    }
+    if (Math.abs(previous_width - w) > 100) {
+        let cx = w / 2;
+        let cy = 350;
+        let xSpacing = 160 * (6 / numColumns) * w / 1280;
+        ySpacing = 25 * w / 1280 * random(1, 2.5);
+    
+        const [finalDests, max_x, max_y] = getFinalDests();
+        particles.forEach((particle, i) => {
+            const [x, y, c] = finalDests[i];
+            let destX = (5 * x / max_x - 2.5) * xSpacing + cx;
+            let destY = (5 * y / max_y - 2.5) * ySpacing + cy;
+            let size = random(w / 1280 * 20, w / 1280 * 40);
+            particle.finalX = destX;
+            particle.finalY = destY;
+            particle.size = size;
+            particle.goingToFinalDest = false;
+            particle.atFinalDest = false;
+            particle.waitingAtFinalDest = false;
+            particle.totalElapsed = particle.elapsed = 0;
+        });
+        previous_width = w;
+    }
 }
 
 function random(min, max) {
