@@ -30,7 +30,7 @@ The goal of the game is to clean the board (i.e. remove all pieces). Note that i
 
 ***For what numbers, N and M, is a win possible?***
 
-#### Extra Credit
+# Extra Credit
 What about 3-dimensions? D-dimensions?
 
 Thanks to Liron Raz for giving me this one!

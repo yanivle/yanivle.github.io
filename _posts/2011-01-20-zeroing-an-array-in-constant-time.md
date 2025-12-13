@@ -24,7 +24,7 @@ Note – you can assume that malloc or new are constant time, but that the retur
 
 Thanks to Nadav Sherman for this riddle!
 
-## Spoiler Alert - Solution Below!
+# Spoiler Alert - Solution Below!
 
 The problem with the memory being initialized with adverserial random is that we can't do anything like checking the cells for a checksum, etc. So what can we do instead?
 
@@ -38,7 +38,7 @@ Do you see why given a data structure that implements the above in constant time
 
 Let's start by considering a solution where **Init** and **Set** take constant time, but **Get** takes linear time, and then improve it. Let's call this data structure SlowTrustArray:
 
-```c++
+```cpp
 struct SlowTrustArray {
   int *trusted_indices;
   int k;
@@ -70,7 +70,7 @@ struct SlowTrustArray {
 
 So - how can we make Get run in constant time too? Well, what if instead of *searching* the trusted_indices array we knew where to look? But how can we do that? Like this:
 
-```c++
+```cpp
 struct TrustArray {
   int *trusted_indices;
   int *trusted_indices_map;

@@ -1,37 +1,33 @@
+---
+layout: null
+---
 <!DOCTYPE html>
 <html lang="en-us" class="no-js">
-
 <head>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-156163418-1"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-WNPC8BMNFC"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
-    gtag('config', 'UA-156163418-1');
+    gtag('config', 'G-WNPC8BMNFC');
   </script>
 
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="About Yaniv Leviathan">
-
   <title>About Yaniv Leviathan</title>
-
   <link rel="shortcut icon" href="/assets/images/favicon.ico">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Google+Sans+Flex:opsz,wght@6..144,1..1000&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap"
-    rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-    integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Google+Sans+Flex:opsz,wght@6..144,1..1000&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
   <style>
-    /* --- CSS Reset & Variables --- */
     :root {
       --font-primary: 'Google Sans Flex', 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-nav: 'Inter', sans-serif; /* NEW: Matches your Blog styles.css */
       --font-title: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
       --font-mono: 'Roboto Mono', monospace;
       --color-bg: #ffffff;
@@ -39,289 +35,196 @@
       --color-text-secondary: #5f6368;
       --color-link: #1a73e8;
       --color-link-hover: #174ea6;
+      --color-accent: #C4B287; 
+      --color-border: #eaeaea;
       --container-width: 1100px;
+      --width-wide: 1200px; /* NEW: Matches your Blog styles.css */
       --radius: 24px;
       --hero-shadow-color: rgba(0, 0, 0, 0.8);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    /* Base Body - Applies to About Content */
+    body { font-family: var(--font-primary); color: var(--color-text); background-color: var(--color-bg); line-height: 1.6; font-size: 18px; -webkit-font-smoothing: antialiased; }
+    
+    /* Default Links - Applies to About Content */
+    a { color: var(--color-link); text-decoration: none; transition: color 0.2s ease; font-weight: 500; }
+    a:hover { color: var(--color-link-hover); text-decoration: underline; }
+    
+    /* Content Container */
+    .container { max-width: var(--container-width); margin: 0 auto; padding: 0 40px; position: relative; }
+    section { margin-bottom: 100px; }
+
+    /* --------------------------------------------------------- */
+    /* --- NAVBAR OVERRIDES (Force Blog Look) --- */
+    /* --------------------------------------------------------- */
+    .site-nav {
+      padding: 20px 0;
+      border-bottom: 1px solid transparent;
+      font-family: var(--font-nav); /* Force Inter */
+      font-size: 16px; /* Reset size so it doesn't inherit the 18px body */
+      background: #fff;
     }
 
-    body {
-      font-family: var(--font-primary);
-      color: var(--color-text);
-      background-color: var(--color-bg);
-      line-height: 1.6;
-      font-size: 18px;
-      -webkit-font-smoothing: antialiased;
+    /* Force the Nav container to be wider (1200px) like the blog */
+    .site-nav .container {
+      max-width: var(--width-wide) !important; 
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 !important; /* Match blog padding */
     }
 
-    a {
-      color: var(--color-link);
+    .site-title {
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: -0.5px;
+      color: #000 !important; /* Force Black */
+      text-decoration: none !important;
+    }
+
+    .nav-links a {
+      margin-left: 25px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #666 !important; /* Force Gray (override blue) */
+      text-decoration: none !important; 
+    }
+
+    .nav-links a:hover {
+      color: var(--color-accent) !important; /* Force Gold */
       text-decoration: none;
-      transition: color 0.2s ease;
-      font-weight: 500;
     }
 
-    a:hover {
-      color: var(--color-link-hover);
-      text-decoration: underline;
-    }
-
-    /* --- Layout --- */
-    .container {
-      max-width: var(--container-width);
-      margin: 0 auto;
-      padding: 0 40px;
-      position: relative;
-    }
-
-    section {
-      margin-bottom: 100px;
-    }
-
-    /* --- Hero / Animation Section --- */
-    .hero {
-      position: relative;
-      width: 100%;
-      height: 450px;
-      background-color: #050505;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 30px;
-    }
-
-    .hero canvas {
-      display: block;  /* Removes weird canvas spacing */
-      width: 100% !important;
-      height: 100% !important;
-      outline: none;
-    }
-
-    .hero-content {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 10;
-      color: white;  /* White text for dark background */
+    /* --------------------------------------------------------- */
+    /* --- FOOTER OVERRIDES (Force Blog Look) --- */
+    /* --------------------------------------------------------- */
+    .site-footer {
+      background-color: #fafafa;
+      padding: 60px 0;
+      font-family: var(--font-nav); 
+      font-size: 0.9rem; 
+      color: #666; 
+      border-top: 1px solid var(--color-border);
       text-align: center;
-      pointer-events: none;  /* Let clicks pass through */
-      width: 100%;
-      padding: 0 20px;
-    }
-
-    h1 {
-      font-size: 4rem;
-      font-weight: 700;
-      letter-spacing: -0.03em;
-      margin: 0;
-      font-family: var(--font-title);
-      text-shadow: 0 0 20px var(--hero-shadow-color),
-        0 0 20px var(--hero-shadow-color),
-        0 0 20px var(--hero-shadow-color);
-    }
-
-    .hero-subtitle {
-      font-size: 1.25rem;
-      font-weight: 400;
-      margin-top: 10px;
-      text-shadow: 0 0 20px rgba(0, 0, 0, 1.0),
-        0 0 20px rgba(0, 0, 0, 1.0),
-        0 0 20px rgba(0, 0, 0, 1.0),
-        0 0 20px rgba(0, 0, 0, 1.0),
-        0 0 20px rgba(0, 0, 0, 1.0);
-    }
-
-    /* --- Avatar --- */
-    .avatar-container {
-      margin-top: -120px;
-      position: relative;
-      z-index: 2;
-      text-align: center;
-      margin-bottom: 60px;
-    }
-
-    .myAvatar {
-      width: 200px;
-      height: 200px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 8px solid #fff;
-      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
-      background-color: #fff;
-      transition: transform 0.3s ease;
-      margin: 0 auto;
-    }
-
-    .myAvatar:hover {
-      transform: scale(1.02);
-    }
-
-    /* --- Typography & Content --- */
-    h2 {
-      font-size: 2.25rem;
-      font-weight: 700;
-      margin: 0 0 30px 0;
-      color: var(--color-text);
-      letter-spacing: -0.02em;
-    }
-
-    [id] {
-      scroll-margin-top: 120px;
-    }
-
-    p {
-      margin-bottom: 28px;
-      font-weight: 400;
-      color: #3c4043;
-    }
-
-    ul {
-      margin-left: 20px;
-      margin-bottom: 28px;
-      color: #3c4043;
-    }
-
-    li {
-      margin-bottom: 12px;
-    }
-
-    .highlights-list {
-      list-style: none;  /* Remove bullet points */
-      margin-left: 0;  /* Override general ul style margin */
-      padding-left: 0;  /* Remove default padding for non-bulleted list */
-    }
-
-    .highlights-list li {
-      margin-bottom: 10px;  /* Spacing below the line */
-      padding-bottom: 10px;  /* Spacing above the line */
-      border-bottom: 1px solid #f1f3f4;  /* Subtle horizontal bar */
-      line-height: 1.4;  /* Tighter line height for a more compact look */
-    }
-
-    .highlights-list li:last-child {
-      border-bottom: none;
-      margin-bottom: 0;
-      padding-bottom: 0;
-    }
-
-    strong {
-      font-weight: 700;
-    }
-
-    /* --- Media styling --- */
-    img,
-    video {
-      display: block;
-      max-width: 100%;
-      height: auto;
-      border-radius: var(--radius);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-      margin: 30px auto;
-    }
-
-    .media-container {
-      margin: 40px 0;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .audio-container {
-      background: #f1f3f4;
-      padding: 24px;
-      border-radius: var(--radius);
-      margin: 20px auto;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      max-width: 600px;
-      width: 100%;
-    }
-
-    audio {
-      width: 100%;
-    }
-
-    .caption {
-      font-size: 0.95rem;
-      color: var(--color-text-secondary);
-      text-align: center;
-      display: block;
-      margin-top: 12px;
-      font-weight: 500;
-    }
-
-    /* --- Footer --- */
-    footer {
       margin-top: 120px;
-      padding: 80px 0;
-      border-top: 1px solid #f1f3f4;
-      text-align: center;
-      color: var(--color-text-secondary);
+      line-height: 1.7; 
+    }
+    
+    /* NEW FIX: Reset paragraph margins inside footer */
+    .site-footer p {
+      margin-bottom: 0 !important;
+      margin-top: 0 !important;
+    }
+    .site-footer .footer-meta p:first-child {
+      margin-bottom: 18px !important; /* Slight gap between Name and Email */
+    }
+
+    /* Force Footer container to match Nav width */
+    .site-footer .container {
+      max-width: var(--width-wide) !important;
+    }
+
+    .footer-meta { margin-bottom: 20px; }
+    
+    .email-code tt {
+      background: #fff;
+      border: 1px solid #eee;
+      padding: 3px 6px;
+      border-radius: 3px;
+      font-size: 0.85em;
+      color: #333;
     }
 
     .social-links {
-      list-style: none;
-      padding: 0;
-      margin: 30px 0;
+      margin: 20px 0;
       display: flex;
       justify-content: center;
-      gap: 30px;
+      gap: 25px;
+      list-style: none;
+      padding: 0;
     }
 
+    /* IMPORTANT: Reset links inside footer to not look like About page links */
+    .site-footer a {
+      color: #666 !important;
+      text-decoration: none !important;
+      border-bottom: none !important;
+      font-weight: normal;
+    }
+    
+    /* Social Icons specific */
     .social-links a {
-      color: var(--color-text-secondary);
-      font-weight: 600;
+      font-size: 1.2rem;
+      transition: all 0.2s ease;
     }
 
-    .fade {
-      opacity: 0;
-      transition: opacity 0.2s ease-in-out;
+    .site-footer a:hover, 
+    .social-links a:hover {
+      color: var(--color-accent) !important;
+      text-decoration: none !important;
     }
+    
+    .social-links a:hover {
+        transform: translateY(-2px);
+    }
+
+    .copyright { font-size: 0.8rem; opacity: 0.7; }
+
+
+    /* --------------------------------------------------------- */
+    /* --- EXISTING ABOUT PAGE STYLES BELOW --- */
+    /* --------------------------------------------------------- */
+
+    /* --- Hero --- */
+    .hero { position: relative; width: 100%; height: 450px; background-color: #050505; overflow: hidden; display: flex; align-items: center; justify-content: center; margin-bottom: 30px; }
+    .hero canvas { display: block; width: 100% !important; height: 100% !important; outline: none; }
+    .hero-content { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; color: white; text-align: center; pointer-events: none; width: 100%; padding: 0 20px; }
+    h1 { font-size: 4rem; font-weight: 700; letter-spacing: -0.03em; margin: 0; font-family: var(--font-title); text-shadow: 0 0 20px var(--hero-shadow-color), 0 0 20px var(--hero-shadow-color), 0 0 20px var(--hero-shadow-color); color: white; }
+    .hero-subtitle { font-size: 1.25rem; font-weight: 400; margin-top: 10px; text-shadow: 0 0 20px #000, 0 0 20px #000; color: white; }
+
+    /* --- Content --- */
+    .avatar-container { margin-top: -120px; position: relative; z-index: 2; text-align: center; margin-bottom: 60px; }
+    .myAvatar { width: 200px; height: 200px; border-radius: 50%; object-fit: cover; border: 8px solid #fff; box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12); background-color: #fff; transition: transform 0.3s ease; margin: 0 auto; }
+    .myAvatar:hover { transform: scale(1.02); }
+    h2 { font-size: 2.25rem; font-weight: 700; margin: 0 0 30px 0; color: var(--color-text); letter-spacing: -0.02em; }
+    [id] { scroll-margin-top: 120px; }
+    p { margin-bottom: 28px; font-weight: 400; color: #3c4043; }
+    ul { margin-left: 20px; margin-bottom: 28px; color: #3c4043; }
+    li { margin-bottom: 12px; }
+    .highlights-list { list-style: none; margin-left: 0; padding-left: 0; }
+    .highlights-list li { margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #f1f3f4; line-height: 1.4; }
+    .highlights-list li:last-child { border-bottom: none; }
+    
+    img, video { display: block; max-width: 100%; height: auto; border-radius: var(--radius); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); margin: 30px auto; }
+    .media-container { margin: 40px 0; width: 100%; display: flex; flex-direction: column; align-items: center; }
+    .audio-container { background: #f1f3f4; padding: 24px; border-radius: var(--radius); margin: 20px auto; display: flex; align-items: center; justify-content: center; max-width: 600px; width: 100%; }
+    audio { width: 100%; }
+    .caption { font-size: 0.95rem; color: var(--color-text-secondary); text-align: center; display: block; margin-top: 12px; font-weight: 500; }
+    .fade { opacity: 0; transition: opacity 0.2s ease-in-out; }
 
     @media (max-width: 768px) {
-      h1 {
-        font-size: 2.75rem;
-      }
-
-      .hero {
-        height: 350px;
-      }
-
-      .avatar-container {
-        margin-top: -80px;
-      }
-
-      .myAvatar {
-        width: 160px;
-        height: 160px;
-      }
-
-      .container {
-        padding: 0 24px;
-      }
-
-      body {
-        font-size: 17px;
-      }
+      h1 { font-size: 2.75rem; }
+      .hero { height: 350px; }
+      .avatar-container { margin-top: -80px; }
+      .myAvatar { width: 160px; height: 160px; }
+      .container { padding: 0 24px; }
+      .site-nav .container { padding: 0 15px !important; }
+      .nav-links a { margin-left: 15px; }
+      body { font-size: 17px; }
     }
   </style>
 </head>
 
 <body>
 
+  {% include navbar.html %}
+
   <header class="hero" id="hero-container">
     <div class="hero-content">
       <h1>Yaniv Leviathan</h1>
-      <div class="hero-subtitle">Hacking until the machine learns or I do</div>
+      <div class="hero-subtitle">Hacking until the machine learns, or I do</div>
     </div>
   </header>
 
@@ -339,26 +242,21 @@
       </p>
 
       <ul class="highlights-list">
-        <li><strong><a href="#section-speculative-decoding">Speculative Decoding</a></strong> (2022), a
-          technique for decoding efficiently from LLMs.</li>
-        <li><strong><a href="#section-duplex">Google Duplex</a></strong> (2018), the world's first AI system capable of having human-like voice conversations.</li>
-        <li><strong><a
-              href="https://gamengen.github.io/">GameNGen</a></strong> (2024), running DOOM in real-time on a neural model.</li>
-        <li><strong><a href="/taotp.html">The Art of Transformer Programming</a></strong> (2022), manually setting the weights of a transformer to perform basic algorithms.</li>
-        <li><strong><a
-              href="https://research.google/blog/generative-ui-a-rich-custom-visual-interactive-user-experience-for-any-prompt/">Generative
-              UI</a></strong> research (2025), integrated into <a
+        <li><strong><a href="#section-duplex">Google Duplex</a></strong> (2018) - I built the world's first AI system capable of having human-like voice conversations.</li>
+        <li><strong><a href="#section-speculative-decoding">Speculative Decoding</a></strong> (2022) - I invented a technique for decoding efficiently from LLMs that became standard across the industry.</li>
+        <li><strong><a href="https://gamengen.github.io/">GameNGen</a></strong> (2024) - I ran DOOM in real-time on a neural model.</li>
+        <li><strong><a href="/taotp.html">The Art of Transformer Programming</a></strong> (2022) - I manually set the weights of a transformer to perform basic algorithms.</li>
+        <li><strong><a href="https://research.google/blog/generative-ui-a-rich-custom-visual-interactive-user-experience-for-any-prompt/">Generative UI</a></strong> (2025) - I led generative UI research integrated into <a
             href="https://blog.google/products/search/gemini-3-search-ai-mode/">Google Search</a> and 
           <a href="https://blog.google/products/gemini/gemini-3-gemini-app/">Gemini</a>.</li>
         <li><strong><a
-              href="https://arxiv.org/abs/2410.02703">Selective Attention</a></strong> (2024) a simple modification of the attention module that improves transformers.</li>
+              href="https://arxiv.org/abs/2410.02703">Selective Attention</a></strong> (2024) - I developed a simple modification of the attention module that improves transformers.</li>
         <li><strong><a
               href="https://arxiv.org/abs/2210.09477">UniTune</a></strong> (2022), <strong><a
               href="https://dreamix-video-editing.github.io/">Dreamix</a></strong> (2023), and <strong><a
-              href="https://dl.acm.org/doi/10.1145/3610548.3618249">Face0</a></strong> (2023), early techniques for neural image and video editing.</li>
-        <li><strong><a href="#section-google-search">Google Search</a></strong> question answering.</li>
-        <li><a href="/">A blog</a>, with some of <strong><a href="/puzzles.html">my favorite
-              puzzles</a></strong>, and <strong><a href="/posts.html">write-ups</a></strong>.</li>
+              href="https://dl.acm.org/doi/10.1145/3610548.3618249">Face0</a></strong> (2023) - I developed early techniques for neural image and video editing.</li>
+        <li><strong><a href="#section-google-search">Google Search</a></strong> - I built a system for automatic question answering.</li>
+        <li><a href="/">A blog</a> - I collect <strong><a href="/puzzles.html">puzzles</a></strong> and occasionally write some <strong><a href="/posts.html">posts</a></strong>.</li>
       </ul>
     </section>
 
@@ -519,8 +417,8 @@
       <h2>Previous Life</h2>
       <p>
         I have been doing AI research for a long while. In 1998, as a high school student, I joined a startup building
-        video understanding software where I programmed neural networks in plain C. I also founded and was the CEO of a
-        company called Tailor where we built a system that automatically modifies websites based on usage patterns.
+        video understanding software where I programmed neural networks in plain C. I also founded and served as CEO of
+        Tailor, where we built a system that automatically modifies websites based on usage patterns.
       </p>
       <p>
         A couple of decades ago I spent several intensive years working on cryptography and cybersecurity. I also spent
@@ -545,40 +443,12 @@
 
   </main>
 
-  <footer>
-    <div class="container">
-      <div>Hand crafted by <a href="/about/">Yaniv Leviathan</a></div>
-      <div style="margin-top: 12px; font-family: var(--font-mono);">
-        yaniv.leviathan.public at proton dot me
-      </div>
-
-      <ul class="social-links">
-        <li>
-          <a href="http://twitter.com/yanivle" target="_blank" title="Twitter">
-            <i class="fab fa-twitter"></i>
-          </a>
-        </li>
-        <li>
-          <a href="http://facebook.com/yanivle" target="_blank" title="Facebook">
-            <i class="fab fa-facebook-f"></i>
-          </a>
-        </li>
-        <li>
-          <a href="http://www.linkedin.com/in/yaniv-leviathan" target="_blank" title="LinkedIn">
-            <i class="fab fa-linkedin-in"></i>
-          </a>
-        </li>
-      </ul>
-
-      <div>© 2025 All Rights Reserved.</div>
-    </div>
-  </footer>
+  {% include footer.html %}
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-  <script src="/assets/javascripts/imagesloaded.pkgd.min.js"></script>
+  <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="/assets/javascripts/header_animation.js"></script>
 
 </body>
-
 </html>

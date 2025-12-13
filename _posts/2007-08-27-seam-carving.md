@@ -1,6 +1,7 @@
 ---
 layout: post
 title:  "Seam Carving"
+excerpt: "My implementation of an amazing image resizing technique by Shai Avidan and Ariel Shamir"
 date:   2007-08-27 12:00:00
 categories: Graphics
 tags:  Graphics Algorithms Coding

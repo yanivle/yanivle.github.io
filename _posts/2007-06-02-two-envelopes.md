@@ -16,7 +16,7 @@ You write down 2 different numbers on 2 pieces of paper (one number on each piec
 
 ***How can I do that? What is my trick?***
 
-## Spoiler Alert - Solution Ahead!
+# Spoiler Alert - Solution Ahead!
 
 Let's start by solving a slightly easier version of the puzzle, where the numbers are whole numbers.
 
@@ -44,6 +44,6 @@ $$\blacksquare$$
 
 Note that while positive, the probability for case 3 shrinks exponentially and while I will always be able to get an advantage, you can make this advantage extremely small by choosing large numbers.
 
-### Solving for General Real Numbers
+## Solving for General Real Numbers
 Note that the only thing I needed in order for the solution above to work, is to be able to generate a number between your two numbers with positive probability. That is trivially easy to do for general real numbers as well - just take any bijection f between the natural numbers $$\mathbb{N}$$ and the rational numbers $$\mathbb{Q}$$, flip a coin and calculate T like above, and instead of defining S as T + 0.5, define $$S = f(T)$$.
 $$\blacksquare$$

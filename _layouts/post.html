@@ -1,89 +1,70 @@
 ---
 layout: default
 ---
-<article class="postWrapper">
-  <section class="section--first is-darkBackgrounded u-table">
-    <div class="section-backgroundImage">
+<main class="post-wrapper">
+  
+  <header class="post-header" 
+          style="{% if page.image.feature %}--hero-bg: url('/assets/images/largesize/{{ page.image.feature }}');{% endif %} view-transition-name: hero-{{ page.url | slugify }};">
+    
+    <div class="header-content container">
+      <div class="super-title">
+        {% if page.categories %}{{ page.categories | first }}{% else %}Blog{% endif %} &middot; {{ page.date | date: "%Y" }}
+      </div>
 
-      {% if page.image.feature %}
-      <img class="post-featuredImage" src="{{ page.image.feature | prepend: "/assets/images/largesize/" }}" style="
-        {% if page.image.topPosition %}
-          top:{{ page.image.topPosition }}px;
-        {% endif %}
-        " alt="">
+      <h1 class="entry-title" style="view-transition-name: title-{{ page.url | slugify }};">{{ page.title }}</h1>
+      
+      {% if page.excerpt %}
+      <div class="entry-subtitle">{{ page.excerpt | strip_html }}</div>
       {% endif %}
 
-    </div>
-    <div class="section-gradient
-    {% if page.bgGradientOpacity == "darker" %}
-      section-gradient--darker
-    {% elsif page.bgGradientOpacity == "lighter" %}
-      section-gradient--lighter
-    {% endif %}
-    "></div>
-    <div class="section-title is-darkBackgrounded u-tableCell u-verticalAlignMiddle">
-      <div class="container">
-        <h2>{{ page.title }}</h2>
-        <div class="postMeta-wrapper">
-          <ul class="postMeta">
-            <li class="postMeta-datetime">
-              <time datetime="{{ page.date }}">
-                {{ page.date | date_to_string }}
-              </time>
-            </li>
-            <li class="postMeta-author">
-              {{ site.author.name }}
-            </li>
-            <li class="postMeta-tags">
-              <!-- {%if page.categories contains "Puzzles" %}<span>&#129513;</span>{% endif %}
-              {%if page.categories contains "WIP" %}<span>&#128679;</span>{% endif %} -->
-              {{ page.categories }}
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-  <section class="section--last">
-    {% if content.size > 2000 %}
-    <div class="container">
-    {%else%}
-    <div class="container container--content">
-    {%endif%}
-      <div class="content-body">
-        {{ content }}
-      </div>
-    </div>
-    <hr class="u-clearHr" />
-    <hr class="u-clearHr" />
-    <hr />
-  </section>
-  <footer class="postFooter">
-    {% if page.previous.url %}
-    <section class="section--prePost is-darkBackgrounded u-table">
-      <div class="section-backgroundImage section-backgroundImage--previousPage">
-        <img class="post-featuredImage" {% if page.previous.image.feature %}
-          src="{{ page.previous.image.feature | prepend: "/assets/images/largesize/" }}" {% endif %} style="top:0"
-          alt="">
-      </div>
-      <div class="section-gradient
-        {% if page.previous.bgGradientOpacity == "darker" %}
-          section-gradient--darker
-        {% elsif page.previous.bgGradientOpacity == "lighter" %}
-          section-gradient--lighter
+      <div class="meta-data">
+        <!-- <span>By <strong>Yaniv Leviathan</strong></span> -->
+        <!-- <span>&middot;</span> -->
+        <span class="date">{{ page.date | date: "%B %d, %Y" }}</span>
+        {% if page.tags %}
+        <span>&middot;</span>
+        <span class="tags-list">
+           {% for tag in page.tags %}
+             <span class="tag-pill">{{ tag }}</span>
+           {% endfor %}
+        </span>
         {% endif %}
-        "></div>
-      <div class="section-title u-tableCell u-verticalAlignMiddle">
-        <div class="container">
-          <h4>Next story:</h4>
-          <a class="prev" href="{{page.previous.url}}">
-            <h2>{{page.previous.title}}</h2>
-          </a>
-        </div>
       </div>
-    </section>
-    {% endif %}
-  </footer>
-</article>
+    </div>
+  </header>
 
-{% include modal.html %}
+  <article class="post-content">
+    {{ content }}
+  </article>
+
+  {% if page.previous.url %}
+  <section class="post-navigation">
+    <hr />
+    <div class="next-story">
+      <span>Read Next</span>
+      <a href="{{ page.previous.url }}">
+        <h3>{{ page.previous.title }}</h3>
+      </a>
+    </div>
+  </section>
+  {% endif %}
+
+  {% if site.disqus %}
+  <section class="comments">
+    <div id="disqus_thread"></div>
+    <script>
+        var disqus_config = function () {
+            this.page.url = "{{ page.url | absolute_url }}";
+            this.page.identifier = "{{ page.url }}";
+        };
+        (function() {
+            var d = document, s = d.createElement('script');
+            s.src = 'https://{{ site.disqus }}.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+  </section>
+  {% endif %}
+
+</main>

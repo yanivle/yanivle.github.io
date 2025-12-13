@@ -14,7 +14,7 @@ syntaxHighlighter: no
 ---
 A short introduction to Graph Theory is needed for this one. If you already are familiar with Graph Theoretic constructs feel free to skip it.
 
-### Short Intro to Graph Theory
+# Short Intro to Graph Theory
 
 A ***graph*** *G*, is a pair *(V,E)* where *V* is a set of ***vertices*** and *E* is a set of ***edges***. Each ***edge*** is an unordered pair of the form *(u, v)* where *u* and *v* are ***vertices*** (i.e. they belong to *V*). The ***degree*** of a vertex *t* (denoted *deg(t)*) is the number of edges containing it:
 
@@ -28,7 +28,7 @@ The following is a trivial claim:
 
 It is trivial to prove this claim by induction on the number of edges (on a graph with no edges it is clear, and by adding an edge to the edge set of the graph the sum of degrees increases by two $$\blacksquare$$).
 
-### The Riddle
+# The Riddle
 
 A rectangle is called ***whole*** if at least one of its sides is an integer. For example, a rectangle of 2 by $$\frac{3}{5}$$ is whole as well as a rectangle of $$\sqrt{5}$$ by 3. A rectangle of $$\frac{1}{2}$$ by $$\frac{1}{2}$$ is not whole. Examples:
 

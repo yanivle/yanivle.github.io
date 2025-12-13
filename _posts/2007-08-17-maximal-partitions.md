@@ -34,7 +34,7 @@ Now, we finally got to the point: ***Given a positive integer N, what is maxmul(
 
 If you want to think about this one yourself, stop reading now, because the rest of this post discusses the solution. Anyway, try to have at least an initial intuition on the answer before reading on.
 
-### Spoiler Alert - Solution Ahead
+# Spoiler Alert - Solution Ahead
 
 I must admit that my initial intuition about this problem was that if *N* is even, then a maximal partition of *N* will be a $$\frac{N}{2}$$-partition of the form {2, 2, ..., 2}. This is wrong.
 
@@ -64,12 +64,12 @@ Using $$x = \frac{N}{e}$$ gives a partition with a constant chunk size of *e*.
 
 This explains (at least intuitively) the reason for 3 being the densest integer.
 
-### Extra Credit
+# Extra Credit
 
 1. How many partitions does a positive integer N have?
 2. How big is the set {mul(P) \| P is a partition of N}?
 
-#### Note
+## Note
 
 The definitions used in this post were mostly invented by me for the purposes of this post, and are not universally accepted terminology (i.e. do not be alarmed if someone does not understand the meaning of the term maximal partition!).
 

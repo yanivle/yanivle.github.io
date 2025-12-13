@@ -20,13 +20,13 @@ A few years ago I gave a week-long x86 assembly course for some fellow programme
 
 The following paragraph is intended for those of you without assembly knowledge. All of you assembly masters are welcome to skip to the fun stuff below.
 
-### Some References 
+# Some References 
 
 Well, for starters I recommend reading the ”The Art of Assembly Language Programming” (AoA) which covers a lot of the basics. And yes – Assembly Programming is an Art (maybe more so than programming in other languages). Next, you should also read Intel’s manuals: Volume 1: Basic Architecture, Volume 2A: Instruction Set Reference, A-M, Volume 2B: Instruction Set Reference, N-Z, Volume 3A: System Programming Guide, Volume 3B: System Programming Guide and Architectures Optimization Reference Manual. Yes, I know its a lot of reading but they are really interesting and you don’t have to read the whole thing in order (although I recommend it – so many interesting facts lye in those pages). Finally, if you are going to develop in assembly (e.g. assemble the source included in this article) I recommend using NASM, as it is the simplest and cleanest assembler (although some people prefer MASM, which is kind of similar, but a bit more clumsy). If you are going to do some 16-bit DOS programming, you will find Ralf Brown’s Interrupt List (RBIL) a useful tool.
 
 Throughout this article I will assume basic assembly knowledge (the first chapters of AoA will more than cover everything).
 
-### The Buzzwords
+# The Buzzwords
 
 SIMD stands for Single Instruction Multiple Data.  It is clear that most algorithms require repeating the same operation over and over again (each time on different sets of data). From this observation stemmed the idea of a vector computer or SIMD. We will shortly see that indeed our fireworks program will repeat the same operations many times and so we will be using the Pentium’s SIMD capabilities for that purpose.
 
@@ -42,7 +42,7 @@ Note that in order to be backward compatible with existing OS’s (mainly Window
 
 SSE stands for Streaming SIMD Extensions. This was Intel’s second attempt at bringing SIMD to the PC (in response to AMD’s 3DNow!). SSE added many instructions to the instruction set as well as 16 128-bit vector registers (xmm0,…,xmm15). Unlike the 8 MMX registers, the SSE registers can contain four 32-bit floating point values. As these registers are not aliased to any existing registers (and so require special care by the OS) they are disabled by default and are only turned on when the OS explicitly commands it.
 
-### Mode 13h
+# Mode 13h
 
 The easiest to program DOS graphics mode is probably mode 13h, which we shall therefore use. In mode 13h, the screen is represented as a 320*200 byte buffer (located in address 0xA000). Each byte in the buffer is an index to a 256 bytes long palette. When mode 13h is enabled, simply writing bytes memory in the range 0xA000-0x19A00 (0x19A0 = 0xA000 + 0xFA00, 0xFA00 = 320*200) will draw pixels on the screen. You should not draw directly to this buffer though, as when the video card is drawing the screen, it scans through this buffer, thereby stalling your write commands. What you should do, is allocate an off-screen buffer and render to this buffer and once in a frame spill the contents of this buffer as quickly as possible to the memory block starting at 0xA000. We will get to this later.
 
@@ -62,7 +62,7 @@ mov ax, 3
 int 0x10
 ```
 
-### The Palette
+# The Palette
 
 Now, in order to render properly colored fireworks, we need to have a decent color palette. In mode 13h the palette is set by outputting the palette index number to port 0x3c8 and then outputting 3 color values (for the red, green and blue components) to port 0x3c9. Note that if the entire palette is to be set in one go, only index 0 needs to be outputted to port 0x3c8, as it is incremented automatically after three writes to port 0x3c9. Each of the 3 color components is represented by a 7 bit value, it is a number in the range 0-63, where a value of 0 means that the component is not present at all in the color, and a value of 63 means that the component is present with full opacity in the color. So the color pure green will be represented by the tuple (0,63,0). The palette we shall use will consist of a simple linear interpolation from black to red to white. Index 0 will be total black, index 128 will be total red and index 255 will be total white.
 
@@ -70,7 +70,7 @@ A simple program that sets such a palette and then draws it to the screen can be
 
 {% include image.html url="/assets/images/posts/palette.jpg" %}
 
-### The Basic Fireworks Program
+# The Basic Fireworks Program
 
 Enough with the introductions – lets get to business!
 
@@ -104,7 +104,7 @@ The MAIN function updates the particles (and calls init_particle when needed) an
 
 After all of the particles are drawn, the MAIN function calls two functions which apply filters on our buffer, before displaying it on the screen (by copying our video buffer to address 0xA000).
 
-### The Filters 
+# The Filters 
 
 These filters are very important (and are implemented using MMX!). There are three: mmx_shade, mmx_blur and mmx_blur_right.
 
@@ -190,7 +190,7 @@ The MAIN program switches between the two blur functions once in a while. The re
 
 {% include image.html url="/assets/images/posts/mmx_blur_right.jpg" %}
 
-### Exercises to the Reader
+# Exercises to the Reader
 
 Change the three filter functions so that they use the 16-byte SSE registers, thus gaining a factor of 2 on these functions’ running time. This is very easy!
 Add another offscreen buffer and correctly implement the blurring.

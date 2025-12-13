@@ -1,9 +1,10 @@
-{::nomarkdown}
-<figure style="margin: 0px;">
-    <a href="{{ include.url | relative_url }}">
-      <div class="img img--fullContainer img--{{include.height | default: 14}}xLeading"
-        style="background-image: url({{ include.url | relative_url }}); background-size: contain;"></div>
+<figure>
+    <a href="{{ include.url | relative_url }}" target="_blank">
+        <img src="{{ include.url | relative_url }}" 
+             alt="{{ include.caption }}"
+             style="display: block; margin: 0 auto; max-width: 100%; height: auto;">
     </a>
-    <figcaption style="text-align:center; font-size: 0.75em; padding-top: 0.75em">{{include.caption | default: }}</figcaption>
+    {% if include.caption %}
+    <figcaption>{{ include.caption }}</figcaption>
+    {% endif %}
 </figure>
-{:/nomarkdown}

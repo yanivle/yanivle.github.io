@@ -2,7 +2,7 @@
 layout: post
 title:  "Understanding Soccer with the Hough Transform"
 date:   2007-06-03 01:00:00
-excerpt: "A post about the Hough Transform"
+excerpt: "A super cool technique for finding geometric shapes in an image"
 categories: Computing
 tags:  Coding Algorithms
 image:

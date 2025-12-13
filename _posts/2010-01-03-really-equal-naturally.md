@@ -2,7 +2,7 @@
 layout: post
 title:  "Really Equal? Naturally!"
 date:   2010-01-03 01:00:00
-excerpt: "A algebraic puzzle"
+excerpt: "An algebraic puzzle"
 categories: Puzzles
 tags:  Math Puzzle Algebra
 image:
@@ -14,14 +14,14 @@ syntaxHighlighter: no
 ---
 You have a set *S* of 2N+1 real numbers, with the following property: if you remove any one element, you can partition the remaining 2N elements into two sets, *A* and *B*, each of size N, such that the sum of the N numbers in set *A* equals the sum of the N numbers in set *B*. Prove that all the numbers in the original set are equal.
 
-### Spoiler Alert - Hint Ahead
+## Spoiler Alert - Hint Ahead
 Start by trying to solve the riddle for the special case where the set contains only *natural numbers* instead of general reals.
 
-## Spoiler Alert - Solution Ahead!
+# Spoiler Alert - Solution Ahead!
 
 We will solve the riddle for the case of natural numbers, integers, rational numbers, and finally real numbers. Note that everywhere below I use the regular set notation to denote multisets.
 
-### Solving for the Natural Numbers
+## Solving for the Natural Numbers
 
 ***Theorem 1***: If the numbers in *S* are all natural numbers, then they are all equal.
 
@@ -37,20 +37,20 @@ The proofs of Lemmas 2 and 3 are trivial.
 
 ***Proof of Theorem 1***: By __*Lemma 1*__, all elements of *S* are either even or odd. If all elements are odd, by __*Lemma 2*__, we can subtract 1 from all elements of *S*, making all elements even. If all the elements are even, by __*Lemma 3*__, we can divide all elements of by 2. Consider the sequence of sets you get by repeated application of this process, diving by 2 if all elements are even, and removing 1 if all elements are odd, until one of the elements of the set, *x*, becomes 0. Call the set at that point *S'*. Let *y* be another element of *S'*. If *y* is not 0, y must be an even number from Lemma 1. Keep diving all elements by 2 (from __*Lemma 3*__) at some point the image of *y* will be an odd number, leading to a contradiction. Therefore for all $$y \in S', y = x$$. Therefore all elements of *S'* are equal. Therefore all elements of *S* are equal. $$\blacksquare$$
 
-### Solving for the Integers
+## Solving for the Integers
 
 ***Theorem 2***: If the numbers in *S* are all integers, then they are all equal.
 
 ***Proof of Theorem 2***: Let $$m = \text{min}(S)$$. The set $$S' = \{x - m \mid x \in S\} \subset \mathbb{N}$$
 satisfies the conditions of __*Theorem 1*__. Therefore all elements of *S'* are equal. Therefore all elements of *S* are equal. $$\blacksquare$$
 
-### Solving for the Rationals
+## Solving for the Rationals
 
 ***Theorem 3***: If the numbers in *S* are all rational numbers, then they are all equal.
 
 ***Proof of Theorem 3***: Let $$S = \{\frac{a_i}{b_i} \mid 0 \leq i \leq N\}$$. Let $$g = \prod_{0 \le i \le N}b_i$$. Let $$S' = \{x \times g \mid x \in S\}$$. Then $$S' \subset \mathbb{Z}$$ and *S'* satisfies the condition of __*Theorem 2*__. So all the elements of S' are equal. So all the elements of *S* are equal. $$\blacksquare$$
 
-### Solving for the Reals
+## Solving for the Reals
 
 ***Theorem 4***: If the numbers in *S* are general real numbers, then they are all equal.
 

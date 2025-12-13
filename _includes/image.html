@@ -1,6 +1,7 @@
-{::nomarkdown}
-<a href="{{ include.url | relative_url }}">
-  <div class="img img--fullContainer img--{{include.height | default: 14}}xLeading"
-    style="background-image: url({{ include.url | relative_url }}); background-size: contain;"></div>
-</a>
-{:/nomarkdown}
+<div class="image-wrapper" style="margin: 2em 0; text-align: center;">
+  <a href="{{ include.url | relative_url }}" target="_blank" style="border-bottom: none;">
+    <img src="{{ include.url | relative_url }}" 
+         alt="{{ include.description | default: '' }}" 
+         style="max-width: 100%; height: auto; display: inline-block; border-radius: 2px;">
+  </a>
+</div>

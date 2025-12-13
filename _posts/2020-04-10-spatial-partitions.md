@@ -2,7 +2,7 @@
 layout: post
 title:  "A Generic Spatial Data Structure for Efficient Nearest Neighbor Searches"
 date:   2020-04-10 15:00:00
-excerpt: "A data structure for finding closest points in space."
+excerpt: "A data structure for finding closest points in space"
 categories: Computing
 tags:  Computing Algorithms Data-Structures
 image:
@@ -14,10 +14,10 @@ syntaxHighlighter: yes
 ---
 Finding the [nearest neighbor](https://en.wikipedia.org/wiki/Nearest_neighbor_search) of a point in a [metric space](https://en.wikipedia.org/wiki/Metric_space) has [numerous applications](https://en.wikipedia.org/wiki/Nearest_neighbor_search#Applications), from *machine learning* (as a matter of fact, finding the nearest neighbor of an item in feature space is a complete machine learning algorithm! We'll see a toy example below), to *graphics* and *physics simulation* (e.g. I use it extensively in my General Relativity Renderer - I hope to write a post about it soon), or, as we shall see later, for finding the closest word in the dictionary to a given word with spelling mistakes. In this post we will explore a generic data structure for efficiently finding the nearest neighbor of a point in arbitrary metric spaces, and a modern c++ implementation.
 
-## A Good Algorithm?
+# A Good Algorithm?
 There are several important dimensions that determine *how good an algorithm is*. Maybe the three most important ones are ***time complexity***, ***memory complexity***, and ***code complexity***. Since in almost all problems you can trade one for one of the others, it's usually impossible to find a solution that is actually the best, in the sense that it optimizes all three. Once in a while though, you find a nice trade-off, with low time, memory, *and* code complexities. The solution I'll describe in this post is one such algorithm, for the problem of efficiently finding the closest point to a target point in a metric space.
 
-## An Example Problem
+# An Example Problem
 Say we have a set of points in the plane $$R^2$$:
 
 {% include image.html url="/assets/images/posts/spatial_partitions/points.png" %}
@@ -30,7 +30,7 @@ We can efficiently output the closest point from the original set to our target 
 
 {% include image.html url="/assets/images/posts/spatial_partitions/points_with_target_and_solution.png" %}
 
-## The Standard Solution
+# The Standard Solution
 Depending on the parameters of the question, the well-known solutions to this problem are usually things like the [*k*-d tree](https://en.wikipedia.org/wiki/K-d_tree). A *k*-d tree is a binary tree, such that each node is associated with a [hyperplane](https://en.wikipedia.org/wiki/Hyperplane) that's orthogonal to one of the axes, and splits the set of points to those on one side of the hyperplane and those on the other side that hyperplane. A hyperplane is simply a plane of dimension one less than that of the space, so in the case of our $$R^2$$ example, a hyperplane is just a line:
 
 {% include image.html url="/assets/images/posts/spatial_partitions/points_with_hyperplane.png" %}
@@ -84,9 +84,9 @@ def find(tree, target):
   return closest2
 ```
 
-## Optimizations
+# Optimizations
 
-### Multiple Points Per Leaf
+## Multiple Points Per Leaf
 One standard and simple optimization, is that instead of storing only a single point at each of the leafs, we can choose to store a vector of points of some length at each leaf. We would then stop constructing child nodes when a leaf has that number of points or less.
 The adjustment to the pseudo-code above is trivial, we would just change one line:
 
@@ -102,10 +102,10 @@ if tree.isLeaf(): return closestPointInList(tree.points, target)
 
 See the Benchmarking section below for some results of how this number affects the performance.
 
-### Choosing the Hyperplanes
+## Choosing the Hyperplanes
 A much more important optimization comes from the way we choose the hyperplanes. So how should we chose which hyperplanes to use?
 
-#### Good Hyperplanes
+### Good Hyperplanes
 Let's consider two desirable traits for the chosen hyperplanes:
 1. We'd like the hyperplane to split the points as evenly as possible, to minimize the worst case depth.
 2. We'd like the points on each side of the hyperplane to be as far away as possible from the hyperplane. This criteria is important, as even if the tree has logarithmic depth, if the *find* algorithm above needs to explore both sides of the hyperplane often, it might run for more than a logarithmic number of steps.
@@ -124,7 +124,7 @@ What about criteria #2? Consider the blue and the green hyperplanes in this diag
 
 While the green line separates the points more evenly (so is better according to criteria #1), according to criteria #2, the blue line is better. Indeed, if we are trying to find the nearest neighbor for a point with a similar distribution to that of the original set of points, e.g. the red target point, we are likely to need to check both sides of the green hyperplane, whereas we are likely to only need to check one side of the blue hyperplane.
 
-#### Degrees of Freedom
+### Degrees of Freedom
 When choosing axis-aligned hyperplanes there are two things we are actually choosing:
 1. Which axis the hyperplane will be perpendicular to ($$X$$, $$Y$$, or $$Z$$)?
 2. What is the point of intersection of the hyperplane and that perpendicular axis?
@@ -133,13 +133,13 @@ We have several ways for choosing both. For #1, we could, at every node choose r
 
 Once we chose the axis, we need to choose the intersection point. Here again we can employ several strategies: we can choose a random point from the set and take its projection on the axis as the intersection point, or we can choose the median point's projection instead of a random point (sounds more promising). Here too, see the benchmarking section below for experiment results with a couple of these.
 
-#### Non Binary Trees
+### Non Binary Trees
 Another simple optimization (which we won't implement) is to consider a set of *k* hyperplanes (say parallel to each other) at each of the nodes of the tree. Instead of just considering on which side of a single hyperplane an item is, we'd then need to determine between which *two* hyperplanes an item is. While adding support for this is trivial, the reason we won't be doing this is that it gets much more hairy if we want to support volume - which we do. Let's see what that means.
 
-## Supporting Volume
+# Supporting Volume
 We discussed above supporting multiple points per leaf, instead of just a single point per leaf. Once we implement that, we can trivially add a really cool feature, that I found useful in several application: supporting *spheres* instead of *points*. Specifically, we want to allow each item that we insert to the tree to have a potentially non-zero radius. In order to enable that, it is enough to allow all nodes in the tree to contain items, not just the leafs, and whenever we add an item to the tree, if its sphere *intersects* the hyperplane (basically meaning it is both to the left and to the right of it) we simply keep it in the parent node, instead of in the child nodes.
 
-## Beyond Hyperplanes
+# Beyond Hyperplanes
 I got to program *k*-d trees several times for various projects, for example, for my General Relativity Renderer, I needed to detect the collision of light photons with millions of stars, and storing them in a *k*-d tree enabled rendering such images as this one:
 
 {% include image.html url="/assets/images/posts/spatial_partitions/stars.jpg" %}
@@ -172,11 +172,11 @@ So we could use this same spatial partitioning data structure (it's no longer a 
 
 Of course in a general metric space, the notions of *axes* and *hyperplanes* don't exist, so we can't use them as our hypersurfaces. But we can still use spheres!
 
-## Gist of the Code
+# Gist of the Code
 
 While the full implementation is pretty concise (you can find it at the end of the post), I wanted to give here just the gist of the code including just the most important parts:
 
-```c++
+```cpp
 // A hyperplane in R3 perpendicular to one of the Axes.
 struct AxisAlignedHyperplane {
   vec3::Axis perpendicular_axis = vec3::X;
@@ -261,7 +261,7 @@ class Tree {
 
 So how would this be used? Here's an example (see the full implementation below for the details):
 
-```c++
+```cpp
 spatial_partition::Vec3KDTree tree;
 tree.fromVector(vector_of_vec3s);
 vec3 target = ...;
@@ -270,7 +270,7 @@ vec3 closest = tree.findClosest(target);
 
 And how about using it for finding the closest string from a dictionary?
 
-```c++
+```cpp
 std::vector<std::string> words;
 LoadWordsFromDictionary(&words);
 spatial_partition::StringVPTree tree;
@@ -279,7 +279,7 @@ tree_closest = tree.findClosest("Yaniv").item;
 std::cerr << "The closest word in the dictionary to 'Yaniv' is: " << tree_closest << std::endl;
 ```
 
-## Toy Example - Machine Learning a COVID Detector
+# Toy Example - Machine Learning a COVID Detector
 
 Before we start with serious benchmarks, let's use our spatial data structure to build a simple machine learned model to detect whether someone has COVID. The features we'll use are the person's body temperature, the number of times the person coughs in a day, and a completely irrelevant feature of the person's favorite number. We'll generate some random data for these features like so:
 - If a person is healthy, we'll assume that their body temperature is normally distributed with a mean of 98.6°F and a standard deviation of 0.45°F. For a sick person we'll assume the same standard deviation but a mean of 1°F higher.
@@ -288,7 +288,7 @@ Before we start with serious benchmarks, let's use our spatial data structure to
 
 Here's all of that in code:
 
-```c++
+```cpp
 struct Example {
   vec3 features;
   enum Label { Healthy = 0, Sick = 1 } label;
@@ -315,7 +315,7 @@ Example getRandomSick() {
 
 And here is our toy machine learning model:
 
-```c++
+```cpp
 struct NearestNeighbor {
   spatial_partition::KDTree<Example, dist> tree;
 
@@ -344,12 +344,12 @@ And that's it! So how well does this perform? Running this with a training set o
 
 The model's precision looks to saturate around the 8X% precision (with 100,000 training examples we get a precision of 83%). As an exercise for the reader, ***what is the theoretical maximal precision, of the ideal machine learned model on this data set?***
 
-## Benchmarking
+# Benchmarking
 So how does this implementation compare to trivial baselines (of basically just iterating over the data and taking the closest point, with only minor optimizations, like bailing early as soon as a point of distance 0 is found)?
 For practical applications, where indeed finding the closest point is the bottleneck, the above code can be *much* further optimized. That said, most optimizations would require hurting the complexity of the code. As it turns out, this implementation already performs orders of magnitude better than the trivial approach (at least in the Euclidean case).
 
-### Results
-#### Trees in Euclidean Spaces
+## Results
+### Trees in Euclidean Spaces
 So here are the results for indexing 10,000 points in $$R^3$$ and performing 10,000 finds:
 
 {% include image.html url="/assets/images/posts/spatial_partitions/results.png" %}
@@ -359,7 +359,7 @@ The rest of the columns represent several tree configurations. The number in red
 The best performing tree in this setup is the round-robin axis aligned tree, with a total cost of 0.07 seconds for the 10K operations (including the building time). Building it costs only 2.3 milliseconds. The random-pivot tree and the max-spread tree perform very similarly. Interestingly, the sphere-tree (that completely ignores the fact that the points are in a Euclidean space) and chooses random pivots, performs really well - less than twice as bad as the round-robin tree.
 Also, interestingly, the x-axis only tree (which basically ignores the y and z coordinates completely and just binary-sorts all the points according to their X-coordinate) performs much worse than all of the other tree configurations, but still about an order of magnitude better than the baseline approach (0.36 seconds vs 2.7 seconds for the baseline approach).
 
-##### A Larger Data Set
+#### A Larger Data Set
 
 What happens on an even larger data set? Here we see the results for 100,000 points in $$R^3$$ and 100,000 finds. The baseline would have been way too slow for this one (estimated at around 5 minutes - more than I have patience for :)) so I am not including it:
 
@@ -367,7 +367,7 @@ What happens on an even larger data set? Here we see the results for 100,000 poi
 
 Here too it's easy to see that the round-robin method dominates, with very fast build time, and the best find time. It is able to build the tree and perform the 100K *find-closest* operations in just over a second.
 
-##### A Different Distribution of Points
+#### A Different Distribution of Points
 
 What happens if the points aren't randomly sampled from the unit cube, like in the experiment above, but are rather organized on the surface of the unit sphere? For this experiment, I kept the slow baseline off, and used 10K points and 10K *find-closest* queries:
 
@@ -377,7 +377,7 @@ As you can see, the round-robin method still dominates, with the random axis one
 
 I also tried making the points non-uniformly distributed, like so:
 
-```c++
+```cpp
 while (std::rand() % 2 == 0) {
   (*points)[i] *= 2;
 }
@@ -385,7 +385,7 @@ while (std::rand() % 2 == 0) {
 
 So half of the points are around the unit cube (or on the surface of the unit sphere - I tried both configurations), a quarter are doubled, an eighth are quadrupled, etc. As it turns out, almost nothing changes. The above results are almost the same with very slight variations. Round-robin FTW!
 
-##### The Effect of the Cutoff
+#### The Effect of the Cutoff
 
 We know there is one more interesting parameter to optimize - the cutoff value, below which we will not keep subdiving the nodes, but rather maintain a flat list. Here we see the results of 10K points in the unit cube in $$R^3$$ with 10K queries, using the round-robin axis selection method:
 
@@ -393,7 +393,7 @@ We know there is one more interesting parameter to optimize - the cutoff value, 
 
 Well, not super surprisingly (that was actually the default I chose before running this experiment :)) it turns out that the best min split size is 32. Obviously the build cost keeps going down as this number increases, but at 32 we are almost minimizing the find cost, while keeping the build cost low.
 
-#### Closest Dictionary String
+### Closest Dictionary String
 
 What about the performance of the data structure for finding the closest strings in the dictionary?
 
@@ -405,7 +405,7 @@ Here are the results:
 
 As you can see, this elegant implementation already does much better than the naive approach! There are specialized algorithms for this problem of finding the closest string in a dictionary like [SymSpell](https://github.com/wolfgarbe/SymSpell), [LinSpell](https://github.com/wolfgarbe/LinSpell), or [Norvig's algorithm](https://norvig.com/spell-correct.html), but for their gains in time complexity, they pay heavily in memory and code complexity.
 
-## Appendix - Calculating Levenshtein Distance
+# Appendix - Calculating Levenshtein Distance
 
 Recall that the Levenshtein distance is a metric on string space (i.e. a distance function between two strings) aiming to measure how similar two strings are. The vanilla Levenshtein distance (that I used for all experiments in this post) is the minimal number of ***Insert***, ***Remove***, and ***Replace*** operations required to transform one string into the other (this is the vanilla version in the sense that e.g. all the operations have the same weights, independent on the characters involved, etc.). Here are examples of the three operations:
 
@@ -417,7 +417,7 @@ You can easily verify that indeed the Levenshtein distance satisfies all the req
 
 I originally wrote a trivial recursive (without memoization) Levenshtein distance implementation, like so:
 
-```c++
+```cpp
 int EditDistanceNaive(const std::string& s1, const std::string& s2,
                              int len1 = -1, int len2 = -1) {
   if (len1 == -1) len1 = s1.length();
@@ -449,7 +449,7 @@ This was so slow, that I couldn't run anything but the most trivial of experimen
 2. Instead of using an $$n \times m$$ matrix (where $$n$$ and $$m$$ are the lengths of the strings we are comparing), it is enough to use a $$2 \times m$$ matrix, as we can scan it top to bottom (see the implementation below), so we use linear memory instead of quadratic memory.
 3. Finally, since during tree building I am sometimes calculating the distance between the same pair of strings, I wrapped the entire implementation with a version that can cache the full result, so the same strings are never compared more than once in the entire lifetime of the program (for brevity, I omitted this from the implementation below, it's a simple wrapper on top of EditDistanceNoCache below).
 
-```c++
+```cpp
 inline const size_t EDIT_DISTANCE_MAX_STRING_LEN = 1024;
 class EditDistanceMatrix {
  public:
@@ -488,11 +488,11 @@ inline int EditDistanceNoCache(const std::string& s1, const std::string& s2) {
 
 All the above experiments use this implementation.
 
-## Implementation
+# Implementation
 
 Finally, here is my implementation of the spatial partition data structure in C++:
 
-```c++
+```cpp
 /*
 Generic spatial-partition binary tree.
 */

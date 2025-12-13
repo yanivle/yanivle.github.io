@@ -14,7 +14,7 @@ syntaxHighlighter: no
 ---
 These are two nice and easy gambling related riddles.
 
-### Double or Nothing
+# Double or Nothing
 
 FC Barcelona  and Real Madrid C.F. will be playing 7 games against each other this season. I give you \\$1,000 and ask you to double it in case Barça wins overall (i.e. if they win at least 4 of the 7 games). You are allowed to lose all of it otherwise.
 
@@ -24,7 +24,7 @@ You have a honest bookie which gives you 1-1 odds on each game, but he is only w
 
 Note that you are not allowed to take loans, so if for example you bet \\$30 on Barça in the first game and they win you have a maximum of \\$1,030 to bet on for the second game, and if they lose, you have a maximum of \\$970 to bet on the second game.
 
-### Beat the Bookie
+# Beat the Bookie
 
 This second riddle is even easier. There are n horses in a horse race. Your bookie gives you $$X_1, ..., X_n$$ – the odds for each horse.
 
@@ -34,9 +34,9 @@ For example, if $$X_2$$ is 3, for each dollar you place on horse 2 you will get 
 
 *Thanks to Srulix for these two riddles!*
 
-## Spoiler Alert - Solutions Ahead!
+# Spoiler Alert - Solutions Ahead!
 
-### Solution to Double or Nothing
+## Solution to Double or Nothing
 Denote by $$W_{i, j}$$ the maximum multiplier you can guarantee to make on your money if you are willing to lose everything unless there are at least *i* wins, out of *i + j* games. Let's show that $$W_{4, 3} \ge 2$$, and how to get it. Note that $$W_{i, 0} = 2^i$$ (just bet all of your money every turn) and $$W_{0, i} = 1$$ for all *i* (you can't guarantee winning anything at all if you don't have any guarantees on the underlying games). Also, note that since the maximum must be attained whether you win or lose the first game, if you denote by *k* the fraction of your money you should bet to attain $$W_{i, j}$$, note that *k* satisfies $$W_{i, j} = (1 + k) \times W_{i - i, j} = (1 - k) \times W_{i, j-1}$$. Or, $$k = \frac{W_{i, j-1} - W_{i - 1, j}}{W_{i, j-1} + W_{i - 1, j}}$$. Using this recursion formula, we get the following values:
 
 <style>
@@ -56,7 +56,7 @@ td, th {
 }
 </style>
 
-##### W:
+#### W:
 
 <table><tr><td class="highlight_cell">$$1 $$</td>
   <td class="highlight_cell">$$2 $$</td>
@@ -84,7 +84,7 @@ td, th {
   <td>$$1 \frac{ 29 }{ 99 }$$</td>
   <td>$$1 \frac{ 93 }{ 163 }$$</td></tr></table>
 
-##### k:
+#### k:
 
 <table><tr><td class="highlight_cell">$$$$</td>
   <td class="highlight_cell">$$1 $$</td>
@@ -114,7 +114,7 @@ td, th {
 
 We see that indeed $$W_{4, 3} = 2$$. The fraction of our money we should bet at any point, is given by the k table. $$\blacksquare$$.
 
-### Solution for Beat the Bookie
+## Solution for Beat the Bookie
 
 Denote by $$a_i$$ the amount you bet on horse *i*. Then your guaranteed win is $$min(a_iX_i)$$. You can therefore only guarantee a win if $$\sum{a_i} \lt min(a_iX_i)$$, and an optimal strategy for optimizing the minimum return would be to require for all *i, j* $$a_iX_i=a_jX_j$$, or, $$a_i = \frac{a_1X_1}{X_i}$$. We get:
 

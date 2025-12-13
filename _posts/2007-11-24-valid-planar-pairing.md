@@ -2,7 +2,7 @@
 layout: post
 title:  "Valid Planar Pairing"
 date:   2007-11-24 01:00:00
-excerpt: "Easy computational geometry puzzle."
+excerpt: "Easy computational geometry puzzle"
 categories: Puzzles
 tags:  Puzzle Geometry
 image:
@@ -22,10 +22,10 @@ A ***valid planar pairing*** is a pairing such that when paired points are conne
 
 Thanks to Nadav Sherman for giving me this one.
 
-### Extra Credit
+## Extra Credit
 Is the claim true in the case that the sets of red and yellow points are infinite?
 
-## Solution
+# Solution
 
 We will not just prove that a pairing exists, but in fact, devise an algorithm to construct it.
 

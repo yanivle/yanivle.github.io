@@ -18,7 +18,7 @@ If you hit the cell with the rabbit, you kill it (and win). Otherwise, if you sh
 
 ***Can you kill the rabbit? If so, what is the minimum number of shots needed to guarantee a kill?***
 
-### Extra Credit
+## Extra Credit
 ***Spoiler Warning – read after solving the riddle above!***
 
 Instead of considering the cells in a row, the riddle can be generalized to a graph.
@@ -27,7 +27,7 @@ If the graph has cycles, no solution exists (make sure you see why!).
 
 What happens if the graph is a general tree?
 
-## Spoiler Alert - Solutions!
+# Spoiler Alert - Solutions!
 
 Let's consider the simple case of a linear graph with 10 cells:
 
@@ -51,7 +51,7 @@ What about more complicated trees? Well, it turns out we can solve all trees wit
 
 {% include image.html url="/assets/images/posts/random_tree.gv.svg" %}
 
-### Spoiler Alert - Solution for the Tree Above
+## Spoiler Alert - Solution for the Tree Above
 
 The reason I know that all trees with up to 9 nodes are solvable is unfortunately not due to some clever reasoning but rather because I wrote a tiny program that enumerates all trees and solves the problem for them (it outputs these diagrams).
 

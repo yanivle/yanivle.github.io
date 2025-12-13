@@ -16,7 +16,129 @@ I recently discovered [Shadertoy](https://www.shadertoy.com/) which let's you wr
 
 ### Demo
 
-<iframe src="https://www.shadertoy.com/embed/tdVGRt?gui=true&t=10&paused=false&muted=false" width="640" height="360" frameborder="0" allowfullscreen="allowfullscreen" ></iframe >
+<script id="my-cool-shader" type="x-shader/x-fragment">
+#define PI 3.14159265359
+#define TWO_PI 6.28318530718
+
+#define NUM_SPHERES 19
+
+vec3 light(vec3 rd, vec3 p, vec3 norm, vec3 c) {
+	vec3 lightPos = vec3(10., 10., -5.);
+    float a = sin(iTime)*sin(iTime);
+	vec3 lightColor = vec3(a,1.-a,1.);
+
+    vec3 ambient = c*0.3;
+    float d = dot(norm, normalize(lightPos - p));
+    vec3 diffuse = clamp(d, 0., 1.) * lightColor * c;
+	vec3 col = ambient + diffuse;
+    if (d > 0.) {
+        float x = max(0.0, dot(reflect(normalize(lightPos-p), norm), rd));
+		float specular = pow(x, 200.);
+        col += vec3(specular);
+    }
+    return col;
+}
+
+vec3 hsv2rgb(vec3 c) {
+  vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+  vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
+  return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
+}
+
+float raySphereIntersect(vec3 r0, vec3 rd, vec3 s0, float sr) {
+    float a = dot(rd, rd);
+    vec3 s0_r0 = r0 - s0;
+    float b = 2.0 * dot(rd, s0_r0);
+    float c = dot(s0_r0, s0_r0) - (sr * sr);
+    if (b*b - 4.0*a*c < 0.0) {
+        return -1.0;
+    }
+    return (-b - sqrt((b*b) - 4.0*a*c))/(2.0*a);
+}
+
+void intersectScene(vec3 ro, vec3 rd, out bool hit, out vec3 ip, out vec3 norm, out vec3 color) {
+	float mn_t = 10000000000.;
+    hit = false;
+    for (int i = 0; i < NUM_SPHERES + 1; ++i) {
+        float f = float(i) / float(NUM_SPHERES);
+        #define TWISTS 10.
+        float sphere_dist_wiggle = 1.;
+        float sphere_dist = 4. + sin(TWO_PI * f * TWISTS + iTime * 3.) * sphere_dist_wiggle;
+        float a = f * TWO_PI * 1. + iTime; // angle of rotation around the z axis
+        float b = f * TWO_PI * 2. + iTime;
+        // c is the center of the sphere.
+        vec3 c = vec3(cos(a)*cos(b), sin(a)*cos(b), sin(b));
+        c *= sphere_dist;
+        float radius = 0.7;
+        if (i == NUM_SPHERES) {
+	        c = vec3(0.);
+        	radius = 1.5;
+        }
+        bool c_hit;
+        vec3 c_ip;
+        vec3 c_norm;
+        float t;
+        t = raySphereIntersect(ro, rd, c, radius);
+        if (t >= 0. && t < mn_t) {
+        	mn_t = t;
+            hit = true;
+            ip = ro + rd*t;
+            norm = normalize(ip - c);
+			float c = abs(f-0.5)/2. + iTime/10.;
+            color = hsv2rgb(vec3(c, 1., 1.));
+            if (i == NUM_SPHERES) {
+            	color = vec3(0.7, 0.7, 0.7);
+            }
+        }
+    }
+}
+
+vec3 render(inout vec3 ro, inout vec3 rd) {
+    vec3 col = vec3(.0);
+    float alpha = 1.;
+    for (int i = 0; i < 5; i++) {
+        bool hit;
+        vec3 norm;
+        vec3 p;
+        vec3 c;
+        intersectScene(ro, rd, hit, p, norm, c);
+        if (!hit) {
+            break;
+        }
+        col += light(rd, p, norm, c) * alpha;
+        alpha *= 0.4;
+        rd = reflect(rd, norm);
+        ro = p + 0.01*rd;
+    }
+    return col;
+}
+
+void mainImage( out vec4 fragColor, in vec2 fragCoord )
+{
+    vec2 uv = (fragCoord-iResolution.xy*0.5)/iResolution.y;
+
+    vec3 camera_target = vec3(0.);
+    float camera_angle = iTime;
+    float camera_dist = 10. + sin(iTime) * 5.;
+    vec3 camera_pos = vec3(cos(camera_angle), 0., sin(camera_angle)) * camera_dist;    
+	//camera_pos = vec3(10., 0., 0.);
+    vec3 camera_forward = normalize(camera_target - camera_pos);
+	vec3 camera_up = vec3(0., 1., 0.);
+    vec3 camera_right = normalize(cross(camera_up, camera_forward));    
+
+    vec3 ro = camera_pos;
+    vec3 rd = camera_forward;
+    float fov = 1.;
+    rd += uv.x * camera_right * fov;
+    rd += uv.y * camera_up * fov;
+    
+    vec3 col = render(ro, rd);
+
+    fragColor = vec4(col,1.0);
+}
+</script>
+
+{% include shadertoy.html canvas_id="canvas1" shader_id="my-cool-shader" width=640 height=360 %}
 
 Let's deconstruct it and see how it works.
 

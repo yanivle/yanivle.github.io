@@ -1,0 +1,118 @@
+<canvas id="{{ include.canvas_id }}" 
+        style="width: 100%; aspect-ratio: 1 / 1; display: block; background-color: #000;">
+</canvas>
+
+<script>
+(function() {
+    const canvas = document.getElementById('{{ include.canvas_id }}');
+    const gl = canvas.getContext('webgl');
+
+    if (!gl) { console.error('WebGL not supported'); return; }
+
+    // 1. Vertex Shader (Standard fullscreen triangle)
+    const vsSource = `
+        attribute vec2 position;
+        void main() { gl_Position = vec4(position, 0.0, 1.0); }
+    `;
+
+    // 2. Fragment Shader Wrapper (Injects user code)
+    // We read the code from the script tag ID provided in the include
+    const userShaderCode = document.getElementById('{{ include.shader_id }}').textContent;
+    
+    const fsSource = `
+        precision highp float;
+        uniform vec3 iResolution;
+        uniform float iTime;
+        uniform vec4 iMouse;
+
+        // --- USER SHADER CODE BEGINS ---
+        ${userShaderCode}
+        // --- USER SHADER CODE ENDS ---
+
+        void main() {
+            mainImage(gl_FragColor, gl_FragCoord.xy);
+        }
+    `;
+
+    // 3. Compiler Helper
+    function createShader(gl, type, source) {
+        const shader = gl.createShader(type);
+        gl.shaderSource(shader, source);
+        gl.compileShader(shader);
+        if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+            console.error('Shader compile error:', gl.getShaderInfoLog(shader));
+            gl.deleteShader(shader);
+            return null;
+        }
+        return shader;
+    }
+
+    const vs = createShader(gl, gl.VERTEX_SHADER, vsSource);
+    const fs = createShader(gl, gl.FRAGMENT_SHADER, fsSource);
+    const program = gl.createProgram();
+    gl.attachShader(program, vs);
+    gl.attachShader(program, fs);
+    gl.linkProgram(program);
+
+    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+        console.error('Program link error:', gl.getProgramInfoLog(program));
+        return;
+    }
+
+    // 4. Buffers & Attributes
+    const positionBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+
+    const positionLoc = gl.getAttribLocation(program, 'position');
+    gl.enableVertexAttribArray(positionLoc);
+    gl.vertexAttribPointer(positionLoc, 2, gl.FLOAT, false, 0, 0);
+
+    // 5. Uniform Locations
+    const resLoc = gl.getUniformLocation(program, 'iResolution');
+    const timeLoc = gl.getUniformLocation(program, 'iTime');
+    const mouseLoc = gl.getUniformLocation(program, 'iMouse');
+
+    // 6. Interaction (iMouse)
+    let mouseX = 0, mouseY = 0, clickX = 0, clickY = 0;
+    let isDown = false;
+    
+    canvas.addEventListener('mousedown', e => {
+        const rect = canvas.getBoundingClientRect();
+        isDown = true;
+        clickX = e.clientX - rect.left;
+        clickY = canvas.height - (e.clientY - rect.top); // Flip Y
+    });
+
+    canvas.addEventListener('mouseup', () => { isDown = false; clickX = -Math.abs(clickX); clickY = -Math.abs(clickY); });
+    
+    canvas.addEventListener('mousemove', e => {
+        if (!isDown) return;
+        const rect = canvas.getBoundingClientRect();
+        mouseX = e.clientX - rect.left;
+        mouseY = canvas.height - (e.clientY - rect.top);
+    });
+
+    // 7. Render Loop
+    function render(time) {
+        time *= 0.001; // convert to seconds
+        
+        // Handle Resize
+        if (canvas.width !== canvas.clientWidth || canvas.height !== canvas.clientHeight) {
+            canvas.width = canvas.clientWidth;
+            canvas.height = canvas.clientHeight;
+            gl.viewport(0, 0, canvas.width, canvas.height);
+        }
+
+        gl.useProgram(program);
+        gl.uniform3f(resLoc, canvas.width, canvas.height, 1.0);
+        gl.uniform1f(timeLoc, time);
+        gl.uniform4f(mouseLoc, mouseX, mouseY, clickX, clickY);
+
+        gl.drawArrays(gl.TRIANGLES, 0, 3);
+        requestAnimationFrame(render);
+    }
+    requestAnimationFrame(render);
+
+})();
+</script>

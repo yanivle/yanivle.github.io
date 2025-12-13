@@ -34,7 +34,7 @@ The solution will consist of several parts (which will be dealt with in the othe
 
 So now, after we have set our goals, let's dive in to the the first step:
 
-### Zero Knowledge Proof of an NPC Problem
+## Zero Knowledge Proof of an NPC Problem
 
 At this point, I rather not formally define the exact meaning of a ZKP. I will instead try to explain is intuitively. Say I know the answer to a complicated puzzle and you don't. The process of me convincing you that I know the answer, without you learning anything about it, is called a Zero Knowledge Proof.
 
@@ -88,15 +88,15 @@ What we got is this:
 
 Well, being busted with a probability of only $$\frac{1}{2}$$ is not very bad, but notice that we can repeat the process any number of times (each time placing the white papers at different locations over the original image). My chances of being correct are independent in each of the times, and so I will get busted with a probability $$(\frac{1}{2})^n$$ (where n is the number of iterations). If n is chosen high enough, you can be quite certain that I am not lying (10 iterations suffice for the probability of missing a liar to be less than $$\frac{1}{1000}$$).
 
-#### Leaking Information
+### Leaking Information
 
 Note that the process is not really “Zero Knowledge” as you do get some information about Waldo's location. For example, by looking at the cutout version of Waldo you can tell his rotation. This can be easily solved by rotating the base image by a random amount. A bigger problem arises when the papers are not large enough. Indeed, if we repeat this process enough times, you can get some information about the location of Waldo by examining the positions of the cutouts. For example, if waldo is near the center of the original image, you will never be able to get a cutout next to the border. I leave it as an exercise for the reader to mitigate this leak.
 
-## More Waldos!
+# More Waldos!
 
 Now for the reason we're all here - solving some more Where's Waldo images! I wrote a script that gets a word (e.g. 'cartoon') and scrapes [publicdomainvectors.org](publicdomainvectors.org) for cliparts of that word and then prepares a Where's Waldo image from those cliparts. Enjoy!
 
-### Where's Pando?
+## Where's Pando?
 
 This is an easier version. This is Pando:
 
@@ -106,7 +106,7 @@ Pando got lost in Cartoon World. Can you find him?
 
 {% include image.html url="/assets/images/posts/zkp/pando_hidden.png" %}
 
-### Where's Baldo?
+## Where's Baldo?
 
 This is Baldo:
 
@@ -116,7 +116,7 @@ Baldo was walking around Ball World, and got lost! Can you find him?
 
 {% include image.html url="/assets/images/posts/zkp/baldo_hidden.png" %}
 
-### Where's Blackdo?
+## Where's Blackdo?
 
 Oh no! Pando got lost again! This time in Monochrome World! Can you find him?
 

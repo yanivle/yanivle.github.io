@@ -1,8 +1,12 @@
-{::nomarkdown}
-
-<a href="{{ include.url | relative_url }}" style="width: {{ include.width | 100% }}; display: block; margin: auto; margin-top: 50px; margin-bottom: 50px;">
-  <video autoplay loop controls muted style="width: 100%">
+<div class="video-wrapper" style="margin: 3rem 0; text-align: center;">
+  <video autoplay loop muted playsinline controls 
+         style="max-width: 100%; width: {{ include.width | default: '100%' }}; height: auto; border-radius: 2px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
     <source src="{{ include.url | relative_url }}" type="video/mp4">
+    Your browser does not support the video tag.
   </video>
-</a>
-{:/nomarkdown}
+  {% if include.caption %}
+  <div style="font-family: var(--font-sans); font-size: 0.9rem; color: var(--color-text-light); margin-top: 10px;">
+    {{ include.caption }}
+  </div>
+  {% endif %}
+</div>

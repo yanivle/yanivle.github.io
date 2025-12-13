@@ -18,7 +18,7 @@ Each of them needs to guess their own number (of course no information is exchan
 
 ***What strategy can they employ in order to make sure that at least one of them guesses correctly?***
 
-### Some Followup Thoughts
+# Some Followup Thoughts
 
 * Can they make sure that more than one person succeeds?
 * How many different solutions to the riddle are there (i.e. how many strategies can the men employ?).

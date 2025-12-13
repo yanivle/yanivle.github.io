@@ -1,109 +1,70 @@
 <head>
-  <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-156163418-1"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% if page.title %}{{ page.title }} | {{ site.title }}{% else %}{{ site.title }}{% endif %}</title>
+
+  <meta name="description"
+    content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
+  <link rel="canonical" href="{{ page.url | replace:'index.html','' | absolute_url }}">
+
+  {% if page.image.feature %}
+  <meta property="og:image" content="{{ page.image.feature | absolute_url }}">
+  {% endif %}
+  <meta property="og:type" content="{% if page.layout == 'post' %}article{% else %}website{% endif %}">
+  <meta property="og:title" content="{{ page.title }}">
+  <meta property="og:url" content="{{ page.url | absolute_url }}">
+
+  {% if page.layout == 'post' %}
+    <meta property="article:published_time" content="{{ page.date | date_to_xmlschema }}">
+  {% if page.last_modified_at %}
+    <meta property="article:modified_time" content="{{ page.last_modified_at | date_to_xmlschema }}">
+  {% endif %}
+  {% if site.author.facebook %}
+    <meta property="article:author" content="https://www.facebook.com/{{ site.author.facebook }}">
+  {% endif %}
+  {% for tag in page.tags %}
+    <meta property="article:tag" content="{{ tag }}">
+  {% endfor %}
+  {% endif %}
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="stylesheet" href="/assets/css/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/themes/prism-okaidia.min.css">
+
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      },
+      chtml: {
+        displayAlign: 'left',    /* Aligns to the left */
+        displayIndent: '0em'     /* No extra gap, so it sits next to the number */
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-WNPC8BMNFC"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
-
-    gtag('config', 'UA-156163418-1');
+    gtag('config', 'G-WNPC8BMNFC');
   </script>
 
-  <link href="http://gmpg.org/xfn/11" rel="profile">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-
-  <!-- Enable responsiveness on mobile devices-->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-
-  <!-- Optimized for search engines -->
-  <meta name="description"
-    content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
-
-  {% if page.robots %}
-  <meta name="robots" content="{{ page.robots }}">
-  {% endif %}
-
-  <link rel="canonical" href="{{ page.url | replace:'index.html','' }}">
-
-  {% if page.next.url %}
-  <link rel="next" href="{{ page.next.url | replace:'index.html','' }}" title="{{ page.next.title }}">
-  {% endif %}
-
-  {% if page.previous.url %}
-  <link rel="prev" href="{{ page.previous.url | replace:'index.html','' }}" title="{{ page.previous.title }}">
-  {% endif %}
-
-  {% if page.date %}
-  <meta property="article:modified_time"
-    content="{% if page.last_modified_at %}{{ page.last_modified_at | date_to_xmlschema }}{% else %}{{ page.date | date_to_xmlschema }}{% endif %}">
-  <meta property="article:published_time" content="{{ page.date | date_to_xmlschema }}">
-  <meta property="article:author" content="https://www.facebook.com/{{ site.author.facebook }}">
-  {% for post in site.related_posts limit:3 %}
-  <meta property="og:see_also" content="{{ post.url | replace:'index.html','' }}">
-  {% endfor %}
-  {% endif %}
-
-  {% if page.categories %}
-  {% for category in page.categories limit:1 %}
-  <meta property="article:section" content="{{ category }}">
-  {% endfor %}
-  {% endif %}
-
-  {% if page.tags %}
-  {% for tag in page.tags %}
-  <meta property="article:tag" content="{{ tag }}">
-  {% endfor %}
-  {% endif %}
-
-  <meta property="fb:admins" content="{{ site.fb_admins }}">
-  <meta property="fb:app_id" content="{{ site.fb_appid }}">
-
-  <title>
-    {% if page.title == "Home" %}
-    {{ site.title }} &middot; {{ site.tagline }}
-    {% else %}
-    {{ page.title }} &middot; {{ site.title }}
-    {% endif %}
-  </title>
-
-  <!-- CSS -->
-  <link rel="stylesheet" href="/assets/css/main.css">
-
-  {% if page.syntaxHighlighter %}
-  <link rel="stylesheet" href="/assets/css/prism-vs.css">
-  {% endif %}
-
-  <!-- Fonts -->
-  <link href='https://fonts.googleapis.com/css?family=Source+Serif+Pro:700,400' rel='stylesheet' type='text/css'>
-  <link href='https://fonts.googleapis.com/css?family=Roboto:100,300' rel='stylesheet' type='text/css'>
-  <link href='https://fonts.googleapis.com/css?family=PT+Sans:700' rel='stylesheet' type='text/css'>
-
-  <!-- Icons -->
-  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/assets/apple-touch-icon-144-precomposed.png">
-  <link rel="shortcut icon" href="/assets/images/favicon.ico">
-
-  <!-- modernizer -->
-  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
-
-  <!--[if lt IE 9]>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
-  <![endif]-->
-
-  <!--[if (gte IE 6)&(lte IE 8)]>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.3.0/respond.js"></script>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/selectivizr/1.0.2/selectivizr-min.js"></script>
-  <![endif]-->
-
-  <!-- Misc scripts -->
-  <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-      tex2jax: {
-        inlineMath: [['$','$'], ['\\(','\\)']],
-        processEscapes: true
-      }
-    });
-    </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
-    type="text/javascript"></script>
+  <!-- <style>
+    @view-transition {
+      navigation: auto;
+    }
+    ::view-transition-group(*) {
+        animation-duration: 0.5s;
+    }    
+  </style> -->
 </head>

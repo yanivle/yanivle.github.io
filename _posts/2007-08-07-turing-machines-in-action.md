@@ -14,7 +14,7 @@ syntaxHighlighter: yes
 ---
 In this post I will define [Turing Machines](https://en.wikipedia.org/wiki/Turing_machine), provide an emulator for Turing Machines, and demonstrate a couple of simple ones in action.
 
-### Definition of a Turing Machine
+# Definition of a Turing Machine
 
 A ***turing machine*** (***TM***)'s ***description*** consists of a tuple of *7* objects: a set of states *Q*, an input alphabet *I*, a tape alphabet *T*, a transition function *F*, a set of accept states $$Q_{accept}$$, a set of reject states $$Q_{reject}$$ and a start state $$Q_{start}$$.
 
@@ -33,7 +33,7 @@ The ***head*** is simply a pointer to the tape. It initially points to tape posi
 
 The ***current state*** (denoted below by *current_state*) is a member of *Q*, and is initialized to $$Q_{start}$$.
 
-### Operation
+# Operation
 
 A *TM* with a description $$\{Q, I, T, F, Q_{accept}, Q_{reject}, Q_{start}\}$$ is initialized as indicated above. The result of its operation consists of the contents of the tape as well as an additional flag which can be either *ACCEPT* or *REJECT*. In the description below, the action accept means setting this flag to the *ACCEPT* state and halting. The same goes for the reject action.
 
@@ -49,13 +49,13 @@ The TM operates as follows:
 
 And that’s it!
 
-### First Example: Unary Multiplication
+# First Example: Unary Multiplication
 
 The following is the description of a *TM* that multiplies two integers in unary notation. For example, if its input is of the form '111\*11=' it will *accept* with an output tape of '111\*11=111111'.
 
 > If you feel adventurous, stop reading now and try to implement this machine yourself.
 
-#### The Machine Description
+## The Machine Description
 
 The format of the description below is hopefully self explanatory. It consists of some nested python dictionaries, and can be fed into my Python TM Emulator&trade; (the code of which is included at the end of this article).
 
@@ -135,7 +135,7 @@ TMUnaryMultiply = {
 }
 ```
 
-#### Output
+## Output
 
 Running the emulator (in verbose mode) with the TMUnaryMultiply description above on the input '111\*11=' results in the following:
 
@@ -363,7 +363,7 @@ Running tm with input [111*11=]...
 accept
 ```
 
-### Turing Machine Emulator
+# Turing Machine Emulator
 
 Here is the code of my Python TM Emulator:
 
@@ -435,7 +435,7 @@ Running tm with input [11111111*1111111=]...
 accept
 ```
 
-### Binary Addition
+# Binary Addition
 
 A second, more interesting TM performs binary addition:
 
@@ -556,7 +556,7 @@ TMBinaryAddReverse = {
 }
 ```
 
-#### Output
+## Output
 
 Here is the output of a sample run:
 

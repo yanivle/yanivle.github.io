@@ -2,7 +2,7 @@
 layout: post
 title:  "fast_minbpe"
 date:   2024-02-23 01:00:00
-excerpt: "My late night take on simple, clean, but slightly faster BPE."
+excerpt: "My late night take on simple, clean, but slightly faster BPE"
 categories: AI
 tags:  AI Computing Programming Hacking Python Math
 image:
@@ -39,12 +39,12 @@ For his tests, Andrej used a snapshot of the Wikipedia article on Taylor Swift w
 <tbody>
 <tr>
 <td markdown="span">Training</td>
-<td markdown="span">110.10 secs</td>
+<td markdown="span">110 secs</td>
 <td markdown="span">1.00 secs</td>
 </tr>
 <tr>
 <td markdown="span">Tokenization</td>
-<td markdown="span">190.91 secs</td>
+<td markdown="span">191 secs</td>
 <td markdown="span">0.52 secs</td>
 </tr>
 </tbody>

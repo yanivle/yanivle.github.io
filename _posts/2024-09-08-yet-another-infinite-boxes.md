@@ -2,7 +2,7 @@
 layout: post
 title:  "Yet Another Case of Infinitely Many Boxes"
 date:   2024-09-08 01:00:02
-excerpt: "Yet another variation on a classic"
+excerpt: "Another variation on a classic"
 categories: Puzzles
 tags:  Puzzle Math
 image:

@@ -1,0 +1,435 @@
+:root {
+  --font-serif: 'Libre Baskerville', serif;
+  --font-sans: 'Inter', sans-serif;
+  --color-text-main: #222;
+  --color-text-light: #666;
+  --color-accent: #C4B287; /* The gold/tan color */
+  --color-border: #eaeaea;
+  --max-width: 800px; /* Standard readable width */
+  --width-wide: 1200px; /* For Nav/Footer */
+}
+
+/* --- BASE & RESET --- */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #fff;
+  color: var(--color-text-main);
+  font-family: var(--font-serif);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { 
+  color: inherit; 
+  text-decoration: none; 
+  transition: color 0.2s ease;
+}
+
+/* --- NAVIGATION (New functionality) --- */
+.site-nav {
+  padding: 20px 0;
+  border-bottom: 1px solid transparent;
+  font-family: var(--font-sans);
+  /* Optional: Keep it absolute to float over white parts, 
+     or relative to sit above. Let's use relative for safety. */
+  position: relative; 
+  z-index: 10;
+}
+
+.site-nav .container {
+  max-width: var(--width-wide);
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.site-title {
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: -0.5px;
+  color: #000;
+}
+
+.nav-links a {
+  margin-left: 25px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--color-text-light);
+}
+
+.nav-links a:hover {
+  color: var(--color-accent);
+}
+
+/* --- THE HERO SECTION (Your Custom Logic) --- */
+.post-header {
+  position: relative;
+  width: 100%;
+  min-height: 65vh; 
+  display: flex;
+  align-items: center;
+  
+    /* STACKING ORDER: Left Fade -> Bottom Fade -> Image */
+    background-image:
+        linear-gradient(to top,
+            #ffffff 0%,
+            rgba(255, 255, 255, 0.75) 17.5%,
+            rgba(255, 255, 255, 0) 35%),
+        linear-gradient(90deg, #ffffff 15%, rgba(255, 255, 255, 0.95) 45%, rgba(255, 255, 255, 0) 100%),
+        var(--hero-bg);
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  margin-bottom: 3rem; /* Spacing before content starts */
+}
+
+.header-content {
+  max-width: var(--max-width);
+  margin-left: 10%; 
+  padding-right: 20px;
+  z-index: 2; 
+}
+
+/* Typography Styling */
+.super-title {
+  font-family: var(--font-serif);
+  font-variant: small-caps;
+  color: var(--color-text-light);
+  letter-spacing: 1px;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+}
+
+.entry-title {
+  font-size: 4rem; /* Massive title */
+  line-height: 1.1;
+  font-weight: 400; 
+  margin: 0 0 1rem 0;
+  color: #111;
+}
+
+.entry-subtitle {
+  font-size: 1.8rem;
+  line-height: 1.3;
+  font-weight: 400;
+  font-style: italic;
+  color: #444;
+  margin: 0 0 2rem 0;
+  opacity: 0.9;
+}
+
+.meta-data {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  color: var(--color-text-light);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* The Gold Badge Style */
+.review-badge {
+  display: inline-block;
+  margin-top: 2rem;
+  background-color: var(--color-accent);
+  color: white;
+  padding: 6px 12px;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-radius: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* --- POST CONTENT STYLING --- */
+
+.post-content {
+  max-width: var(--max-width);
+  margin: 0 auto 4rem auto;
+  padding: 0 20px;
+  font-size: 1.2rem; 
+}
+
+/* Standard paragraphs */
+.post-content p {
+  margin-bottom: 1.5rem;
+}
+
+/* Headings inside posts */
+.post-content h2 {
+  font-family: var(--font-sans);
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  letter-spacing: -0.5px;
+  color: #111;
+}
+
+.post-content h3 {
+  font-family: var(--font-sans);
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+/* Links inside posts */
+.post-content a {
+  color: #000;
+  text-decoration: underline;
+  text-decoration-color: var(--color-accent);
+  text-underline-offset: 3px;
+  transition: all 0.2s ease;
+}
+
+.post-content a:hover {
+  text-decoration-color: #000;
+  background-color: rgba(196, 178, 135, 0.1);
+}
+
+/* Blockquotes */
+.post-content blockquote {
+  border-left: 4px solid var(--color-accent);
+  margin: 2rem 0;
+  padding-left: 25px;
+  font-style: italic;
+  color: #555;
+  background: #fafafa;
+  padding: 20px 25px;
+}
+
+/* Images & Figures */
+.post-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 2px;
+}
+
+figure {
+  margin: 2.5rem 0;
+  text-align: center;
+}
+
+figcaption {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  color: var(--color-text-light);
+  margin-top: 10px;
+}
+
+/* Lists */
+.post-content ul, .post-content ol {
+  margin-bottom: 1.5rem;
+  padding-left: 1.5rem;
+}
+.post-content li {
+  margin-bottom: 0.5rem;
+}
+
+/* Divider */
+hr {
+  border: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, #ddd, transparent);
+  margin: 3rem auto;
+  max-width: 200px;
+}
+
+/* --- POST NAVIGATION (Next Story) --- */
+.post-navigation {
+  max-width: var(--max-width);
+  margin: 0 auto 3rem auto;
+  padding: 0 20px;
+  text-align: center;
+}
+
+.next-story span {
+  font-family: var(--font-sans);
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  color: var(--color-text-light);
+}
+
+.next-story a h3 {
+  font-family: var(--font-serif);
+  font-size: 1.8rem;
+  margin-top: 10px;
+  color: var(--color-text-main);
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  transition: text-decoration-color 0.3s ease;
+}
+
+.next-story a:hover h3 {
+  text-decoration-color: var(--color-accent);
+}
+
+/* --- COMMENTS --- */
+.comments {
+  max-width: var(--max-width);
+  margin: 0 auto 4rem auto;
+  padding: 0 20px;
+}
+
+/* --- FOOTER --- */
+.site-footer {
+  background-color: #fafafa;
+  padding: 60px 0;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  color: var(--color-text-light);
+  border-top: 1px solid var(--color-border);
+  text-align: center;
+}
+
+/* Ensure Footer Container matches Navbar alignment exactly */
+.site-footer .container {
+  max-width: var(--width-wide); /* Matches .site-nav .container width */
+  margin: 0 auto;             /* Centers the content */
+  padding: 0 20px;            /* Matches .site-nav .container padding */
+  box-sizing: border-box;     /* Ensures padding doesn't affect width */
+}
+
+.footer-meta {
+  margin-bottom: 20px;
+}
+
+.email-code tt {
+  background: #fff;
+  border: 1px solid #eee;
+  padding: 3px 6px;
+  border-radius: 3px;
+  font-size: 0.85em;
+  color: #333;
+}
+
+/* Protect Footer Links from external page styles */
+.site-footer a:not(.social-links a) {
+  color: inherit;              /* Force it to use the footer's gray color */
+  text-decoration: none;       /* Remove underline by default */
+  font-weight: 600;            /* Optional: make the author name pop slightly */
+  border-bottom: 1px solid transparent; /* Prepare for hover effect */
+  transition: all 0.2s ease;
+}
+
+.site-footer a:not(.social-links a):hover {
+  color: var(--color-accent);  /* Gold on hover */
+  border-bottom-color: var(--color-accent); /* Optional: Underline on hover */
+}
+
+/* --- FOOTER SOCIAL ICONS --- */
+.social-links {
+  margin: 20px 0;
+  display: flex;
+  justify-content: center;
+  gap: 25px; /* Space between icons */
+}
+
+.social-links a {
+  color: var(--color-text-light); /* Start gray */
+  font-size: 1.2rem;              /* Icon size */
+  transition: all 0.2s ease;
+  display: inline-block;
+  text-decoration: none;          /* Remove underline */
+  border: none;                   /* Remove any border from previous link styles */
+}
+
+.social-links a:hover {
+  color: var(--color-accent);     /* Gold/Tan on hover */
+  transform: translateY(-2px);    /* Slight lift effect */
+}
+
+.copyright {
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+
+/* --- MOBILE RESPONSIVENESS (Your Custom Logic) --- */
+@media (max-width: 768px) {
+  .post-header {
+    min-height: 60vh; 
+    align-items: flex-end; 
+    padding: 0 0 2rem 0; 
+    
+    background-image: 
+      linear-gradient(to top, #ffffff 0%, #ffffff 40%, rgba(255,255,255,0) 85%),
+      var(--hero-bg);
+      
+    background-position: center top; 
+  }
+  
+  .header-content { 
+    margin-left: 0;
+    padding: 0 20px;
+    max-width: 100%; 
+  }
+
+  .entry-title { 
+    font-size: 2.5rem; 
+  }
+  .entry-subtitle { 
+    font-size: 1.4rem; 
+    margin: 0 0 1rem 0;
+  }
+  
+  .site-nav .container {
+    padding: 0 15px;
+  }
+  
+  .nav-links a {
+    margin-left: 15px;
+  }
+}
+
+/* --- MATHJAX FIXES --- */
+
+/* 1. Force container to respect parent width */
+mjx-container[display="true"] {
+  display: block;
+  overflow-x: auto;       /* Adds scrollbar if too wide */
+  overflow-y: hidden;
+  max-width: 100%;
+  padding: 10px 0;        /* Space for the scrollbar */
+}
+
+/* 2. Optional: Adjust font size slightly on very small screens */
+@media (max-width: 480px) {
+  mjx-container {
+    font-size: 0.9em !important;
+  }
+}
+
+.tags-list {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 6px; /* Spacing between tags */
+  align-items: center;
+  /* Use vertical-align to fix small alignment shifts if needed */
+  vertical-align: middle; 
+}
+
+.tag-pill {
+  font-family: var(--font-sans);
+  font-size: 0.75rem; /* Smaller than body text */
+  font-weight: 500;
+  color: var(--color-text-light); /* #666 */
+  background-color: #f2f2f2;      /* Very light gray background */
+  padding: 3px 8px;               /* Breathing room inside the pill */
+  border-radius: 4px;             /* Soft corners */
+  letter-spacing: 0.3px;
+  white-space: nowrap;            /* Keeps "Math Puzzles" on one line */
+  transition: all 0.2s ease;
+  cursor: default;                /* Or 'pointer' if you make them links later */
+}
+
+/* Optional: Add a subtle hover effect using your gold accent color */
+.tag-pill:hover {
+  color: var(--color-accent);
+  background-color: rgba(196, 178, 135, 0.15); /* Low opacity gold */
+}

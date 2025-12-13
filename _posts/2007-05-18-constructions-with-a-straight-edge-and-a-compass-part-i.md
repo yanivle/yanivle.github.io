@@ -2,7 +2,7 @@
 layout: post
 title:  "Constructions with a Straight-Edge and a Compass – Part I"
 date:   2007-05-11 01:00:00
-excerpt: "A proof that the set of constructable numbers with a straight-edge from a set of rational points is a set of rational points."
+excerpt: "A proof that the set of constructable numbers with a straight-edge from a set of rational points is a set of rational points"
 categories: Math
 tags:  Math Proof Geometry Algebra
 image:
@@ -24,7 +24,7 @@ These are the rules of our simplified game: The board is the 2 dimensional eucli
 
 A point of the euclidean plane is called *constructable* (from the original points) if it can be added to *P*.
 
-### Some Simple Examples:
+# Some Simple Examples:
 
 1. If the initial set of points consists of only a single point then this single point is also the only constructable point (as no lines can be drawn). The same applies for an initial set containing 2 points (as only one line can be drawn, and so there are no line intersections!).
 2. If the initial set contains 3 points then 3 lines can be drawn (as shown here). But no new point is created.

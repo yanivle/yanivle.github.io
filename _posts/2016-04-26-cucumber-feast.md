@@ -2,7 +2,7 @@
 layout: post
 title:  "Cucumber Feast"
 date:   2007-11-21 01:00:00
-excerpt: "A combinatorics math puzzle"
+excerpt: "A combinatorics puzzle"
 categories: Puzzles
 tags:  Math Puzzles Combinatorics
 image:

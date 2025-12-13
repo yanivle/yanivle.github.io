@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en-us" class="no-js">
+<head>
+  <!-- Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-156163418-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'UA-156163418-1');
+  </script>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="{{ site.description }}">
+
+  <title>{{ page.title | default: site.name }}</title>
+  <link rel="shortcut icon" href="/assets/images/favicon.ico">
+  
+  {% assign page_type = 'all' %}
+  {% if page.url contains '/puzzles' %}
+    {% assign page_type = 'puzzles' %}
+  {% elsif page.url contains '/posts' %}
+    {% assign page_type = 'posts' %}
+  {% endif %}
+
+  {% if page_type == 'all' %}
+  <link rel="canonical" href="/">
+  {% endif %}
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@400;500;700&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Google+Sans+Flex:opsz,wght@6..144,1..1000&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    /* --- Shared Variables (Updated for Dark Bento Theme) --- */
+    :root {
+      /* Typography */
+      --font-primary: 'Outfit', 'Google Sans Flex', -apple-system, sans-serif;
+      --font-nav: 'Outfit', sans-serif;
+      --font-title: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif; /* Restored for Hero */
+      --font-mono: 'Roboto Mono', monospace;
+      
+      /* Dark Theme Colors */
+      --color-bg: #0a0a0a;
+      --color-card-bg: #171717;
+      --color-text: #ffffff;
+      --color-text-secondary: #a3a3a3;
+      --color-accent: #b4f728; /* Lime accent from Bento */
+      --color-border: rgba(255, 255, 255, 0.1);
+      
+      /* Layout */
+      --container-width: 1200px;
+      --radius: 24px;
+      --transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+      
+      /* Hero Shadow */
+      --hero-shadow-color: rgba(0, 0, 0, 0.8);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body { 
+      font-family: var(--font-primary); 
+      color: var(--color-text); 
+      background: var(--color-bg); 
+      line-height: 1.6;
+      overflow-x: hidden; 
+    }
+
+    a { text-decoration: none; color: inherit; transition: color 0.2s ease; }
+    
+    .container { 
+      max-width: var(--container-width); 
+      margin: 0 auto; 
+      padding: 0 20px; 
+    }
+
+    /* --- Navbar Styles --- */
+    .site-nav { 
+      padding: 30px 0; 
+      font-family: var(--font-nav); 
+      margin-bottom: 0; /* Removed bottom margin to sit flush with hero */
+    }
+    .site-nav .container { display: flex; justify-content: space-between; align-items: center; padding: 0 20px !important; }
+    
+    .site-title { 
+      font-weight: 800; 
+      font-size: 1.2rem; 
+      letter-spacing: -0.5px; 
+      color: #fff; 
+    }
+    
+    .nav-links a { 
+      margin-left: 25px; 
+      font-size: 0.95rem; 
+      font-weight: 500; 
+      color: var(--color-text-secondary); 
+    }
+    .nav-links a:hover { color: var(--color-accent); }
+
+    /* --- RESTORED HERO STYLES --- */
+    .hero { 
+      position: relative; 
+      width: 100%; 
+      height: 450px; 
+      background-color: #0a0a0a;
+      overflow: hidden; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      margin-bottom: 60px; 
+    }
+    .hero canvas { 
+      display: block; 
+      width: 100% !important; 
+      height: 100% !important; 
+      outline: none; 
+    }
+    .hero-content { 
+      position: absolute; 
+      top: 50%; 
+      left: 50%; 
+      transform: translate(-50%, -50%); 
+      z-index: 10; 
+      color: white; 
+      text-align: center; 
+      width: 100%; 
+      pointer-events: none; 
+      padding: 0 20px; 
+    }
+    
+    h1 { 
+      font-size: 4rem; 
+      font-weight: 700; 
+      letter-spacing: -0.03em; 
+      margin: 0; 
+      font-family: var(--font-title); 
+      text-shadow: 0 0 20px var(--hero-shadow-color), 0 0 20px var(--hero-shadow-color), 0 0 20px var(--hero-shadow-color); 
+      color: white; 
+    }
+    
+    .hero-subtitle { 
+      font-size: 1.25rem; 
+      font-weight: 400; 
+      margin-top: 10px; 
+      text-shadow: 0 0 20px #000, 0 0 20px #000; 
+      color: white; 
+    }
+
+    /* --- The Bento Grid --- */
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-auto-rows: 280px;
+      gap: 16px;
+      width: 100%;
+      margin-bottom: 80px;
+    }
+
+    /* --- Card Logic --- */
+    .bento-item {
+      background-color: var(--color-card-bg);
+      border-radius: var(--radius);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      transition: var(--transition);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      display: block;
+      text-decoration: none;
+      color: white;
+      
+      /* Mouse tracking vars */
+      --mouse-x: 0px;
+      --mouse-y: 0px;
+    }
+
+    /* Mouse Follow Glow */
+    .bento-item::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      border-radius: var(--radius);
+      background: radial-gradient(
+          800px circle at var(--mouse-x) var(--mouse-y), 
+          rgba(255, 255, 255, 0.1), 
+          transparent 40%
+      );
+      opacity: 0;
+      transition: opacity 0.5s;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    /* Inner Highlight */
+    .bento-item::after {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      border-radius: var(--radius);
+      background: radial-gradient(
+          600px circle at var(--mouse-x) var(--mouse-y), 
+          rgba(255, 255, 255, 0.04), 
+          transparent 40%
+      );
+      opacity: 0;
+      transition: opacity 0.5s;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .bento-item:hover::before,
+    .bento-item:hover::after { opacity: 1; }
+
+    .bento-item:hover {
+      transform: translateY(-4px) scale(0.99);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+      border-color: rgba(255,255,255,0.1);
+    }
+
+    /* --- Images --- */
+    .bento-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      top: 0; left: 0;
+      z-index: 0;
+      transition: transform 0.7s ease;
+      filter: brightness(0.85);
+    }
+
+    .bento-item:hover .bento-img {
+      transform: scale(1.1);
+      filter: brightness(1);
+    }
+
+    /* --- Content Overlay --- */
+    .bento-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 30%, rgba(0,0,0,0) 100%);
+    }
+
+    /* Tags/Badges */
+    .bento-tag {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 6px 14px;
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      align-self: flex-start;
+      margin-bottom: auto; /* Pushes content down */
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #fff;
+    }
+    
+    .bento-tag i { margin-right: 6px; }
+
+    /* Typography inside Card */
+    .bento-item h2 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin: 0 0 8px 0;
+      line-height: 1.1;
+      transform: translateY(10px);
+      opacity: 0.9;
+      transition: var(--transition);
+      color: white;
+    }
+
+    .bento-item p {
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.7);
+      transform: translateY(20px);
+      opacity: 0;
+      transition: var(--transition);
+      transition-delay: 0.05s;
+      margin: 0;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .bento-date {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.6);
+      z-index: 4;
+      mix-blend-mode: overlay;
+      pointer-events: none;
+    }
+
+    /* Hover Reveal */
+    .bento-item:hover h2,
+    .bento-item:hover p {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* --- Spans (Applied via Liquid) --- */
+    .bento-col-2 { grid-column: span 2; }
+    .bento-row-2 { grid-row: span 2; }
+
+    /* --- Recommended Badge --- */
+    .bento-item.recommended { border: 1px solid var(--color-accent); }
+    .badge-recommended {
+      background-color: var(--color-accent) !important;
+      color: #000 !important;
+      font-weight: 700;
+    }
+
+    /* --- Footer Styles (Dark Mode) --- */
+    .site-footer { 
+      background-color: #111; 
+      padding: 60px 0; 
+      font-family: var(--font-nav); 
+      font-size: 0.9rem; 
+      color: var(--color-text-secondary); 
+      border-top: 1px solid var(--color-border); 
+      text-align: center; 
+    }
+    .site-footer a { color: var(--color-text-secondary); }
+    .site-footer a:hover { color: var(--color-accent); }
+
+    /* Fix footer spacing to match index.html */
+    .site-footer .footer-meta {
+      margin-bottom: 20px;
+    }
+    
+    .site-footer .footer-meta p {
+      margin-bottom: 14px; /* Creates the gap between Name and Email */
+    }
+    
+    /* Optional: Style the email box for dark mode */
+    .site-footer .email-code tt {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 3px 6px;
+      border-radius: 3px;
+      font-family: var(--font-mono);
+    }
+
+    .social-links a { color: var(--color-text-secondary); }
+    
+    /* --- Responsive --- */
+    @media (max-width: 1024px) {
+      .bento-grid { grid-template-columns: repeat(3, 1fr); }
+      .bento-col-2 { grid-column: span 2; } 
+    }
+
+    @media (max-width: 768px) {
+      .bento-grid { grid-template-columns: repeat(2, 1fr); }
+      .bento-col-2 { grid-column: span 2; }
+      h1 { font-size: 2.75rem; }
+      .hero { height: 350px; }
+    }
+
+    @media (max-width: 600px) {
+      .bento-grid { display: flex; flex-direction: column; gap: 20px; }
+      .bento-item { min-height: 320px; }
+      .bento-col-2, .bento-row-2 { grid-column: auto; grid-row: auto; }
+      .bento-item h2, .bento-item p { transform: translateY(0); opacity: 1; }
+      .bento-overlay {
+        background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.5) 40%, rgba(0,0,0,0) 100%);
+      }
+    }
+
+    /* @view-transition {
+      navigation: auto;
+    }
+    ::view-transition-group(*) {
+        animation-duration: 0.5s;
+    } */
+    /* --- Footer Spacing Fixes --- */
+    
+    /* 1. Add breathing room between text lines */
+    .site-footer .footer-meta p {
+      margin-bottom: 16px; 
+    }
+    
+    /* 2. Fix the "crammed" social icons */
+    .site-footer .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 30px; /* Adjust this number to increase/decrease icon spacing */
+      margin: 30px 0; /* Vertical space around the icon row */
+    }
+
+    /* 3. Ensure icons are large enough to be clickable */
+    .site-footer .social-links a {
+      font-size: 1.2rem;
+    }
+    
+    /* 4. Optional: Style the email box for dark mode context */
+    .site-footer .email-code tt {
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 4px 8px;
+      border-radius: 4px;
+    }
+
+    /* 1. Force the footer to use 'Inter' just like index.html */
+    .site-footer {
+      font-family: 'Inter', sans-serif !important;
+    }
+
+    /* 2. Fix the gap between "Hand crafted" and the Email line */
+    /* Targeting the first paragraph explicitly to push the second one down */
+    .site-footer .footer-meta p:first-child {
+      margin-bottom: 24px; 
+    }
+
+    /* 3. Fix the "too big/strong" email address */
+    .site-footer .email-code tt {
+      font-family: 'Roboto Mono', monospace; /* Clean mono font */
+      font-size: 0.85em; /* Scale it down (was likely 1em default) */
+      font-weight: 400;  /* Remove any accidental bolding */
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 4px 8px;
+      border-radius: 4px;
+    }
+
+    /* 4. Fix the crammed social icons (re-included for safety) */
+    .site-footer .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 30px; 
+      margin-top: 30px;
+    }
+
+    .copyright { font-size: 0.8rem; opacity: 0.7; }
+  </style>
+</head>
+
+<body>
+  
+  {% include navbar.html %}
+
+  <header class="hero" id="hero-container">
+    <div class="hero-content">
+      <h1>Yaniv Leviathan</h1>
+      <div class="hero-subtitle">Hacking until the machine learns, or I do</div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="bento-grid" id="grid">
+      {% for post in site.posts %}
+        
+        {% comment %} Filter Logic {% endcomment %}
+        {% if page_type == 'puzzles' and post.categories contains "Puzzles" %}
+        {% elsif page_type == 'posts' and post.categories contains "Puzzles" %}{% continue %}
+        {% elsif page_type == 'puzzles' %}{% continue %}{% endif %}
+
+        {% comment %} BENTO PATTERN GENERATION {% endcomment %}
+        {% assign mod = forloop.index0 | modulo: 10 %}
+        {% assign grid_class = "" %}
+        
+        {% if mod == 0 %}
+            {% assign grid_class = "bento-col-2 bento-row-2" %}
+        {% elsif mod == 1 %}
+            {% assign grid_class = "bento-row-2" %}
+        {% elsif mod == 4 %}
+            {% assign grid_class = "bento-col-2" %}
+        {% elsif mod == 7 %}
+            {% assign grid_class = "bento-row-2" %}
+        {% elsif mod == 8 %}
+            {% assign grid_class = "bento-col-2" %}
+        {% endif %}
+
+        <a href="{{ post.url }}" class="bento-item {{ grid_class }} {% if post.recommended %}recommended{% endif %}">
+          
+          {% comment %} Image Handling - UPDATED PATH TO /hero {% endcomment %}
+          {% if post.image.feature %}
+            <img src="{{ post.image.feature | prepend: "/assets/images/largesize/" }}" class="bento-img" alt="{{ post.title }}" style="view-transition-name: hero-{{ post.url | slugify }};">
+          {% else %}
+            <div class="bento-img" style="background: #222; background-image: radial-gradient(#333 1px, transparent 1px); background-size: 20px 20px; view-transition-name: hero-{{ post.url | slugify }};"></div>
+          {% endif %}
+          
+          <span class="bento-date">{{ post.date | date_to_string }}</span>
+
+          <div class="bento-overlay">
+            {% if post.recommended %}
+                <span class="bento-tag badge-recommended"><i class="fas fa-star"></i> Recommended</span>
+            {% elsif post.categories contains "Puzzles" %}
+                <span class="bento-tag"><i class="fas fa-puzzle-piece"></i> Puzzle</span>
+            {% elsif post.categories contains "WIP" %}
+                <span class="bento-tag"><i class="fas fa-wrench"></i> WIP</span>
+            {% else %}
+                <span class="bento-tag"> {{ post.categories | first }}</span>
+            {% endif %}
+
+            <div>
+                <h2 style="view-transition-name: title-{{ post.url | slugify }};">{{ post.title }}</h2>
+                {% if post.excerpt %}
+                    <p>{{ post.excerpt | strip_html | truncatewords: 20 }}</p>
+                {% endif %}
+            </div>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+  </main>
+
+  {% include footer.html %}
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="/assets/javascripts/header_animation.js"></script>
+  
+  <script>
+    const cards = document.getElementsByClassName("bento-item");
+    
+    for (const card of cards) {
+      card.onmousemove = e => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        card.style.setProperty("--mouse-x", `${x}px`);
+        card.style.setProperty("--mouse-y", `${y}px`);
+      };
+    }
+  </script>
+</body>
+</html>

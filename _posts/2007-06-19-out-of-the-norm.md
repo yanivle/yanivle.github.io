@@ -14,7 +14,7 @@ syntaxHighlighter: no
 ---
 I am taking a course about [Hilbert Spaces](https://en.wikipedia.org/wiki/Hilbert_space) this semester. A very basic notion in a Hilbert Space is that of the [norm](https://en.wikipedia.org/wiki/Norm_(mathematics)). For a while now, I kept several questions regarding norms in the back of my mind, and as I finally got to think about them, I wanted to share my conclusions with you.
 
-### Introductory Concepts 
+# Introductory Concepts 
 
 Let's start from the beginning (those of you familiar with Normed Spaces can skip this section). A *[linear space](https://en.wikipedia.org/wiki/Vector_space)* is a set of objects with two operations:
 
@@ -52,7 +52,7 @@ Formally, a norm is a function from the linear space to $$\mathbb{R}+$$ (the set
 2. ‖x + y‖ ≤ ‖x‖ + ‖y‖                      (triangle inequality)
 3. ‖x‖ ≥ 0 and ‖x‖ = 0 i.f.f. x = 0
 
-### Examples 
+# Examples 
 
 Now let's consider the 2-dimensional euclidean plane as our linear space (call it $$\mathbb{R}_2$$). An example of a norm in $$\mathbb{R}_2$$ is the euclidean norm (where u=(x,y) is a member of $$\mathbb{R}_2$$):
 
@@ -98,7 +98,7 @@ If you still can’t figure it out: $$l_\infty(x)$$ is the point-wise limit of $
 
 This brings up an interesting question: Do norms other than $$l_1$$ and $$l_2$$ have any “real-world” meaning? If you have any insights on this, please comment!
 
-### Unit Circles
+# Unit Circles
 
 The unit circle of a normed space is the subset of elements of the space such that their norm is equal to 1.
 
@@ -126,7 +126,7 @@ Something else to think about is the volume of the unit circles. The volume of t
 
 Can you supply some more values?
 
-### Visualizing the Norms
+# Visualizing the Norms
 
 While the unit circles above are very informative, I wanted to see how the norms look like in the entire plane. I therefore plotted the $$l_1$$, $$l_2$$, $$l_3$$, and $$l_\infty$$ norms in the entire plane, using this scale:
 

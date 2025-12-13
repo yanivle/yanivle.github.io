@@ -2,7 +2,7 @@
 layout: post
 title:  "Spot the Not"
 date:   2007-07-25 01:00:00
-excerpt: "A topology and real-snalysis math puzzle"
+excerpt: "A topology and real-analysis puzzle"
 categories: Puzzles
 tags:  Math Puzzles Topology Real-Analysis
 image:
@@ -16,7 +16,7 @@ This one is a riddle of my own invention. It gives a good counter-example to som
 
 The riddle requires some knowledge of [Topology](http://en.wikipedia.org/wiki/Topology) and [Real-Analysis](http://en.wikipedia.org/wiki/Real_analysis).  For those of you lacking it, all the relevant definitions are included at the end (I recommend skimming through them before reading the riddle itself).
 
-#### This seemingly trivial list of claims leads to a contradiction. Can you find the error?
+## This seemingly trivial list of claims leads to a contradiction. Can you find the error?
 
 1. If $$A$$ is an open subset of $$\mathbb{R}$$, then $$\mathbb{R}-A$$ is a closed subset.
 2. If $$A$$ is a subset of $$\mathbb{R}$$, then $$bdy(A)$$ = $$bdy(\mathbb{R}-A)$$.
@@ -32,7 +32,7 @@ The riddle requires some knowledge of [Topology](http://en.wikipedia.org/wiki/To
 
 ***Can you “Spot the Not”?***
 
-#### Definitions Used by the Riddle
+# Definitions Used by the Riddle
 
 1. *Open set* – a set is called open if each point of the set is an interior point of the set.
 2. *Interior point* - a point $$p$$ is called an interior point of a subset $$A$$ of $$\mathbb{R}$$ if there exists $$e>0$$ such that the interval $$(c-e,c+e)$$ is contained in $$A$$.
