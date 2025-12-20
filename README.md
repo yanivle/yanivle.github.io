@@ -1,16 +1,10 @@
 # yanivle.github.io
 
-This is my personal blog. It is based on the [Mickey theme](https://github.com/vincentchan/mickey) for [Jekyll](http://jekyllrb.com).
-
+This is my personal blog and a collection of some of my favorite puzzles.
 
 ## Building and Serving
 
-Recompile sass (using the deprecated `Ruby Sass 3.7.4`):
-
-    sass _scss/main.scss:assets/css/main.css --sourcemap=none --style expanded
-    sass _scss/main.scss:assets/css/main.min.css --sourcemap=none --style compressed
-
-Put hero images for new posts go in `assets/images/hero` and then run:
+Put images for new posts in `assets/images/hero` and then run:
 
     python build/resize_images.py
 
@@ -21,3 +15,7 @@ To serve locally (remove `--drafts` for prod view):
 To build:
 
     bundle exec jekyll build --config=_config.yml --drafts
+
+## Acknowledgements
+
+Some posts use images from the awesome royalty-free images sites [Pexels](https://www.pexels.com), [Unsplash](https://unsplash.com/), and [publicdomainvectors.org](https://publicdomainvectors.org/), or from the awesome [Ideogram](https://ideogram.ai) image generation site.

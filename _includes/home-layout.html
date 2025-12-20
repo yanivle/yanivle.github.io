@@ -318,12 +318,39 @@
     .bento-col-2 { grid-column: span 2; }
     .bento-row-2 { grid-row: span 2; }
 
-    /* --- Recommended Badge --- */
-    .bento-item.recommended { border: 1px solid var(--color-accent); }
+    /* --- Recommended Badge & Card Shine --- */
+    
     .badge-recommended {
-      background-color: var(--color-accent) !important;
-      color: #000 !important;
-      font-weight: 700;
+      background: rgba(255, 255, 255, 0.15) !important;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #fff !important;
+      font-weight: 600; /* Match regular tag weight */
+    }
+
+    .bento-item.recommended .bento-overlay::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%; /* Wide shine for the whole card */
+      height: 100%;
+      background: linear-gradient(
+        to right, 
+        transparent, 
+        rgba(255, 255, 255, 0.15), 
+        transparent
+      );
+      transform: skewX(-25deg);
+      pointer-events: none; /* Ensures you can still click the card */
+      z-index: 10;
+      
+      animation: cardShine 7s infinite;
+    }
+
+    @keyframes cardShine {
+      0% { left: -100%; }
+      20% { left: 200%; } /* Moves slower across the larger area */
+      100% { left: 200%; } /* Long pause before repeating */
     }
 
     /* --- Footer Styles (Dark Mode) --- */
@@ -498,7 +525,7 @@
 
           <div class="bento-overlay">
             {% if post.recommended %}
-                <span class="bento-tag badge-recommended"><i class="fas fa-star"></i> Recommended</span>
+                <span class="bento-tag badge-recommended"><i class="fas fa-star"></i> {{ post.categories | first }}</span>
             {% elsif post.categories contains "Puzzles" %}
                 <span class="bento-tag"><i class="fas fa-puzzle-piece"></i> Puzzle</span>
             {% elsif post.categories contains "WIP" %}
